@@ -19,7 +19,7 @@
           <input type="password" class="form-control" v-model="login" placeholder="Password">
         </div>
         <button type="submit" class="btn btn-primary button">Log In</button>
-        <div class="signup">Don’t have an account?<a class="signuplink" href="/About">Sign up</a></div>
+        <div class="signup">Don’t have an account?<a class="signuplink" href="/registration">Sign up</a></div>
       </form>
     </div>
   </div>
@@ -44,6 +44,9 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 .login {
   display: flex;
@@ -54,6 +57,7 @@ export default {
   padding: 40px 40px;
   border-radius: 10px;
   width: 25%;
+  min-width: 350px;
 }
 .header {
   font-weight: bold;
