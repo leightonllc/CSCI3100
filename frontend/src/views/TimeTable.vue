@@ -5,17 +5,20 @@
         </div>
         <div class="right">
             <h1>Timetable Planner</h1>
+            <Calendar />
         </div>
     </div>
 </template>
 
 <script>
 import SideBar from '../components/sidebar/SideBar'
+import Calendar from '../components/calendar/Calendar'
 
 export default {
   name: 'TimeTable',
   components: {
-      SideBar
+      SideBar,
+      Calendar
   }
 };
 </script>
