@@ -4,6 +4,7 @@ import Registration from '../views/Registration.vue'
 import VerifyEmail from '../views/VerifyEmail.vue'
 import ConfirmRegist from '../views/ConfirmRegist'
 import TimeTable from '../views/TimeTable'
+import ChatRoom from '../components/chatroom/Chat.vue'
 
 const routes = [{
         path: '/',
@@ -29,7 +30,12 @@ const routes = [{
         path: '/timetable',
         name: 'timeTable',
         component: TimeTable
-    }
+    },
+    {
+        path: '/chat',
+        name: 'Chat',
+        component: ChatRoom
+    },
 ]
 
 const router = createRouter({
