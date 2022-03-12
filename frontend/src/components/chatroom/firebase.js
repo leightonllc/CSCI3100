@@ -1,9 +1,13 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from 'firebase/app';
+import { getDatabase } from "firebase/database";
 
-import firebase from "firebase";
-import "firebase/firestore";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-var config = {
+
+const firebaseConfig = {
   apiKey: "AIzaSyBkmkmp8XdBN91dK0aZZI3KOZQh3GcVaJY",
   authDomain: "csci3100-chat.firebaseapp.com",
   databaseURL: "https://csci3100-chat-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -13,6 +17,8 @@ var config = {
   appId: "1:638768966493:web:230d5b28989d6c2939d6b4"
 };
 
-// Initialize Firebase
-var fire = firebase.initializeApp(config);
-export default fire;
+const app = initializeApp(firebaseConfig);
+
+const db = getDatabase(app);
+
+export default db;
