@@ -5,6 +5,7 @@ import VerifyEmail from '../views/VerifyEmail.vue'
 import ConfirmRegist from '../views/ConfirmRegist'
 import TimeTable from '../views/TimeTable'
 import ChatRoom from '../components/chatroom/Chat.vue'
+import CourseReview from '../views/CourseReview.vue'
 
 const routes = [{
         path: '/',
@@ -35,6 +36,11 @@ const routes = [{
         path: '/chat',
         name: 'Chat',
         component: ChatRoom,
+    },
+    {
+        path: '/coursereview',
+        name: 'CourseReview',
+        component: CourseReview,
     },
 ]
 
