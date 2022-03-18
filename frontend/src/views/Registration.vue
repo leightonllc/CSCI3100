@@ -1,35 +1,64 @@
 <template>
   <div class="background">
     <div class="left">
-      <img src="@/assets/logo.png" alt="">
-      CUTE
+      <img src="@/assets/logo_white.png" alt="App Logo" />
     </div>
     <div class="right">
-      
       <div class="login">
         <form class="form">
           <div class="header">
-              <div class="loginStr1">Register Individual Account!</div>
-              <div class="loginStr2">For the purpose of industry regulation, your details are required.</div>
+            <div class="loginStr1">Register Individual Account!</div>
+            <div class="loginStr2">
+              For the purpose of industry regulation, your details are required.
+            </div>
           </div>
           <div class="form-group">
             <label for="exampleInputName1">Account Name</label>
-            <input type="text" class="form-control" v-model="login" placeholder="Enter account name">
+            <input
+              type="text"
+              class="form-control"
+              v-model="login"
+              placeholder="Enter account name"
+            />
           </div>
           <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" v-model="login" placeholder="Email address">
+            <input
+              type="email"
+              class="form-control"
+              v-model="login"
+              placeholder="Email address"
+            />
           </div>
           <div class="form-group">
             <label for="exampleInputPassword1">Create password</label>
-            <input type="password" class="form-control" v-model="login" placeholder="Enter password">
+            <input
+              type="password"
+              class="form-control"
+              v-model="login"
+              placeholder="Enter password"
+            />
           </div>
           <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">I agree to terms & conditions</label>
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="exampleCheck1"
+            />
+            <label class="form-check-label" for="exampleCheck1"
+              >I agree to terms & conditions</label
+            >
           </div>
-          <button type="submit" class="btn btn-primary button" @click="register()">Register Account</button>
-          <div class="signup">Already have an account?<a class="signuplink" href="/">Sign In</a></div>
+          <button
+            type="submit"
+            class="btn btn-primary button"
+            @click="register()"
+          >
+            Register Account
+          </button>
+          <div class="signup">
+            Already have an account?<a class="signuplink" href="/">Sign In</a>
+          </div>
         </form>
       </div>
     </div>
@@ -37,15 +66,14 @@
 </template>
 
 <script>
-
 export default {
-  name: 'Registration',
-  methods:{
-      register(){
-          this.$router.push('/verifyEmail')
-      }
-  }
-}
+  name: "Registration",
+  methods: {
+    register() {
+      this.$router.push("/verifyEmail");
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -54,7 +82,12 @@ export default {
   display: flex;
 }
 .left {
-  background: linear-gradient(0deg, rgba(21, 101, 216, 0.7), rgba(21, 101, 216, 0.7)), url(~@/assets/images/cuhkbg.jpg) ;
+  background: linear-gradient(
+      0deg,
+      rgba(21, 101, 216, 0.7),
+      rgba(21, 101, 216, 0.7)
+    ),
+    url(~@/assets/images/cuhkbg.jpg);
   height: 100%;
   flex: 2 2 0;
   background-repeat: no-repeat;
@@ -62,9 +95,9 @@ export default {
   background-size: cover;
   font-weight: bold;
   font-size: 16px;
-  color: #FFFFFF;
+  color: #ffffff;
   text-align: start;
-  padding: 50px 
+  padding: 20px;
 }
 .right {
   flex: 3 3 0;
@@ -82,7 +115,7 @@ export default {
 .header {
   font-weight: bold;
   font-size: 19px;
-  color: #A4A6B3;
+  color: #a4a6b3;
   padding: 0px 0px 20px 0px;
 }
 .loginStr1 {
@@ -93,15 +126,14 @@ export default {
 .loginStr2 {
   font-weight: normal;
   font-size: 18px;
-  color: #9FA2B4;
+  color: #9fa2b4;
 }
-.form-group{
+.form-group {
   text-align: start;
   font-weight: bold;
   font-size: 16px;
-  color: #9FA2B4;
+  color: #9fa2b4;
   padding: 0px 0px 30px 0px;
-
 }
 .form-control {
   padding: 10px;
@@ -110,23 +142,23 @@ export default {
   font-weight: 500;
   font-size: 16px;
   align-items: center;
-  color: #696F79;
+  color: #696f79;
   padding-bottom: 30px;
 }
 .button {
   width: 90%;
   padding: 15px 0px;
 }
-.signup{
+.signup {
   font-size: 14px;
   text-align: center;
-  color: #9FA2B4;
+  color: #9fa2b4;
   padding: 20px 0px;
 }
-.signuplink{
+.signuplink {
   font-size: 14px;
   font-weight: bold;
-  color: #1565D8;
-  text-decoration:none;
+  color: #1565d8;
+  text-decoration: none;
 }
 </style>
