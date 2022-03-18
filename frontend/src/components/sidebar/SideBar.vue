@@ -2,7 +2,7 @@
     <div class="sidebar">
         <div class="logo">
             <img src="@/assets/logo.png" alt="">
-            <span>CUTE</span>
+            <span style="color: white">CUTE</span>
         </div>
         <hr/>
         <hr/>
@@ -48,9 +48,6 @@ export default {
         padding: 0.5vh
     }
 
-    span {
-        color: white;
-    }
 
     ul.fa-ul {
         text-align: left;
@@ -75,13 +72,6 @@ export default {
         border-left: solid 0.5vw silver;
     }
 
-    ul li:last-child {
-        margin-bottom: 5vh;
-    }
-
-    ul li:first-child {
-        margin-top: 5vh;
-    }
 
     hr.solid {
         border-top: 1px solid #DFE0EB;
