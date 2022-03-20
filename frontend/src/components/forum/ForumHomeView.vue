@@ -1,0 +1,150 @@
+<template>
+    <div class="forumPostBox">
+        <!-- Replace this with no profile picture placeholder -->
+                        <!-- flex layout -->
+        <div class="forumPostBoxHeader">
+            <div class="forumPostProfilePicture">
+            <!-- disallow div to shrink when page gets smaller -->
+            <svg height="60" width="60">
+                <circle cx="30" cy="30" r="25" fill="green"></circle>
+            </svg>
+            </div>
+            <div class="forumPostMetadata">
+                <!-- allow div to grow and take up all space -->
+                <p class="poster">{{ post.username }}</p>
+                <p class="timeElapsed">{{ timediff }}</p>
+            </div>
+        </div>
+        <div class="forumPostBody">
+            <div class="title">
+                <p>{{ post.question }}</p>
+            </div>
+            <div class="description">
+                <p> {{ post.description }} </p>
+            </div>
+        </div>
+    </div>
+</template>
+
+<style scoped>
+    .forumPostBox {
+        margin: 5vh 0vw 0vh;
+        border-radius: 10px;
+        border-color: lightgray;
+        border-style: solid;
+        padding: 1vh 1vw;
+        min-width: 50vw;
+        min-height: 30vh;
+    }
+
+    .forumPostBox:hover {
+        background-color: lightgrey
+    }
+
+    .forumPostBoxHeader {
+        display: flex;
+        align-items: center;
+    }
+    .forumPostProfilePicture {
+        flex-shrink: 0;
+    }
+    .forumPostMetaData {
+        flex-shrink: 1;
+        margin-left: 10px;
+    }
+
+    p.poster {
+        font-size: 1em;
+        font-weight: bold;
+        color: black;
+        margin-left: 15px;
+        margin-bottom: 0px;
+    }
+
+    p.timeElapsed {
+        font-size: 0.8em;
+        font-weight: bold;
+        color: gray;
+        margin-left: 15px;
+        margin-bottom: 0px;
+    }
+
+   .forumPostBody {
+       margin-top: 15px;
+       margin-bottom: 10px;
+   }
+
+    .forumPostBody .title {
+        color: black;
+        font-weight: bold;
+    }
+</style>
+
+<script>
+export default {
+    name: 'ForumHomeView',
+    props: {post: Object},
+    data() {
+        return {
+            timediff: null,
+        }
+    },
+    created() {
+        this.setTimer();
+    },
+
+    methods: {
+        setTimer() {
+            let d1 = new Date();
+            let d = d1 - this.post.timestamp;
+            let seconds = Math.floor(d / 1000);
+            let minutes = Math.floor(seconds / 60);
+            let hours = Math.floor(minutes / 60);
+            let days = Math.floor(hours / 24);
+            let weeks = Math.floor(days / 7);
+            
+            // Months
+            let day1 = d1.getDate();
+            let day2 = this.post.timestamp.getDate();
+            let month1 = d1.getMonth();
+            let month2 = this.post.timestamp.getMonth();
+
+            let months = Math.floor(month1 - month2);
+            if (months < 0) {
+                months += 12;
+            }
+            if (months > 0){
+                months = day2 > day1 ? months-1 : months
+            };
+
+            // Year
+            let years = Math.floor(days/365);
+            
+            if (years > 0){
+                this.timediff =  years + "y ago";
+            }
+            else if (months > 0){
+                this.timediff = months + "mo ago";
+            }
+            else if (weeks > 0){
+                this.timediff = weeks + "w ago";
+            }
+            else if (days > 0){
+                this.timediff = days + "d ago";
+            }
+            else if (hours > 0){
+                this.timediff = hours + "h ago";
+            }
+            else if (minutes > 0){
+                this.timediff = minutes + "m ago"
+            }
+            else if (seconds > 0) {
+                this.timediff = seconds + "s ago"
+            }
+            else {
+                this.timediff = "Just now";
+            }
+        }
+    },
+}
+</script>
