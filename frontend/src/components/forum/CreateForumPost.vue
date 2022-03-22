@@ -10,7 +10,6 @@
               v-model="title"
               placeholder="What is the title of your post?"
             />
-            {{ title }}
         </div>
         <div class="form-group">
             <label for="description">Description</label>
@@ -19,7 +18,6 @@
               v-model="description"
               placeholder="Write your description in detail"
             ></textarea>
-            {{ description }}
         </div>
         <button class="btn-submit">Submit</button>
       </form>
