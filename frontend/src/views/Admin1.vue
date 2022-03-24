@@ -72,7 +72,9 @@
         max-width: unset;
     }
 
-    .left {}
+    .left {
+        
+    }
 
     .right {
         padding: 30px 20px
