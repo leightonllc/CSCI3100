@@ -11,7 +11,7 @@
         </ul>
         <hr class="solid" />
         <ul class="fa-ul">
-            <li><i class="fa-solid fa-message"></i>Chat</li>
+            <li onclick="location.href='./chat'"><i class="fa-solid fa-message"></i>Chat</li>
             <li><i class="fa fa-user-gear"></i>Setting</li>
             <li><i class="fa fa-right-from-bracket"></i>Logout</li>
         </ul>
@@ -25,6 +25,7 @@ export default {
 </script>
 
 <style>
+
     .sidebar {
         background-color: #F0F0F0;
         padding-top: 5vh;

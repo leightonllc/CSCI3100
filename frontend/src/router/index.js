@@ -7,6 +7,7 @@ import TimeTable from '../views/TimeTable'
 import ChatRoom from '../components/chatroom/Chat.vue'
 import CourseReview from '../views/CourseReview.vue'
 import Setting from '../views/Setting.vue'
+import Admin1 from '../views/Admin1.vue'
 
 const routes = [{
         path: '/',
@@ -47,6 +48,11 @@ const routes = [{
         path: '/setting',
         name: 'Setting',
         component: Setting,
+    },
+    {
+        path: '/admin1',
+        name: 'Admin1',
+        component: Admin1,
     },
 ]
 

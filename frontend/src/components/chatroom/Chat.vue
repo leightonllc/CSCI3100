@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <!-- Login section -->
-    <div class="login mt-5" v-if="!name">
+    <div class="login m-5" v-if="!name">
       <h3 class="mt-5">Join Chat</h3>
-      <label for="username">userName</label>
+      <label for="username">Since the Login function has not been implemented yet, there's no name prop passed here. Please type a random username to continue:</label>
       <br />
       <input class="mb-3" type="text" v-model="userName" />
       <br />
@@ -11,24 +11,31 @@
     </div>
 
     <!-- Chat section -->
-    <div class="message-body mt-3" v-else>
-      <h3>Chat</h3>
-      <h5>Welcome {{ name }}!</h5>
-      <div class="card">
-        <div class="card-body">
-          <div class="border pl-2 pt-1 ml-2 message-text mb-2" v-for="message in messages" :key="message">
-            <p class="lead">{{ message.username }}</p>
-            <p class="message pt-1">{{ message.text }}</p>
+
+    <div class="row" v-else>
+      <div class="col-xl-2 col-lg-3 col-md-4">
+        <SideBar />
+      </div>
+      <div class="col-xl-10 col-lg-9 col-md-8">
+        <h3>Chat</h3>
+        <h5>Welcome {{ name }}!</h5>
+        <div class="row d-flex justify-content-center">
+          <div class="col-md-8 col-lg-6 col-xl-4" style="overflow-y: scroll; height:70vh">
+            <div class="border pl-2 pt-1 ml-2 message-text mb-2" v-for="message in messages" :key="message">
+              <p class="lead">{{ message.username }}</p>
+              <p class="message pt-1">{{ message.text }}</p>
+            </div>
           </div>
         </div>
+        <input v-model="showMessage" type="text" class="mt-3 mr-2 pl-2 pr-2" />
+        <button class="btn btn-primary" @click="sendMessage">Send</button>
       </div>
-      <input v-model="showMessage" type="text" class="mt-3 mr-2 pl-2 pr-2" />
-      <button class="btn btn-primary" @click="sendMessage">Send</button>
     </div>
   </div>
 </template>
 
 <script>
+  import SideBar from '../sidebar/CourseSideBar.vue';
   import db from "./firebase";
   import {
     ref,
@@ -45,6 +52,9 @@
         showMessage: "",
         messages: []
       };
+    },
+    components: {
+      SideBar,
     },
     methods: {
       updateUsername() {
@@ -76,3 +86,6 @@
     }
   };
 </script>
+
+<style scoped>
+</style>
