@@ -8,6 +8,8 @@ import ChatRoom from '../components/chatroom/Chat.vue'
 import CourseReview from '../views/CourseReview.vue'
 import Setting from '../views/Setting.vue'
 import Admin1 from '../views/Admin1.vue'
+import ResetPassword from '../views/ResetPassword.vue'
+import NewPassword from '../views/NewPassword.vue'
 
 const routes = [{
         path: '/',
@@ -53,6 +55,16 @@ const routes = [{
         path: '/admin1',
         name: 'Admin1',
         component: Admin1,
+    },
+    {
+        path: '/resetpassword',
+        name: 'ResetPassword',
+        component: ResetPassword,
+    },
+    {
+        path: '/newpassword',
+        name: 'NewPassword',
+        component: NewPassword,
     },
 ]
 

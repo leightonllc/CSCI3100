@@ -19,7 +19,11 @@
           />
         </div>
         <div class="form-group">
-          <label for="exampleInputPassword1">PASSWORD</label>
+          <div style="display:flex;justify-content: space-between;">
+            
+            <label for="exampleInputPassword1">PASSWORD</label>
+            <a href="/resetpassword">Forgot password?</a>
+          </div>
           <input
             type="password"
             class="form-control"

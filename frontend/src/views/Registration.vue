@@ -5,7 +5,8 @@
     </div>
     <div class="right">
       <div class="login">
-        <form class="form">
+        <form class="form" onsubmit="return false">
+        <i class="pi pi-angle-left" onclick="history.back()" style="cursor: pointer;">Back</i>
           <div class="header">
             <div class="loginStr1">Register Individual Account!</div>
             <div class="loginStr2">
@@ -26,7 +27,7 @@
             <input
               type="email"
               class="form-control"
-              v-model="login"
+              v-model="email"
               placeholder="Email address"
             />
           </div>
@@ -35,9 +36,17 @@
             <input
               type="password"
               class="form-control"
-              v-model="login"
               placeholder="Enter password"
             />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Upload profile picture</label>
+            
+            <FileUpload mode="advanced" name="demo[]" url="./upload" accept="image/*" >
+              <template #empty>
+                  <p>Drag and drop files to here to upload.</p>
+              </template>
+            </FileUpload>
           </div>
           <div class="form-check">
             <input
@@ -52,7 +61,7 @@
           <button
             type="submit"
             class="btn btn-primary button"
-            @click="register()"
+            @click="sendEmail()"
           >
             Register Account
           </button>
@@ -60,6 +69,13 @@
             Already have an account?<a class="signuplink" href="/">Sign In</a>
           </div>
         </form>
+          <button
+            type="submit"
+            class="btn btn-primary button"
+            @click="sendEmail()"
+          >
+            Register Account
+          </button>
       </div>
     </div>
   </div>
@@ -72,13 +88,21 @@ export default {
     register() {
       this.$router.push("/verifyEmail");
     },
+    async sendEmail() {
+      let bruh = []
+      Math.random()
+      bruh.push(Math.floor(Math.random() * 8999) + 1001)
+      console.log("asd"+this.email)
+   }
+
+
   },
 };
 </script>
 
 <style scoped>
 .background {
-  height: 100%;
+  min-height: 100%;
   display: flex;
 }
 .left {
@@ -88,7 +112,6 @@ export default {
       rgba(21, 101, 216, 0.7)
     ),
     url(~@/assets/images/cuhkbg.jpg);
-  height: 100%;
   flex: 2 2 0;
   background-repeat: no-repeat;
   background-position: center;

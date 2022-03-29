@@ -16,6 +16,7 @@ import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import Rating from 'primevue/rating';
 import Column from 'primevue/column';
+import FileUpload from 'primevue/fileupload';
 
 library.add(fas)
 
@@ -29,5 +30,6 @@ app.component('Textarea', Textarea)
 app.component('Rating', Rating)
 app.component('DataTable', DataTable)
 app.component('Column', Column)
+app.component('FileUpload', FileUpload)
 
 app.mount('#app')
