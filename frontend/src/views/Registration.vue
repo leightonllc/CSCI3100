@@ -15,7 +15,7 @@
           </div>
           <div class="form-group">
             <label for="exampleInputName1">Account Name</label>
-            <input type="text" class="form-control" v-model="login" placeholder="Enter account name" />
+            <input type="text" class="form-control" v-model="name" placeholder="Enter account name" />
           </div>
           <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>
@@ -23,19 +23,11 @@
           </div>
           <div class="form-group">
             <label for="exampleInputPassword1">Create password</label>
-            <input type="password" class="form-control" required="true" v-model="password" placeholder="Enter password" />
-          </div>
-          <div class="form-group">
-            <label for="exampleInputPassword1">Upload profile picture</label>
-
-            <FileUpload mode="advanced" name="demo[]" url="./upload" accept="image/*">
-              <template #empty>
-                <p>Drag and drop files to here to upload.</p>
-              </template>
-            </FileUpload>
+            <input type="password" class="form-control" required="true" v-model="password"
+              placeholder="Enter password" />
           </div>
           <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1" />
+            <input type="checkbox" required="true" class="form-check-input" id="exampleCheck1" />
             <label class="form-check-label" for="exampleCheck1">I agree to terms & conditions</label>
           </div>
           <button type="submit" class="btn btn-primary button">
@@ -56,6 +48,7 @@
     getAuth,
     createUserWithEmailAndPassword,
     sendEmailVerification,
+    updateProfile
   } from "firebase/auth";
 
   export default {
@@ -64,6 +57,7 @@
       return {
         email: '',
         password: '',
+        name: '',
       };
     },
     methods: {
@@ -74,15 +68,26 @@
         createUserWithEmailAndPassword(auth, this.email, this.password)
           .then((userCredential) => {
             const user = userCredential.user;
+            updateProfile(user, {
+              displayName: this.name,
+            }).then(() => {
+              //
+            }).catch((error) => {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+              console.log(errorCode, errorMessage);
+            })
             sendEmailVerification(user)
               .then(() => {
                 console.log("Email Verification Sent");
-                this.$router.push({path: '/verifyEmail'});
+                this.$router.push({
+                  path: '/verifyEmail'
+                });
               })
           })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
+          .catch((error2) => {
+            const errorCode = error2.code;
+            const errorMessage = error2.message;
             console.log(errorCode, errorMessage);
           })
       },
