@@ -5,7 +5,7 @@
     </div>
     <div class="right">
       <div class="login">
-        <form class="form" onsubmit="return false">
+        <form class="form" @submit.stop.prevent="register()">
           <i class="pi pi-angle-left" onclick="history.back()" style="cursor: pointer;">Back</i>
           <div class="header">
             <div class="loginStr1">Register Individual Account!</div>
@@ -38,16 +38,13 @@
             <input type="checkbox" class="form-check-input" id="exampleCheck1" />
             <label class="form-check-label" for="exampleCheck1">I agree to terms & conditions</label>
           </div>
-          <button type="submit" class="btn btn-primary button" @click="register()">
+          <button type="submit" class="btn btn-primary button">
             Register Account
           </button>
           <div class="signup">
             Already have an account?<a class="signuplink" href="/">Sign In</a>
           </div>
         </form>
-        <button type="submit" class="btn btn-primary button" @click="register()">
-          Register Account
-        </button>
       </div>
     </div>
   </div>

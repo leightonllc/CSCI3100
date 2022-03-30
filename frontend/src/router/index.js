@@ -10,6 +10,7 @@ import Setting from '../views/Setting.vue'
 import Admin1 from '../views/Admin1.vue'
 import ResetPassword from '../views/ResetPassword.vue'
 import NewPassword from '../views/NewPassword.vue'
+import ResetEmail from '../views/ResetEmail.vue'
 
 const routes = [{
         path: '/',
@@ -65,6 +66,11 @@ const routes = [{
         path: '/newpassword',
         name: 'NewPassword',
         component: NewPassword,
+    },
+    {
+        path: '/resetemail',
+        name: 'ResetEmail',
+        component: ResetEmail,
     },
 ]
 
