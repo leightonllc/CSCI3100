@@ -37,9 +37,11 @@
   import db from "../components/chatroom/firebase";
   import {
     getAuth,
-    signInWithEmailAndPassword
+    signInWithEmailAndPassword,
+    setPersistence,
+    browserSessionPersistence
   } from "firebase/auth";
-
+  const auth = getAuth();
   export default {
     name: "HomeView",
     data() {
@@ -54,22 +56,31 @@
     },
     methods: {
       login() {
-        const auth = getAuth();
-        signInWithEmailAndPassword(auth, this.email, this.password)
-          .then((userCredential) => {
-            console.log(this.email, this.password);
-            const user = userCredential.user;
-            this.$router.push({path: '/timetable'});
-          })
-          .catch((error) => {
+        setPersistence(auth, browserSessionPersistence)
+          .then(() => {
+            signInWithEmailAndPassword(auth, this.email, this.password)
+              .then((userCredential) => {
+                console.log(auth.currentUser);
+                this.$router.push({
+                  path: '/timetable'
+                });
+              })
+              .catch((error) => {
+                this.flag = true;
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode, errorMessage);
+              });
+          }).catch((error2) => {
             this.flag = true;
-            const errorCode = error.code;
-            const errorMessage = error.message;
+            const errorCode = error2.code;
+            const errorMessage = error2.message;
             console.log(errorCode, errorMessage);
           });
 
       },
     },
+
   };
 </script>
 

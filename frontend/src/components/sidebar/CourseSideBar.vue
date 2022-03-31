@@ -13,24 +13,42 @@
         <ul class="fa-ul">
             <li onclick="location.href='./chat'"><i class="fa-solid fa-message"></i>Chat</li>
             <li><i class="fa fa-user-gear"></i>Setting</li>
-            <li><i class="fa fa-right-from-bracket"></i>Logout</li>
+            <li @click="LogOut()"><i class="fa fa-right-from-bracket"></i>Logout</li>
         </ul>
     </div>
 </template>
 
 <script>
-export default {
-    name: 'CourseSideBar',
-}
+    import db from "../chatroom/firebase";
+    import {
+        getAuth,
+        signOut
+    } from "firebase/auth";
+    const auth = getAuth();
+    export default {
+        name: 'CourseSideBar',
+        methods: {
+            LogOut() {
+                signOut(auth).then(() => {
+                    this.$router.push({
+                        path: '/'
+                    });
+                }).catch((error) => {
+                    const errorCode = error2.code;
+                    const errorMessage = error2.message;
+                    console.log(errorCode, errorMessage);
+                });
+            }
+        }
+    }
 </script>
 
 <style>
-
     .sidebar {
         background-color: #F0F0F0;
         padding-top: 5vh;
-        height:100vh;
-        
+        height: 100vh;
+
         position: -webkit-sticky;
         position: sticky;
         top: 0;
@@ -44,7 +62,4 @@ export default {
         margin-left: auto;
         margin-right: auto;
     }
-
-
-
 </style>

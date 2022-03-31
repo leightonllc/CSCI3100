@@ -1,35 +1,29 @@
 <template>
   <div id="app">
-    <!-- Login section -->
-    <div class="login m-5" v-if="!name">
-      <h3 class="mt-5">Join Chat</h3>
-      <label for="username">Since the Login function has not been implemented yet, there's no name prop passed here. Please type a random username to continue:</label>
-      <br />
-      <input class="mb-3" type="text" v-model="userName" />
-      <br />
-      <button class="btn btn-primary" @click="updateUsername()">Join Chat</button>
-    </div>
 
     <!-- Chat section -->
 
-    <div class="row" v-else>
-      <div class="col-xl-2 col-lg-3 col-md-4">
+    <div class="row">
+      <div class="col-xl-3 col-lg-3 col-md-4">
         <SideBar />
       </div>
-      <div class="col-xl-10 col-lg-9 col-md-8">
+      <div class="col-xl-9 col-lg-9 col-md-8 mt-5">
         <h3>Chat</h3>
         <h5>Welcome {{ name }}!</h5>
         <div class="row d-flex justify-content-center">
-          <div class="col-md-8 col-lg-6 col-xl-4" style="overflow-y: scroll; height:70vh">
+          <div class="container col-lg-8" style="overflow-y: scroll; height:70vh">
             <div class="border pl-2 pt-1 ml-2 message-text mb-2" v-for="message in messages" :key="message">
               <p class="lead">{{ message.username }}</p>
               <p class="message pt-1">{{ message.text }}</p>
             </div>
           </div>
+          <form class="row col-lg-8" @submit.stop.prevent="sendMessage()">
+            <div class="col-9"><input v-model="showMessage" type="text" class="form-control" /></div>
+            <div class="col-3"><button class="btn btn-primary" type="submit">Send</button></div>
+          </form>
         </div>
-        <input v-model="showMessage" type="text" class="mt-3 mr-2 pl-2 pr-2" />
-        <button class="btn btn-primary" @click="sendMessage">Send</button>
       </div>
+
     </div>
   </div>
 </template>
@@ -43,11 +37,14 @@
     push,
     onValue
   } from "firebase/database";
+  import {
+    getAuth,
+    onAuthStateChanged
+  } from "firebase/auth";
   export default {
     name: "App",
     data() {
       return {
-        userName: "",
         name: null,
         showMessage: "",
         messages: []
@@ -57,25 +54,33 @@
       SideBar,
     },
     methods: {
-      updateUsername() {
-        this.name = this.userName;
-        this.userName = "";
-      },
       sendMessage() {
-        const message = {
-          text: this.showMessage,
-          username: this.name
-        };
-        const messageListRef = ref(db, "messages");
-        const newMessageRef = push(messageListRef);
-        set(newMessageRef, message);
-        this.showMessage = "";
+        if (this.name) {
+          const message = {
+            text: this.showMessage,
+            username: this.name
+          };
+          const messageListRef = ref(db, "messages");
+          const newMessageRef = push(messageListRef);
+          set(newMessageRef, message);
+          this.showMessage = "";
+        }
       }
     },
     mounted() {
-      const messageListRef = ref(db, "messages");
-      console.log(messageListRef);
-
+      const auth = getAuth();
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/firebase.User
+          this.name = user.displayName;
+          console.log(user);
+          // ...
+        } else {
+          // User is signed out
+          // ...
+        }
+      });
       onValue(ref(db, "messages"), (snapshot) => {
         this.messages = [];
         snapshot.forEach((childSnapshot) => {

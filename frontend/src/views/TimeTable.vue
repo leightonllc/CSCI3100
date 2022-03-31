@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import SideBar from '../components/sidebar/SideBar'
+import SideBar from '../components/sidebar/CourseSideBar.vue';
 import Calendar from '../components/calendar/Calendar'
 
 export default {
