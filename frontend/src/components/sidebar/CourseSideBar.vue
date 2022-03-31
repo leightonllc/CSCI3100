@@ -4,10 +4,11 @@
             <img src="@/assets/logo.png" alt="">
         </div>
         <ul class="fa-ul">
-            <li><i class="fa fa-house"></i>Home</li>
-            <li><i class="fa fa-book"></i>CSCI2720</li>
-            <li><i class="fa fa-book"></i>ENGG1110</li>
-            <li><i class="fa fa-book"></i>CSCI3100</li>
+            <li onclick="location.href='./'"><i class="fa fa-house"></i>Home</li>
+            <li onclick="location.href='./coursereview'"><i class="fa fa-book"></i>Course Review</li>
+            <li onclick="location.href='./courselist'"><i class="fa fa-book"></i>Course List</li>
+            <li onclick="location.href='./showallusers'"><i class="fa fa-book"></i>All Users</li>
+            
         </ul>
         <hr class="solid" />
         <ul class="fa-ul">

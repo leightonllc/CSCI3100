@@ -5,7 +5,7 @@
         </div>
         <div class="right m-2">
             <div>
-                <strong>User</strong>
+                <span class="h2">Users</span>
                 <div class="my-2">
                     <table class="table">
                         <thead>
