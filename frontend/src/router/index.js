@@ -11,6 +11,7 @@ import ShowAllUsers from '../views/ShowAllUsers.vue'
 import ResetPassword from '../views/ResetPassword.vue'
 import NewPassword from '../views/NewPassword.vue'
 import ResetEmail from '../views/ResetEmail.vue'
+import CourseList from '../views/CourseList.vue'
 
 const routes = [{
         path: '/',
@@ -71,6 +72,11 @@ const routes = [{
         path: '/resetemail',
         name: 'ResetEmail',
         component: ResetEmail,
+    },
+    {
+        path: '/courselist',
+        name: 'CourseList',
+        component: CourseList,
     },
 ]
 
