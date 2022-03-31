@@ -89,7 +89,7 @@
                   name: user.displayName,
                   email: this.email,
                 };
-                const userListRef = ref(db, "users/" + user.uid);
+                const userListRef = ref(db, "users");
                 const newUserRef = push(userListRef);
                 set(newUserRef, newuser);
                 console.log("Email Verification Sent");
