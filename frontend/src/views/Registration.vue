@@ -50,6 +50,11 @@
     sendEmailVerification,
     updateProfile
   } from "firebase/auth";
+  import {
+    ref,
+    set,
+    push,
+  } from "firebase/database";
 
   export default {
     name: "Registration",
@@ -71,7 +76,7 @@
             updateProfile(user, {
               displayName: this.name,
             }).then(() => {
-              //
+              console.log(user);
             }).catch((error) => {
               const errorCode = error.code;
               const errorMessage = error.message;
@@ -79,6 +84,14 @@
             })
             sendEmailVerification(user)
               .then(() => {
+                const newuser = {
+                  uid: user.uid,
+                  name: user.displayName,
+                  email: this.email,
+                };
+                const userListRef = ref(db, "users");
+                const newUserRef = push(userListRef);
+                set(newUserRef, newuser);
                 console.log("Email Verification Sent");
                 this.$router.push({
                   path: '/verifyEmail'
