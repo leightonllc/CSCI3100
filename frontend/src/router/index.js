@@ -12,6 +12,7 @@ import ResetPassword from '../views/ResetPassword.vue'
 import NewPassword from '../views/NewPassword.vue'
 import ResetEmail from '../views/ResetEmail.vue'
 import CourseList from '../views/CourseList.vue'
+import Overview from '../views/Overview.vue'
 
 const routes = [{
         path: '/',
@@ -37,6 +38,11 @@ const routes = [{
         path: '/timetable',
         name: 'timeTable',
         component: TimeTable
+    },
+    {
+        path: '/overview',
+        name: 'overview',
+        component: Overview
     },
     {
         path: '/chat',

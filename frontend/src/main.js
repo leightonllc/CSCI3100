@@ -17,6 +17,9 @@ import TabPanel from 'primevue/tabpanel';
 import Rating from 'primevue/rating';
 import Column from 'primevue/column';
 import FileUpload from 'primevue/fileupload';
+import Card from 'primevue/card';
+import Button from 'primevue/button';
+import InputText from 'primevue/inputtext';
 
 library.add(fas)
 
@@ -31,5 +34,8 @@ app.component('Rating', Rating)
 app.component('DataTable', DataTable)
 app.component('Column', Column)
 app.component('FileUpload', FileUpload)
+app.component('Card', Card)
+app.component('Button', Button)
+app.component('InputText', InputText)
 
 app.mount('#app')
