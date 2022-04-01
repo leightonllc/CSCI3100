@@ -34,7 +34,7 @@
             Register Account
           </button>
           <div class="signup">
-            Already have an account?<a class="signuplink" href="/">Sign In</a>
+            Already have an account? <a class="signuplink" href="/">Sign In</a>
           </div>
         </form>
       </div>

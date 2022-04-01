@@ -8,72 +8,47 @@
         <div class="heading">My Profile</div>
         <hr />
         <div class="formcontent">
-           <div class="propic">
-            <img src="@/assets/images/cuhkbg.jpg" alt="propic" />
+          <div class="propic">
+            <img src="" alt="propic" />
           </div>
-    <br>
-            <div class="button">
-          <button
-                type="submit"
-                class="btn btn-secondary"
-                @click="savechanges()"
-              >
-                Change Photo
-              </button>
-         </div>
-          
-          <form
-            action="/dataCollectionLocation"
-            method="post"
-            autocomplete="on"
-          >
+          <br />
+          <div class="button">
+             <FileUpload mode="basic" name="propic[]" url="./upload"  accept="image/*" chooseLabel="Change Photo"/>
+          </div>
+
+          <form action="/dataCollectionLocation" method="post" autocomplete="on">
             <div class="form-group">
               <label for="username">Username</label>
-              <input
-                type="text"
-                class="form-control"
-                v-model="profile"
-                placeholder="Name"
-              />
+              <input type="text" class="form-control" v-model="profileName" placeholder="Name" />
             </div>
             <div class="form-group">
               <label for="email">Email</label>
               <input
                 type="email"
                 class="form-control"
-                v-model="profile"
+                v-model="profileEmail"
                 placeholder="ramonridwan@gogeafrica.com"
               />
             </div>
             <div class="form-group">
               <label for="description">Description</label>
-              <textarea
-                class="form-control"
-                v-model="profile"
-                placeholder="I am a student"
-              />
+              <textarea class="form-control" v-model="profileDescription" placeholder="I am a student" />
             </div>
             <div class="button">
-              <button
-                type="submit"
-                class="btn btn-primary button"
-                @click="savechanges()"
-              >
-                Save Changes
-              </button>
+              <Button  label="Save Changes" @click="savechanges()" class="p-button-success" />
             </div>
           </form>
           <br />
           <hr />
           <div class="heading">Change Password</div>
           <hr />
-          <form action="">
+          <form action>
             <div class="form-group">
               <label for="newpassword">New Password</label>
               <input
                 type="password"
                 class="form-control"
-                v-model="password"
+                v-model="newPassword"
                 placeholder="Type password here"
               />
             </div>
@@ -82,18 +57,12 @@
               <input
                 type="password"
                 class="form-control"
-                v-model="password"
+                v-model="comfirmPassword"
                 placeholder="Type password here again"
               />
             </div>
             <div class="button">
-              <button
-                type="submit"
-                class="btn btn-primary button"
-                @click="savechanges()"
-              >
-                Change Password
-              </button>
+              <Button  label="Change Password" @click="changepassword()" class="p-button-success" />
             </div>
           </form>
         </div>
@@ -110,9 +79,36 @@ export default {
   components: {
     SideBar,
   },
+  data() {
+    return {
+      
+      user: {
+
+        "_id": {
+          "$oid": "62332a10269d41f11ff57426"
+        },
+        "username": "janedoe",
+        "password": "87654321",
+        "email": "@gmail.com",
+        "propic": {
+          "$binary": "",
+          "$type": "0"
+        },
+        "description": "Hey guys! I am a student currently studying Computer Science in CUHK. I’m year 4 now. I like programming. Have a nice day!",
+        "role": "user"
+
+      },
+      profileName: "janedoe",
+      profileEmail: "@gmail.com",
+      profileDescription: "description",
+    }
+  },
   methods: {
     savechanges() {
-      this.$router.push("/verifyEmail");
+      return 1;
+    },
+    changepassword() {
+      return 1;
     },
   },
 };
@@ -136,7 +132,7 @@ export default {
 .propic {
   width: 114px;
   height: 114px;
-  background: rgba(196,196,196,1);
+  background: rgba(196, 196, 196, 1);
   opacity: 1;
   top: 0px;
   left: 0px;
@@ -191,7 +187,7 @@ export default {
 .form-control {
   padding: 10px;
 }
-.button{
+.button {
   display: flex;
   justify-content: center;
   align-items: center;

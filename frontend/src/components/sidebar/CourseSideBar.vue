@@ -13,7 +13,7 @@
         <hr class="solid" />
         <ul class="fa-ul">
             <li onclick="location.href='./chat'"><i class="fa-solid fa-message"></i>Chat</li>
-            <li><i class="fa fa-user-gear"></i>Setting</li>
+            <li onclick="location.href='./setting'"><i class="fa fa-user-gear"></i>Setting</li>
             <li @click="LogOut()"><i class="fa fa-right-from-bracket"></i>Logout</li>
         </ul>
     </div>

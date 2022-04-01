@@ -4,13 +4,15 @@
       <img src="@/assets/logo_white.png" alt="" />
     </div>
     <div class="right">
-      <div class="login">
-        <div class="loginStr1">
-          <fa icon="circle-check" class="tick" />Your email has been verified!
+      <div class="mx-5">
+        <div class="login">
+          <div class="loginStr1">
+            <fa icon="circle-check" class="tick" />Your email has been verified!
+          </div>
+          <div class="buttondiv my-4">
+            <button class="btn btn-primary button" @click="back()">Return to Log in</button>
+          </div>
         </div>
-        <button class="btn btn-primary button" @click="back()">
-          Return to Log in
-        </button>
       </div>
     </div>
   </div>
@@ -69,5 +71,8 @@ export default {
 .button {
   width: 75%;
   padding: 15px 0px;
+}
+.buttondiv {
+  padding-bottom: 30px;
 }
 </style>

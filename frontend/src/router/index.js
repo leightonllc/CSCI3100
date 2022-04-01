@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import Login from '../views/Login.vue'
 import Registration from '../views/Registration.vue'
 import VerifyEmail from '../views/VerifyEmail.vue'
 import ConfirmRegist from '../views/ConfirmRegist'
@@ -13,16 +13,23 @@ import NewPassword from '../views/NewPassword.vue'
 import ResetEmail from '../views/ResetEmail.vue'
 import CourseList from '../views/CourseList.vue'
 import Overview from '../views/Overview.vue'
+import Forum from '../views/Forum.vue'
+import Members from '../views/Members.vue'
 
 const routes = [{
         path: '/',
-        name: 'home',
-        component: HomeView
+        name: 'login',
+        component: Login
     },
     {
         path: '/registration',
         name: 'registration',
         component: Registration
+    },
+    {
+        path: '/resetpassword',
+        name: 'ResetPassword',
+        component: ResetPassword,
     },
     {
         path: '/verifyEmail',
@@ -35,14 +42,14 @@ const routes = [{
         component: ConfirmRegist
     },
     {
-        path: '/timetable',
-        name: 'timeTable',
-        component: TimeTable
-    },
-    {
         path: '/overview',
         name: 'overview',
         component: Overview
+    },
+    {
+        path: '/timetable',
+        name: 'timeTable',
+        component: TimeTable
     },
     {
         path: '/chat',
@@ -55,6 +62,16 @@ const routes = [{
         component: CourseReview,
     },
     {
+        path: '/forum',
+        name: 'Forum',
+        component: Forum,
+    },
+    {
+        path: '/members',
+        name: 'Members',
+        component: Members,
+    },
+    {
         path: '/setting',
         name: 'Setting',
         component: Setting,
@@ -63,11 +80,6 @@ const routes = [{
         path: '/showallusers',
         name: 'ShowAllUsers',
         component: ShowAllUsers,
-    },
-    {
-        path: '/resetpassword',
-        name: 'ResetPassword',
-        component: ResetPassword,
     },
     {
         path: '/newpassword',

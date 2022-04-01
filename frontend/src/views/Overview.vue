@@ -6,12 +6,12 @@
         <div class="right">
             <div class="content">
                 <h2>Current Courses</h2>
-                <span v-for="course of courses" v-bind:key="course.coursecode">
+                <span v-for="course of usercourse" v-bind:key="course.coursecode">
                     <Button class="p-button-text p-button-secondary block1">
                         <Card class="block2">
                             <template #title>
                                 <div class="title">
-                                    {{ course.coursecode }}
+                                    {{ course.courseCode }}
                                     <div class="tool">
                                         <Button
                                             icon="pi pi-ellipsis-v"
@@ -21,10 +21,10 @@
                                 </div>
                             </template>
                             <template #subtitle>
-                                <div style="overflow: auto;">{{ course.title }}</div>
+                                <div style="overflow: auto;">{{ course.courseName }}</div>
                             </template>
                             <template #content>
-                                <div style="overflow: auto;">{{ course.description }}</div>
+                                <div style="overflow: auto;">{{ course.professor }}</div>
                             </template>
                         </Card>
                     </Button>
@@ -36,13 +36,17 @@
                     <template #header>
                         <div class="p-input-icon-left" style="margin: 10px 0px;">
                             <i class="pi pi-search" />
-                            <InputText type="text" v-model="value" placeholder="Search"/>
+                            <InputText type="text" v-model="value" placeholder="Search (not work yet)" />
                         </div>
                     </template>
-                    <Column field="coursecode" header="Course Code"></Column>
-                    <Column field="title" header="Title" style="max-width: 200px; overflow: auto;" />
+                    <Column field="courseCode" header="Course Code"></Column>
                     <Column
-                        field="description"
+                        field="courseName"
+                        header="Title"
+                        style="max-width: 200px; overflow: auto;"
+                    />
+                    <Column
+                        field="courseDescription"
                         header="Description"
                         style="max-width: 300px; overflow: auto;"
                     />
@@ -71,31 +75,111 @@
 import SideBar from '../components/sidebar/CourseSideBar.vue';
 
 export default {
-    name: 'Home',
+    name: 'Overview',
     components: {
         SideBar
     },
-    //getCourses() {
-    //    return 1;
-    //return fetch.get('demo/data/cars-small.json').then(res => res.json()).then(d => d.data);
-    //},
-
     data() {
         return {
+            "usercourse": [
+                {
+                    "_id": {
+                        "$oid": "623361c5ef1acfa872c710e7"
+                    },
+                    "userid": {
+                        "$oid": "623328fe269d41f11ff57425"
+                    },
+                    "courseid": {
+                        "$oid": "623354dcef1acfa872c710cf"
+                    },
+                    "courseCode": "CSCI2720",
+                    "courseName": "Building Web Applications",
+                    "courseDescription": "Almost everything in full-stack web development, from raw HTML to the ME*N stack",
+                    "professor": "Dr. CHAU Chuck-jee",
+                    "assessment": "Homework: 20%; Project: 40%; Final Exam: 40%",
+                    "rating": 5,
+                    "comments": ["", {
+                        "username": "janedoe",
+                        "commentedOn": {
+                            "$date": "2022-03-28T15:23:54.029Z"
+                        },
+                        "content": "kkwkwkkwkwk",
+                        "rate": 5
+                    }]
+                },
+                {
+                    "_id": {
+                        "$oid": "6233627aef1acfa872c710fa"
+                    },
+                    "userid": {
+                        "$oid": "623328fe269d41f11ff57425"
+                    },
+                    "courseid": {
+                        "$oid": "6233578eef1acfa872c710d2"
+                    },
+                    "courseName": "Software Engineering",
+                    "courseDescription": "This course introduces software life-cycles: system modelling, requirements analysis and specifications, design techniques, implementation methodology, testings, maintenance and engineering laboratory. Analytical tools: software metrics, system performance measurement and evaluation. Management techniques: estimations, planning, project management, communication skills and documentations. Introductions to CASE tools and security.",
+                    "professor": "Professor LYU Rung Tsong Michael",
+                    "assessment": "Homework: 20%; Project: 40%; Final Exam: 40%",
+                    "rating": 6.5,
+                    "comments": [""],
+                    "courseCode": "CSCI3100"
+                }
+            ],
             "courses": [
-                { "coursecode": "Volkswagen", "title": 201232131234234234232313112, "description": "Odsfdffssdfsffsdfdsfsdfsdsdfdfsdfsfsdsffdsfdsfdsfsdfsdrange", "vin": "dsad231ff" },
-                { "coursecode": "Audi", "title": 2011, "description": "Black", "vin": "gwregre345" },
-                { "coursecode": "Renault", "title": 2005, "description": "Gray", "vin": "h354htr" }
+                {
+                    "_id": {
+                        "$oid": "623354dcef1acfa872c710cf"
+                    },
+                    "courseCode": "CSCI2720",
+                    "courseName": "Building Web Applications",
+                    "courseDescription": "Almost everything in full-stack web development, from raw HTML to the ME*N stack",
+                    "professor": "Dr. CHAU Chuck-jee",
+                    "assessment": "Homework: 20%; Project: 40%; Final Exam: 40%",
+                    "rating": 5,
+                    "comments": ["", {
+                        "username": "janedoe",
+                        "commentedOn": {
+                            "$date": "2022-03-28T15:23:54.029Z"
+                        },
+                        "content": "kkwkwkkwkwk",
+                        "rate": 5
+                    }]
+                },
+                {
+                    "_id": {
+                        "$oid": "623354dcef1acfa872c710cf"
+                    },
+                    "courseCode": "CSCI2720",
+                    "courseName": "Building Web Applications",
+                    "courseDescription": "Almost everything in full-stack web development, from raw HTML to the ME*N stack",
+                    "professor": "Dr. CHAU Chuck-jee",
+                    "assessment": "Homework: 20%; Project: 40%; Final Exam: 40%",
+                    "rating": 5,
+                    "comments": ["", {
+                        "username": "janedoe",
+                        "commentedOn": {
+                            "$date": "2022-03-28T15:23:54.029Z"
+                        },
+                        "content": "kkwkwkkwkwk",
+                        "rate": 5
+                    }]
+                },
+                {
+                    "_id": {
+                        "$oid": "62414f4b96f8a0b96a8e4608"
+                    },
+                    "courseName": "Introduction of Engineering",
+                    "courseDescription": "This course introduces software life-cycles: system modelling, requirements analysis and specifications, design techniques, implementation methodology, testings, maintenance and engineering laboratory. Analytical tools: software metrics, system performance measurement and evaluation. Management techniques: estimations, planning, project management, communication skills and documentations. Introductions to CASE tools and security.",
+                    "professor": "Professor ABCC",
+                    "assessment": "Homework: 20%; Project: 40%; Final Exam: 40%",
+                    "rating": 1,
+                    "comments": [""],
+                    "courseCode": "ENGG9000"
+                }
             ]
         }
     },
-    //courseList: null,
-    //created() {
-    //    this.courseList = new CourseList();
-    //},
-    //mounted() {
-    //    this.courseList.getCourses().then(data => this.cars = data);
-    //}
 };
 </script>
 

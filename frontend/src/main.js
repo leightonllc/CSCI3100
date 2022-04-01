@@ -20,6 +20,7 @@ import FileUpload from 'primevue/fileupload';
 import Card from 'primevue/card';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
+import TabMenu from 'primevue/tabmenu';
 
 library.add(fas)
 
@@ -37,5 +38,6 @@ app.component('FileUpload', FileUpload)
 app.component('Card', Card)
 app.component('Button', Button)
 app.component('InputText', InputText)
+app.component('TabMenu', TabMenu)
 
 app.mount('#app')

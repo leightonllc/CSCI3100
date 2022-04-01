@@ -3,7 +3,7 @@
     <div class="login">
       <form class="form" @submit.stop.prevent="login()">
         <div class="header">
-          <img src="@/assets/logo.png" alt="App Logo" height="100px" />
+          <img src="@/assets/logo.png" alt="App Logo" style="height:100px;"/>
         </div>
         <div class="alert alert-info alert-dismissable fade show" v-if="flag">Please check your credentials.</div>
         <div class="header">
@@ -24,7 +24,7 @@
         </div>
         <button type="submit" class="btn btn-primary button">Log In</button>
         <div class="signup">
-          Don’t have an account?<a class="signuplink" href="/registration">Sign up</a>
+          Don’t have an account? <a class="signuplink" href="/registration">Sign up</a>
         </div>
       </form>
     </div>
