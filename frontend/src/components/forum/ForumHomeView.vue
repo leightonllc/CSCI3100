@@ -1,5 +1,5 @@
 <template>
-    <div class="forumPostBox">
+    <div class="forumPostBox" @click="handleClick(post.id)">
         <!-- Replace this with no profile picture placeholder -->
                         <!-- flex layout -->
         <div class="forumPostBoxHeader">
@@ -11,16 +11,16 @@
             </div>
             <div class="forumPostMetadata">
                 <!-- allow div to grow and take up all space -->
-                <p class="poster">{{ post.username }}</p>
+                <p class="poster">{{ post.contents.username }}</p>
                 <p class="timeElapsed">{{ timediff }}</p>
             </div>
         </div>
         <div class="forumPostBody">
             <div class="title">
-                <p>{{ post.question }}</p>
+                <p>{{ post.contents.question }}</p>
             </div>
             <div class="description">
-                <p> {{ post.description }} </p>
+                <p> {{ post.contents.description }} </p>
             </div>
         </div>
     </div>
@@ -94,9 +94,12 @@ export default {
     },
 
     methods: {
+        handleClick(id) {
+            this.$emit('clicked-post', id);
+        },
         setTimer() {
             let d1 = new Date();
-            let d = d1 - this.post.timestamp;
+            let d = d1 - new Date(this.post.contents.timestamp);
             let seconds = Math.floor(d / 1000);
             let minutes = Math.floor(seconds / 60);
             let hours = Math.floor(minutes / 60);
@@ -105,9 +108,9 @@ export default {
             
             // Months
             let day1 = d1.getDate();
-            let day2 = this.post.timestamp.getDate();
+            let day2 = new Date(this.post.timestamp).getDate();
             let month1 = d1.getMonth();
-            let month2 = this.post.timestamp.getMonth();
+            let month2 = new Date(this.post.timestamp).getMonth();
 
             let months = Math.floor(month1 - month2);
             if (months < 0) {

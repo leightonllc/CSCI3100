@@ -63,4 +63,8 @@
         margin-left: auto;
         margin-right: auto;
     }
+
+    i {
+        margin: 0px 0.5vw
+    }
 </style>

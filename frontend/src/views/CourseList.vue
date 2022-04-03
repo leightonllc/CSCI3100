@@ -16,18 +16,18 @@
                                 <th scope="col">Professors</th>
                                 <th scope="col">Assessment</th>
                                 <th scope="col">Rating</th>
-                                <th scope="col">Comments</th>
+                                <!-- <th scope="col">Comments</th> -->
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">CSCI3100</th>
-                                <td>Software Engineering</td>
-                                <td>This course will focus on state-of-the-art techniques in software design, development, measurement and evaluation.</td>
-                                <td>Prof. Michael Lyu</td>
-                                <td>Homework: 15% Mid-term Exam: 15% Project: 30% Final Exam: 40%</td>
-                                <td>4.5/5</td>
-                                <td>Interesting jokes</td>
+                            <tr class="courseEntry" v-for="course of courses" :key="course.code" @click="handleClick(course.code)">
+                                <th scope="row"> {{course.code}} </th>
+                                <td> {{ course.name }} </td>
+                                <td> {{ course.courseDescription }} </td>
+                                <td> {{ course.professor }} </td>
+                                <td> {{ course.assessment }} </td>
+                                <td> {{course.rating }}/5</td>
+                                <!-- <td>Interesting jokes</td> -->
                             </tr>
 
                         </tbody>
@@ -59,22 +59,39 @@
         },
         data() {
             return {
-                users: []
+                courses: []
             };
         },
-        methods: {},
+        methods: {
+            handleClick(code) {
+                let courseRow;
+                onValue(ref(db, "courses"), (snapshot) => {
+                    snapshot.forEach((childSnapshot) => {
+                        if (childSnapshot.val().code === code){
+                            courseRow = childSnapshot.val();
+                        }
+                    })
+                });
+                if (courseRow) {
+                    this.$router.push({ name: 'CourseReview', params: {code: code}} );
+                }
+            }
+        },
 
         mounted() {
-            const userListRef = ref(db, "users");
-            console.log(userListRef);
+            // const userListRef = ref(db, "users");
+            // console.log(userListRef);
 
-            onValue(ref(db, "users"), (snapshot) => {
-                this.users = [];
+            onValue(ref(db, "courses"), (snapshot) => {
+                this.courses = [];
                 snapshot.forEach((childSnapshot) => {
-                    this.users.push(childSnapshot.val());
+                    this.courses.push(childSnapshot.val());
                 })
             })
-            console.log(this.users);
+            // this.courses.forEach((idx, val) => {
+            //     console.log(idx);
+            //     console.log(val)}
+            // );
         }
     };
 </script>
@@ -86,6 +103,10 @@
         width: 100vw;
         padding: 0;
         max-width: unset;
+    }
+
+    .courseEntry:hover {
+        background-color: lightgray;
     }
 
     .left {}
