@@ -3,7 +3,7 @@
         <UpperBar/>
         <div class="container">
             <div class="left">
-                <SideBar />dasd
+                <SideBar />
             </div>
             <div class="right">
                 <div>
@@ -118,6 +118,6 @@
 
     .right {
         flex:10 10 0;
-        padding: 30px 40px
+        padding: 30px 20px 30px 70px 
     }
 </style>
