@@ -32,11 +32,11 @@
 
                 <hr />
                 <h2>Other Courses</h2>
-                <DataTable :value="courses" :paginator="true" :rows="10" data-key="id">
+                <DataTable :value="courses" :paginator="true" :rows="10" data-key="id" :filters="filters"> 
                     <template #header>
                         <div class="p-input-icon-left" style="margin: 10px 0px;">
                             <i class="pi pi-search" />
-                            <InputText type="text" v-model="value" placeholder="Search (not work yet)" />
+                            <InputText type="text" v-model="filters['global'].value"  placeholder="Search" />
                         </div>
                     </template>
                     <Column field="courseCode" header="Course Code"></Column>
@@ -73,7 +73,7 @@
 
 <script>
 import SideBar from '../components/sidebar/CourseSideBar.vue';
-
+import {FilterMatchMode,FilterOperator} from 'primevue/api';
 export default {
     name: 'Overview',
     components: {
@@ -81,6 +81,9 @@ export default {
     },
     data() {
         return {
+            filters: {
+                'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
+            },
             "usercourse": [
                 {
                     "_id": {
@@ -205,14 +208,14 @@ export default {
 }
 .container {
     display: flex;
-    height: 100vh;
+    min-height: 100%;
     width: 100vw;
     padding: 0;
     max-width: unset;
 }
 .left {
     flex: 2;
-    height: 100%;
+    min-height: 100%;
 }
 .right {
     flex: 10;
