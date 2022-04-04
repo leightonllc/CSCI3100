@@ -47,6 +47,7 @@
 <script>
     import SideBar from '../components/sidebar/CourseSideBar';
     import db from "../components/chatroom/firebase";
+    import "../components/chatroom/firebase-admin"
 
     import {
         ref,
