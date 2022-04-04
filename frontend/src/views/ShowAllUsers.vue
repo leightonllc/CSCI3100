@@ -13,6 +13,8 @@
                                 <th scope="col">UID</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
+                                <th scope="col">Role</th>
+                                <th scope="col">Description</th>
                             </tr>
                         </thead>
                         <tbody v-for="user in users" :key="user">
@@ -20,6 +22,19 @@
                                 <th scope="row">{{ user.uid }}</th>
                                 <td> {{ user.name }} </td>
                                 <td> {{ user.email }} </td>
+                                <td> {{ user.role }} </td>
+                                <td> {{ user.description }} </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="dropbtn btn btn-secondary btn-sm">Settings</button>
+                                        <div class="dropdown-content" style="left:0;">
+                                            <a v-if=" user.role == 'user'" @click="makeAdmin(user.key)" href="#">Assign as Admin</a>
+                                            <a v-else href="#" @click="removeAdmin(user.key)"> Remove Admin</a>
+                                            <a href="#">Reset Password</a>
+                                            <a href="#">Disable User</a>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -32,10 +47,12 @@
 <script>
     import SideBar from '../components/sidebar/CourseSideBar';
     import db from "../components/chatroom/firebase";
+
     import {
         ref,
         set,
         push,
+        update,
         onValue
     } from "firebase/database";
     export default {
@@ -52,7 +69,18 @@
                 users: []
             };
         },
-        methods: {},
+        methods: {
+            makeAdmin(key) {
+                const updates = {};
+                updates['/users/' + key + '/role'] = "admin";
+                return update(ref(db), updates);
+            },
+            removeAdmin(key) {
+                const updates = {};
+                updates['/users/' + key + '/role'] = "user";
+                return update(ref(db), updates);
+            }
+        },
 
         mounted() {
             const userListRef = ref(db, "users");
@@ -61,7 +89,9 @@
             onValue(ref(db, "users"), (snapshot) => {
                 this.users = [];
                 snapshot.forEach((childSnapshot) => {
-                    this.users.push(childSnapshot.val());
+                    let temp = childSnapshot.val();
+                    temp.key = childSnapshot.key;
+                    this.users.push(temp);
                 })
             })
             console.log(this.users);
@@ -83,4 +113,25 @@
     .right {
         padding: 30px 20px
     }
+
+    .dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+.dropdown:hover .dropdown-content {display: block;}
+
 </style>
