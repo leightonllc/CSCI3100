@@ -9,11 +9,12 @@
         <hr />
         <div class="formcontent">
           <div class="propic">
-            <img src="" alt="propic" />
+            <img src="" id="mypropic2" alt="propic" />
           </div>
           <br />
           <div class="button">
-             <FileUpload mode="basic" name="propic[]" url="./upload"  accept="image/*" chooseLabel="Change Photo"/>
+            <FileUpload mode="basic" name="propic[]" :customUpload="true" @uploader="propicUploader" accept="image/*"
+              chooseLabel="Change Photo" />
           </div>
 
           <form action="/dataCollectionLocation" method="post" autocomplete="on">
@@ -23,17 +24,13 @@
             </div>
             <div class="form-group">
               <label for="email">Email</label>
-              <input
-                type="email"
-                class="form-control"
-                v-model="profileEmail"
-                placeholder="ramonridwan@gogeafrica.com"
-              />
+              <input type="email" class="form-control" v-model="profileEmail"
+                placeholder="ramonridwan@gogeafrica.com" />
             </div>
             <div class="form-group">
               <label for="description">Description</label>
               <textarea class="form-control" v-model="profileDescription" placeholder="I am a student" />
-            </div>
+              </div>
             <div class="button">
               <Button  label="Save Changes" @click="savechanges()" class="p-button-success" />
             </div>
@@ -73,7 +70,20 @@
 
 <script>
 import SideBar from "../components/sidebar/CourseSideBar";
-
+import db from "../components/chatroom/firebase";
+    import {
+        getAuth,
+        updateProfile,
+        onAuthStateChanged
+    } from "firebase/auth";
+    import {
+        getStorage,
+        ref,
+        uploadBytes,
+        getDownloadURL
+    } from "firebase/storage";
+const auth = getAuth();
+const storage = getStorage();
 export default {
   name: "Setting",
   components: {
@@ -110,7 +120,45 @@ export default {
     changepassword() {
       return 1;
     },
+    propicUploader(event) {
+    console.log(event.files[0].type.replace("image/", ''));
+    updateProfile(auth.currentUser, {
+      photoURL: event.files[0].type.replace("image/", '')
+    }).then(() => {
+      const propicRef = ref(storage, 'propic/' + auth.currentUser.uid + '.' + auth.currentUser.photoURL); //filetype is stored in user.photoURL
+      uploadBytes(propicRef, event.files[0]).then((snapshot) => {
+      console.log('Uploaded a blob or file!');
+      });
+
+    }).catch((error1) => {
+
+    })
+    }
   },
+   created() {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    // User is signed in, see docs for a list of available properties
+                    // https://firebase.google.com/docs/reference/js/firebase.User
+                    getDownloadURL(ref(storage, 'propic/' + user.uid + '.' + user.photoURL))
+                        .then((url) => {
+                            // `url` is the download URL for 'images/stars.jpg'
+
+                            const img = document.getElementById('mypropic2');
+                            img.setAttribute('src', url);
+                        })
+                        .catch((error) => {
+                            const errorCode = error.code;
+                            const errorMessage = error.message;
+                            console.log(errorCode, errorMessage);
+                        });
+                    // ...
+                } else {
+                    // User is signed out
+                    // ...
+                }
+            });
+        }
 };
 </script>
 
@@ -140,6 +188,15 @@ export default {
   overflow: hidden;
   margin: auto;
 }
+
+.propic, img {
+  
+    max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .heading {
   color: #868686;
   font-family: Poppins;

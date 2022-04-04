@@ -62,7 +62,7 @@
               .then((userCredential) => {
                 console.log(auth.currentUser);
                 this.$router.push({
-                  path: '/timetable'
+                  path: '/overview'
                 });
               })
               .catch((error) => {

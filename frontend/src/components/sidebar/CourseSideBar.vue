@@ -4,11 +4,11 @@
             <img src="@/assets/logo.png" alt="">
         </div>
         <ul class="fa-ul">
-            <li onclick="location.href='./'"><i class="fa fa-house"></i>Home</li>
+            <li onclick="location.href='./overview'"><i class="fa fa-house"></i>Home</li>
             <li onclick="location.href='./coursereview'"><i class="fa fa-book"></i>Course Review</li>
             <li onclick="location.href='./courselist'"><i class="fa fa-book"></i>Course List</li>
             <li onclick="location.href='./showallusers'"><i class="fa fa-book"></i>All Users</li>
-            
+
         </ul>
         <hr class="solid" />
         <ul class="fa-ul">
@@ -16,16 +16,26 @@
             <li onclick="location.href='./setting'"><i class="fa fa-user-gear"></i>Setting</li>
             <li @click="LogOut()"><i class="fa fa-right-from-bracket"></i>Logout</li>
         </ul>
+        My Profile Pic:
+        <img class="propic" id="mypropic" />
     </div>
+
 </template>
 
 <script>
     import db from "../chatroom/firebase";
     import {
         getAuth,
+        onAuthStateChanged,
         signOut
     } from "firebase/auth";
+    import {
+        getStorage,
+        ref,
+        getDownloadURL
+    } from "firebase/storage";
     const auth = getAuth();
+    const storage = getStorage();
     export default {
         name: 'CourseSideBar',
         methods: {
@@ -34,12 +44,36 @@
                     this.$router.push({
                         path: '/'
                     });
-                }).catch((error) => {
+                }).catch((error2) => {
                     const errorCode = error2.code;
                     const errorMessage = error2.message;
                     console.log(errorCode, errorMessage);
                 });
             }
+        },
+        created() {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    // User is signed in, see docs for a list of available properties
+                    // https://firebase.google.com/docs/reference/js/firebase.User
+                    getDownloadURL(ref(storage, 'propic/' + user.uid + '.' + user.photoURL))
+                        .then((url) => {
+                            // `url` is the download URL for 'images/stars.jpg'
+
+                            const img = document.getElementById('mypropic');
+                            img.setAttribute('src', url);
+                        })
+                        .catch((error) => {
+                            const errorCode = error.code;
+                            const errorMessage = error.message;
+                            console.log(errorCode, errorMessage);
+                        });
+                    // ...
+                } else {
+                    // User is signed out
+                    // ...
+                }
+            });
         }
     }
 </script>
@@ -66,5 +100,9 @@
 
     i {
         margin: 0px 0.5vw
+    }
+
+    .propic {
+        height: 200px;
     }
 </style>
