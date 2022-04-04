@@ -47,8 +47,7 @@ export default {
                 events: [],
                 eventChange: async function(changeInfo ) {
                     console.log(changeInfo.event.endStr);
-                    await db.collection('calEvent').doc(changeInfo.event.id).update({
-                        title: changeInfo.event.title,
+                    await db.collection(changeInfo.event.title).doc(changeInfo.event.id).update({
                         start: changeInfo.event.startStr,
                         end: changeInfo.event.endStr,
                     })
@@ -59,7 +58,8 @@ export default {
         };
   },
   created(){
-      this.getEvents()
+      this.getEvents('CSCI3100')
+      this.getEvents('CSCI4430')
   },
   watch: {
       "options.events": function(){
@@ -71,18 +71,19 @@ export default {
           console.log("asd")
           calendar.getEventSources()
       },
-      async getEvents () {
-      let snapshot = await db.collection('calEvent').get()
+      async getEvents (coursecode) {
+      let snapshot = await db.collection(coursecode).get()
       const events = []
       snapshot.forEach(doc => {
         let appData = doc.data()
         appData.id = doc.id
+        appData.title=coursecode
         events.push(appData)
       })
-      this.options.events = events
+      this.options.events=this.options.events.concat(events)
     },
     async updateEvent (ev) {
-      await db.collection('calEvent').doc(ev.id).update({
+      await db.collection('CSCI3100').doc(ev.id).update({
         title: ev.title,
         start: ev.start,
         end: ev.end,
