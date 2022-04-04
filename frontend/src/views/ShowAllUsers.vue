@@ -1,4 +1,6 @@
 <template>
+<div>
+    <UpperBar/>
     <div class="container">
         <div class="left">
             <SideBar />
@@ -43,6 +45,7 @@
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script>

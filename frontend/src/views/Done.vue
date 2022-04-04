@@ -1,10 +1,13 @@
 <template>
-  <div class="container">
-    <div class="left">
-      <SideBar />
-    </div>
-    <div class="content d-flex vh-100 row align-items-center justify-content-center">
-      <div class="col-md-12 text-center">Your change is effective now.</div>
+  <div>
+    <UpperBar/>
+    <div class="container">
+      <div class="left">
+        <SideBar />
+      </div>
+      <div class="content d-flex vh-100 row align-items-center justify-content-center">
+        <div class="col-md-12 text-center">Your change is effective now.</div>
+      </div>
     </div>
   </div>
 </template>
@@ -74,7 +77,11 @@ export default {
   padding: 0;
   max-width: unset;
 }
+.left{
+  flex:2;
+}
 .right {
+  flex:10;
   padding: 30px 20px;
 }
 .cater {

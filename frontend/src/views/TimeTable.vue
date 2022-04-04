@@ -1,4 +1,6 @@
 <template>
+<div style="min-height:100vh">
+    <UpperBar/>
     <div class="container">
         <div class="left">
             <SideBar />
@@ -10,6 +12,7 @@
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script>
@@ -100,7 +103,7 @@ export default {
 <style scoped>
     .container {
         display: flex;
-        min-height: 100%;
+        min-height: 100vh;
         width: 100vw;
         padding: 0;
         max-width: unset;
@@ -114,11 +117,6 @@ export default {
         padding: 0px 30px;
     }
 
-    h1 {
-        margin: 3%;
-        margin-bottom: 1%;
-        text-align: left;
-    }
     @media screen and (max-width: 960px) {
     ::v-deep(.fc-header-toolbar) {
         display: flex;

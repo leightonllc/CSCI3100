@@ -1,6 +1,17 @@
 <template>
-  <router-view/>
+  <div style="min-height:100%">
+    <router-view/>
+  </div>
 </template>
+<script>
+import UpperBar from './components/upperBar/UpperBar.vue'
+export default {
+  name: 'App',
+  components: {
+      UpperBar
+  },
+};
+</script>
 
 <style>
 #app {

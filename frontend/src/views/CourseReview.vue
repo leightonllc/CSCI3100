@@ -1,56 +1,59 @@
 <template>
-  <div class="container">
-    <div class="left">
-      <SideBar />
-    </div>
-    <div class="right">
-      <h1>{{ course.code }} - {{ course.name }}</h1>
-      <Menu :courseCode="courseCode"/>
-      <div class="block1">
-        <div class="cater">
-            <div class="header">Course Description</div>
-            <div class="content">{{ course.courseDescription }}</div>
-          </div>
-          <div class="cater">
-            <div class="header">Professor(s)</div>
-            <div class="content">{{ course.professor }}</div>
-          </div>
-          <div class="cater">
-            <div class="header">Assessment</div>
-            <div class="content">{{ course.assessment }}</div>
-          </div>
-          <div class="cater">
-            <div class="header">Rating</div>
-            <div class="content">{{ course.rating }}/5</div>
-          </div>
-          <div class="cater">
-            <div class="header">Comments</div>
-            <div class="content" v-for="comment of course.comments" v-bind:key="comment._id">
-              <div>{{ comment.username }}: {{ comment.content }}</div>
-            </div>
-          </div>
-          <div class="cater">
-            <div class="header">Input your review here:</div>
-            <div class="content">
-              Comment:
-              <div>
-                <Textarea v-model="value3" :autoResize="true" rows="5" style="width:100%" />
+    <div>
+      <UpperBar/>
+      <div class="container">
+        <div class="left">
+          <SideBar />
+        </div>
+        <div class="right">
+          <h1>{{ course.code }} - {{ course.name }}</h1>
+          <Menu :courseCode="courseCode"/>
+          <div class="block1">
+            <div class="cater">
+                <div class="header">Course Description</div>
+                <div class="content">{{ course.courseDescription }}</div>
               </div>
-            </div>
-            <br>
-            <div>
-              Rate this course
-              <div>
-                <Rating v-model="rating" :cancel="false" />
+              <div class="cater">
+                <div class="header">Professor(s)</div>
+                <div class="content">{{ course.professor }}</div>
               </div>
-            </div>
-            <br>
-            <div>
-              <Button label="Submit" icon="pi pi-send" />
-            </div>
+              <div class="cater">
+                <div class="header">Assessment</div>
+                <div class="content">{{ course.assessment }}</div>
+              </div>
+              <div class="cater">
+                <div class="header">Rating</div>
+                <div class="content">{{ course.rating }}/5</div>
+              </div>
+              <div class="cater">
+                <div class="header">Comments</div>
+                <div class="content" v-for="comment of course.comments" v-bind:key="comment._id">
+                  <div>{{ comment.username }}: {{ comment.content }}</div>
+                </div>
+              </div>
+              <div class="cater">
+                <div class="header">Input your review here:</div>
+                <div class="content">
+                  Comment:
+                  <div>
+                    <Textarea v-model="value3" :autoResize="true" rows="5" style="width:100%" />
+                  </div>
+                </div>
+                <br>
+                <div>
+                  Rate this course
+                  <div>
+                    <Rating v-model="rating" :cancel="false" />
+                  </div>
+                </div>
+                <br>
+                <div>
+                  <Button label="Submit" icon="pi pi-send" />
+                </div>
+              </div>
           </div>
+        </div>
       </div>
-    </div>
   </div>
 </template>
 
@@ -108,9 +111,11 @@ export default {
   max-width: unset;
 }
 .left {
+  flex:1;
 }
 .right {
   padding: 30px 20px;
+  flex:10;
 }
 .cater {
   padding-bottom: 50px;

@@ -1,6 +1,8 @@
 <template>
+<div>
+  <UpperBar/>
   <div class="container">
-    <div class="left">
+    <div style="width:100%" class="left">
       <SideBar />
     </div>
     <div class="content">
@@ -64,6 +66,7 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -250,7 +253,11 @@ export default {
   padding: 0;
   max-width: unset;
 }
+.left{
+  flex:2;
+}
 .right {
+  flex:10;
   padding: 30px 20px;
 }
 .cater {
@@ -264,7 +271,7 @@ export default {
 }
 .content {
   background: #f6f6f6;
-  padding: 10px;
+  padding: 10px 20px 10px 60px;
   font-family: "Poppins";
   font-weight: 400;
   font-size: 14px;

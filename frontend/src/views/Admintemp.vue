@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+    <UpperBar/>
         <div class="left">
             <SideBar />
         </div>

@@ -20,13 +20,18 @@ import Card from 'primevue/card';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import TabMenu from 'primevue/tabmenu';
+import VueSidebarMenu from 'vue-sidebar-menu'
+import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
+import UpperBar from './components/upperBar/UpperBar'
 
 library.add(fas)
 
-const app = createApp(App).use(router).use(PrimeVue)
+const app = createApp(App).use(router).use(PrimeVue).use(VueSidebarMenu)
 app.use(router)
 app.use(PrimeVue)
+app.use(VueSidebarMenu)
 app.component('fa', FontAwesomeIcon)
+app.component('UpperBar', UpperBar)
 app.component('TabView', TabView)
 app.component('TabPanel', TabPanel)
 app.component('Textarea', Textarea)

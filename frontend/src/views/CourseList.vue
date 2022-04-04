@@ -1,38 +1,41 @@
 <template>
-    <div class="container">
-        <div class="left">
-            <SideBar />
-        </div>
-        <div class="right m-2">
-            <div>
-                <span class="h2">Courses</span>
-                <div class="my-2">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Course Code</th>
-                                <th scope="col">Course Name</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Professors</th>
-                                <th scope="col">Assessment</th>
-                                <th scope="col">Rating</th>
-                                <!-- <th scope="col">Comments</th> -->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="courseEntry" v-for="course of courses" :key="course.code" @click="handleClick(course.code)">
-                                <th scope="row"> {{course.code}} </th>
-                                <td> {{ course.name }} </td>
-                                <td> {{ course.courseDescription }} </td>
-                                <td> {{ course.professor }} </td>
-                                <td> {{ course.assessment }} </td>
-                                <td> {{course.rating }}/5</td>
-                                <!-- <td>Interesting jokes</td> -->
-                            </tr>
+    <div>
+        <UpperBar/>
+        <div class="container">
+            <div class="left">
+                <SideBar />dasd
+            </div>
+            <div class="right">
+                <div>
+                    <span class="h2">Courses</span>
+                    <div class="my-2">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Course Code</th>
+                                    <th scope="col">Course Name</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Professors</th>
+                                    <th scope="col">Assessment</th>
+                                    <th scope="col">Rating</th>
+                                    <!-- <th scope="col">Comments</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="courseEntry" v-for="course of courses" :key="course.code" @click="handleClick(course.code)">
+                                    <th scope="row"> {{course.code}} </th>
+                                    <td> {{ course.name }} </td>
+                                    <td> {{ course.courseDescription }} </td>
+                                    <td> {{ course.professor }} </td>
+                                    <td> {{ course.assessment }} </td>
+                                    <td> {{course.rating }}/5</td>
+                                    <!-- <td>Interesting jokes</td> -->
+                                </tr>
 
-                        </tbody>
+                            </tbody>
 
-                    </table>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -109,9 +112,12 @@
         background-color: lightgray;
     }
 
-    .left {}
+    .left {
+        flex:2 2 0;
+    }
 
     .right {
-        padding: 30px 20px
+        flex:10 10 0;
+        padding: 30px 40px
     }
 </style>

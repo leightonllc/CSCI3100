@@ -1,82 +1,41 @@
 <template>
-    <sidebar-menu  :collapsed="collapsed"
-    :menu="menu"
-    :relative="!isOnMobile"
-    @update:collapsed="onToggleCollapse"
-    @item-click="onItemClick"  
-    :theme="selectedTheme"
+  <div class="mainBar" style="background: #1e1e21">
     
-    />
+    <div style="display: flex;
+    justify-content: space-between;" >
+      <div>
+        <img src="@/assets/logo.png" alt=""> 
+      </div>
+      <div>
+        
+        propic
+      <img class="propic" id="mypropic" />
+      </div>
+    </div>
+  </div>
 </template>
 
-<script>
-    import db from "../chatroom/firebase";
-    import {
-        getAuth,
-        onAuthStateChanged,
-        signOut
-    } from "firebase/auth";
-    import {
-        getStorage,
-        ref,
-        getDownloadURL
-    } from "firebase/storage";
-    import {
-        ref as rtdbref,
-        onValue,
-    } from "firebase/database";
-    const auth = getAuth();
-    const storage = getStorage();
-    export default {
-        name: 'CourseSideBar',
-        data() {
-            return {
-                role: 'user',
-                collapsed: false,
-                isOnMobile: false,
-                menu: [
-                    {   
-                        header: 'CUTE'
-                        
-                    },
-                    {
-                        href: '/overview',
-                        title: 'Dashboard',
-                        icon: 'fa fa-user'
-                    },
-                    {
-                        href: '/coursereview',
-                        title: 'Course Review',
-                        icon: 'fa fa-chart-area',
-                    },
-                    {
-                        href: '/courselist',
-                        title: 'course List',
-                        icon: 'fa fa-chart-area',
-                    },
-                    {   
-                        header: 'Setting',
-                        hiddenOnCollapse: true
-                        
-                    },
-                    {
-                        href: '/chat',
-                        title: 'Chat',
-                        icon: 'fa fa-chart-area',
-                    },
-                    {
-                        href: '/setting',
-                        title: 'Setting',
-                        icon: 'fa fa-chart-area',
-                    },
-                    {
-                        title: 'LogOut',
-                        icon: 'fa fa-chart-area',
-                    },
 
-                ],
-            };
-        },
+<script>
+import db from "../chatroom/firebase";
+import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+} from "firebase/auth";
+import {
+    getStorage,
+    ref,
+    getDownloadURL
+} from "firebase/storage";
+import {
+    ref as rtdbref,
+    onValue,
+} from "firebase/database";
+const auth = getAuth();
+const storage = getStorage();
+    export default {
+        name: 'UpperBar',
         methods: {
             onItemClick(event, item){
                 if (item.title=='LogOut'){
@@ -152,30 +111,9 @@
 </script>
 
 <style>
-    .sidebar {
-        background-color: #F0F0F0;
-        padding-top: 5vh;
-        height: 100vh;
-
-        position: -webkit-sticky;
-        position: sticky;
-        top: 0;
-        text-align: center;
-        margin-left: 0px;
-        margin-right: 0px;
-    }
-
-    .logo {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    i {
-        margin: 0px 0.5vw
-    }
-
-    .propic {
-        height: 200px;
-    }
+@media screen and (max-width: 767px) {
+  .mainBar {
+    display:none;
+  }
+}
 </style>

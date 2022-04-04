@@ -1,4 +1,6 @@
 <template>
+<div>
+    <UpperBar/>
     <div class="container">
         <div class="left">
             <SideBar />
@@ -43,12 +45,12 @@
                     <Column
                         field="courseName"
                         header="Title"
-                        style="max-width: 200px; overflow: auto;"
+                        style=" overflow: auto;"
                     />
                     <Column
                         field="courseDescription"
                         header="Description"
-                        style="max-width: 300px; overflow: auto;"
+                        style="overflow: auto;"
                     />
                     <Column style="width: 340px;">
                         <template #body>
@@ -69,6 +71,7 @@
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script>

@@ -1,13 +1,14 @@
 <template>
   <div id="app">
 
+        <UpperBar/>
     <!-- Chat section -->
 
-    <div class="row">
-      <div class="col-xl-3 col-lg-3 col-md-4">
+    <div class="row" style="min-height: 100%;">
+      <div class="col-xl-3 col-lg-3 col-md-4" style="flex:2">
         <SideBar />
       </div>
-      <div class="col-xl-9 col-lg-9 col-md-8 mt-5">
+      <div class="col-xl-9 col-lg-9 col-md-8 mt-5" style="flex:10">
         <h3>Chat</h3>
         <h5>Welcome {{ name }}!</h5>
         <div class="row d-flex justify-content-center">
