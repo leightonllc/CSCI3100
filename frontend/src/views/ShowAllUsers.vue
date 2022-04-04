@@ -28,9 +28,10 @@
                                     <div class="dropdown">
                                         <button class="dropbtn btn btn-secondary btn-sm">Settings</button>
                                         <div class="dropdown-content" style="left:0;">
-                                            <a v-if=" user.role == 'user'" @click="makeAdmin(user.key)" href="#">Assign as Admin</a>
+                                            <a v-if=" user.role == 'user'" @click="makeAdmin(user.key)" href="#">Assign
+                                                as Admin</a>
                                             <a v-else href="#" @click="removeAdmin(user.key)"> Remove Admin</a>
-                                            <a href="#">Reset Password</a>
+                                            <a href="#" @click="resetPassword(user.email)">Reset Password</a>
                                             <a href="#">Disable User</a>
                                         </div>
                                     </div>
@@ -47,8 +48,6 @@
 <script>
     import SideBar from '../components/sidebar/CourseSideBar';
     import db from "../components/chatroom/firebase";
-    import "../components/chatroom/firebase-admin"
-
     import {
         ref,
         set,
@@ -56,6 +55,11 @@
         update,
         onValue
     } from "firebase/database";
+    import {
+        getAuth,
+        sendPasswordResetEmail
+    } from "firebase/auth";
+    const auth = getAuth();
     export default {
         name: 'Admin1',
         props: {
@@ -80,6 +84,18 @@
                 const updates = {};
                 updates['/users/' + key + '/role'] = "user";
                 return update(ref(db), updates);
+            },
+            resetPassword(email) {
+                // Admin SDK API to generate the password reset link.
+                sendPasswordResetEmail(auth, email)
+                    .then(() => {
+                        console.log("reset done");
+                    })
+                    .catch((error) => {
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+                        console.log(errorCode, errorMessage);
+                    });
             }
         },
 
@@ -116,23 +132,27 @@
     }
 
     .dropdown-content {
-  display: none;
-  position: absolute;
-  right: 0;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
 
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
 
-.dropdown-content a:hover {background-color: #f1f1f1;}
-.dropdown:hover .dropdown-content {display: block;}
+    .dropdown-content a:hover {
+        background-color: #f1f1f1;
+    }
 
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
 </style>

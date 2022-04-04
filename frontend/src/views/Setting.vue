@@ -17,29 +17,27 @@
               chooseLabel="Change Photo" />
           </div>
 
-          <form action="/dataCollectionLocation" method="post" autocomplete="on">
+          <form  @submit.stop.prevent="changeInfo()">
             <div class="form-group">
               <label for="username">Username</label>
-              <input type="text" class="form-control" v-model="profileName" placeholder="Name" />
+              <input type="text" class="form-control" v-model="name" />
             </div>
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" class="form-control" v-model="profileEmail"
-                placeholder="ramonridwan@gogeafrica.com" />
+              <input type="email" class="form-control" v-model="email" />
             </div>
             <div class="form-group">
               <label for="description">Description</label>
-              <textarea class="form-control" v-model="profileDescription" placeholder="I am a student" />
+              <textarea class="form-control" v-model="description" />
               </div>
             <div class="button">
-              <Button  label="Save Changes" @click="savechanges()" class="p-button-success" />
+              <Button  label="Save Changes" type="submit" class="p-button-success" />
             </div>
           </form>
           <br />
           <hr />
           <div class="heading">Change Password</div>
-          <hr />
-          <form action>
+          <form @submit.stop.prevent="changepassword()">
             <div class="form-group">
               <label for="newpassword">New Password</label>
               <input
@@ -59,7 +57,7 @@
               />
             </div>
             <div class="button">
-              <Button  label="Change Password" @click="changepassword()" class="p-button-success" />
+              <Button  label="Change Password" type="submit" class="p-button-success" />
             </div>
           </form>
         </div>
@@ -74,7 +72,9 @@ import db from "../components/chatroom/firebase";
     import {
         getAuth,
         updateProfile,
-        onAuthStateChanged
+        onAuthStateChanged,
+        updateEmail,
+        updatePassword,
     } from "firebase/auth";
     import {
         getStorage,
@@ -82,8 +82,18 @@ import db from "../components/chatroom/firebase";
         uploadBytes,
         getDownloadURL
     } from "firebase/storage";
+    import {
+    ref as rtdbref,
+    set,
+    push,
+    onValue,
+    update,
+  } from "firebase/database";
 const auth = getAuth();
 const storage = getStorage();
+var key = '';
+var role = '';
+var uid = '';
 export default {
   name: "Setting",
   components: {
@@ -92,33 +102,20 @@ export default {
   data() {
     return {
       
-      user: {
+      name: '',
+      email: '',
+      description: '',
+      newPassword: '',
 
-        "_id": {
-          "$oid": "62332a10269d41f11ff57426"
-        },
-        "username": "janedoe",
-        "password": "87654321",
-        "email": "@gmail.com",
-        "propic": {
-          "$binary": "",
-          "$type": "0"
-        },
-        "description": "Hey guys! I am a student currently studying Computer Science in CUHK. I’m year 4 now. I like programming. Have a nice day!",
-        "role": "user"
-
-      },
-      profileName: "janedoe",
-      profileEmail: "@gmail.com",
-      profileDescription: "description",
     }
   },
   methods: {
-    savechanges() {
-      return 1;
-    },
     changepassword() {
-      return 1;
+      updatePassword(auth.currentUser, this.newPassword).catch((error3) => {
+        const errorCode = error3.code;
+        const errorMessage = error3.message;
+        console.log(errorCode, errorMessage);
+      })
     },
     propicUploader(event) {
     console.log(event.files[0].type.replace("image/", ''));
@@ -127,12 +124,40 @@ export default {
     }).then(() => {
       const propicRef = ref(storage, 'propic/' + auth.currentUser.uid + '.' + auth.currentUser.photoURL); //filetype is stored in user.photoURL
       uploadBytes(propicRef, event.files[0]).then((snapshot) => {
-      console.log('Uploaded a blob or file!');
+       this.$router.push({
+                        path: '/done'
+                    });
       });
 
     }).catch((error1) => {
 
     })
+    },
+    changeInfo() {
+      set(rtdbref(db, "users/" + key), {
+        name: this.name,
+        email: this.email,
+        description: this.description,
+        role: role,
+        uid: uid,
+      });
+      updateProfile(auth.currentUser, {
+        displayName: this.name
+      }).catch((error1) => {
+        const errorCode = error1.code;
+        const errorMessage = error1.message;
+        console.log(errorCode, errorMessage);
+      });
+      updateEmail(auth.currentUser, this.email).catch((error2) => {
+        const errorCode = error2.code;
+        const errorMessage = error2.message;
+        console.log(errorCode, errorMessage);
+      }).then(() => {
+         this.$router.push({
+                        path: '/done'
+                    });
+      });
+
     }
   },
    created() {
@@ -152,6 +177,19 @@ export default {
                             const errorMessage = error.message;
                             console.log(errorCode, errorMessage);
                         });
+                        
+                    onValue(rtdbref(db, "users"), (snapshot) => {
+                      snapshot.forEach((childSnapshot) => {
+                      if(childSnapshot.val().uid == user.uid) {
+                        key = childSnapshot.key;
+                        this.name = childSnapshot.val().name;
+                        this.email = childSnapshot.val().email;
+                        this.description = childSnapshot.val().description;
+                        role = childSnapshot.val().role;
+                        uid = childSnapshot.val().uid;
+                      }
+                      })
+                    })
                     // ...
                 } else {
                     // User is signed out

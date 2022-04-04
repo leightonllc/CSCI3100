@@ -7,7 +7,7 @@
             <li onclick="location.href='./overview'"><i class="fa fa-house"></i>Home</li>
             <li onclick="location.href='./coursereview'"><i class="fa fa-book"></i>Course Review</li>
             <li onclick="location.href='./courselist'"><i class="fa fa-book"></i>Course List</li>
-            <li onclick="location.href='./showallusers'"><i class="fa fa-book"></i>All Users</li>
+            <li v-if="role=='admin'" onclick="location.href='./showallusers'"><i class="fa fa-book"></i>All Users</li>
 
         </ul>
         <hr class="solid" />
@@ -34,10 +34,19 @@
         ref,
         getDownloadURL
     } from "firebase/storage";
+    import {
+        ref as rtdbref,
+        onValue,
+    } from "firebase/database";
     const auth = getAuth();
     const storage = getStorage();
     export default {
         name: 'CourseSideBar',
+        data() {
+            return {
+                role: 'user'
+            };
+        },
         methods: {
             LogOut() {
                 signOut(auth).then(() => {
@@ -62,6 +71,13 @@
 
                             const img = document.getElementById('mypropic');
                             img.setAttribute('src', url);
+                            onValue(rtdbref(db, "users"), (snapshot) => {
+                                snapshot.forEach((childSnapshot) => {
+                                    if (childSnapshot.val().uid == user.uid) {
+                                        this.role = childSnapshot.val().role;
+                                    }
+                                })
+                            })
                         })
                         .catch((error) => {
                             const errorCode = error.code;

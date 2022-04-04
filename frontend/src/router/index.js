@@ -15,6 +15,7 @@ import CourseList from '../views/CourseList.vue'
 import Overview from '../views/Overview.vue'
 import Forum from '../views/Forum.vue'
 import Members from '../views/Members.vue'
+import Done from '../views/Done.vue'
 
 const routes = [{
         path: '/',
@@ -95,6 +96,11 @@ const routes = [{
         path: '/courselist',
         name: 'CourseList',
         component: CourseList,
+    },
+    {
+        path: '/done',
+        name: 'Done',
+        component: Done,
     },
 ]
 
