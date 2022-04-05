@@ -4,12 +4,11 @@
     <div style="display: flex;
     justify-content: space-between;" >
       <div>
-        <img src="@/assets/logo.png" alt=""> 
+        <img class="logo" src="@/assets/logo.png" alt=""> 
       </div>
-      <div>
-        
-        propic
-      <img class="propic" id="mypropic" />
+      <div class="propic-wrapper">
+    
+      <img class="propic1" id="mypropic" />
       </div>
     </div>
   </div>
@@ -115,5 +114,27 @@ const storage = getStorage();
   .mainBar {
     display:none;
   }
+}
+
+.mainBar {
+    height: 70px;
+}
+
+.logo {
+    height: 70px !important;
+}
+
+.propic-wrapper {
+    width: 70px;
+  height: 70px;
+  overflow:hidden;
+}
+.propic1 {
+   min-height: 100%;
+  width: 100%;
+  left: 50%;
+  top: 50%;
+  position: relative;
+  transform: translateX(-50%) translateY(-50%);
 }
 </style>
