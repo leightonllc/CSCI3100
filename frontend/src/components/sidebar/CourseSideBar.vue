@@ -51,7 +51,7 @@
                     },
                     {
                         href: '/courselist',
-                        title: 'course List',
+                        title: 'Course List',
                         icon: 'fa fa-chart-area',
                     },
                     {   

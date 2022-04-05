@@ -104,18 +104,19 @@ export default {
   padding: 20px 10px;
 }
 .container {
-  display: flex;
-  min-height: 100vh;
-  width: 100vw;
-  padding: 0;
-  max-width: unset;
+    display: flex;
+    min-height: 100vh;
+    width: 100vw;
+    padding: 0;
+    max-width: unset;
 }
 .left {
-  flex:1;
+    flex:2 2 0;
 }
+
 .right {
-  padding: 30px 20px;
-  flex:10;
+    flex:10 10 0;
+    padding: 30px 20px 30px 70px 
 }
 .cater {
   padding-bottom: 50px;
