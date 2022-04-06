@@ -35,8 +35,6 @@ Please have node.js installed before working on the project.
 
 - [Ng Megan Hoi Ling](https://github.com/meganmhl)
   - SID: 1155124894
-- [Chin Wen Jun Cyril](https://github.com/cwjchin)
-  - SID: 1155104882
 - [Hung Man Kei](https://github.com/monkeyjai78)
   - SID: 1155127099
 - [Lau Long Ching](https://github.com/leightonllc)
