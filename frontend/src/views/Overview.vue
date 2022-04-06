@@ -1,189 +1,151 @@
 <template>
-<div>
-    <UpperBar/>
-    <div class="container">
-        <div class="left">
-            <SideBar />
-        </div>
-        <div class="right">
-            <div class="content">
-                <h2>Current Courses</h2>
-                <span v-for="course of usercourse" v-bind:key="course.coursecode">
-                    <Button class="p-button-text p-button-secondary block1">
-                        <Card class="block2">
-                            <template #title>
-                                <div class="title">
-                                    {{ course.courseCode }}
-                                    <div class="tool">
-                                        <Button
-                                            icon="pi pi-ellipsis-v"
-                                            class="p-button-secondary p-button-text p-button-rounded"
-                                        />
+    <div>
+        <UpperBar />
+        <div class="container">
+            <div class="left">
+                <SideBar />
+            </div>
+            <div class="right">
+                <div class="content">
+                    <h2>Current Courses</h2>
+                    <span v-for="course of usercourse_details" v-bind:key="course.code">
+                        <Button class="p-button-text p-button-secondary block1">
+                            <Card class="block2" @click="handleClick(course.code)">
+                                <template #title>
+                                    <div class="title">
+                                        {{ course.code }}
+                                        <div class="tool">
+                                            <Button icon="pi pi-ellipsis-v"
+                                                class="p-button-secondary p-button-text p-button-rounded" @click="handleDelete(course.code)"/>
+                                        </div>
                                     </div>
-                                </div>
-                            </template>
-                            <template #subtitle>
-                                <div style="overflow: auto;">{{ course.courseName }}</div>
-                            </template>
-                            <template #content>
-                                <div style="overflow: auto;">{{ course.professor }}</div>
-                            </template>
-                        </Card>
-                    </Button>
-                </span>
+                                </template>
+                                <template #subtitle>
+                                    <div style="overflow: auto;">{{ course.name }}</div>
+                                </template>
+                                <template #content>
+                                    <div style="overflow: auto;">{{ course.professor }}</div>
+                                </template>
+                            </Card>
+                        </Button>
+                    </span>
 
-                <hr />
-                <h2>Other Courses</h2>
-                <DataTable :value="courses" :paginator="true" :rows="10" data-key="id" :filters="filters"> 
-                    <template #header>
-                        <div class="p-input-icon-left" style="margin: 10px 0px;">
-                            <i class="pi pi-search" />
-                            <InputText type="text" v-model="filters['global'].value"  placeholder="Search" />
-                        </div>
-                    </template>
-                    <Column field="courseCode" header="Course Code"></Column>
-                    <Column
-                        field="courseName"
-                        header="Title"
-                        style=" overflow: auto;"
-                    />
-                    <Column
-                        field="courseDescription"
-                        header="Description"
-                        style="overflow: auto;"
-                    />
-                    <Column style="width: 340px;">
-                        <template #body>
-                            <Button
-                                label="More Details"
-                                icon="pi pi-info"
-                                class="p-button-rounded p-button-secondary p-button-raised"
-                                style="margin: 0px 10px 0px 0px;"
-                            />
-                            <Button
-                                label="Add Course"
-                                icon="pi pi-plus"
-                                class="p-button-rounded p-button-warning p-button-raised"
-                            />
+                    <hr />
+                    <h2>Other Courses</h2>
+                    <DataTable :value="courses" :paginator="true" :rows="5" data-key="id" :filters="filters" :selection="selected" selectionMode="single" @rowSelect="onRowSelect">
+                        <template #header>
+                            <div class="p-input-icon-left" style="margin: 10px 0px;">
+                                <i class="pi pi-search" />
+                                <InputText type="text" v-model="filters['global'].value" placeholder="Search" />
+                            </div>
                         </template>
-                    </Column>
-                </DataTable>
+                        <Column field="code" header="Course Code"></Column>
+                        <Column field="name" header="Title" style="overflow: auto;" />
+                        <Column field="courseDescription" header="Description" style="overflow: auto; " />
+                        <Column style="width: 340px;">
+                            <template #body="btn">
+                                <Button label="More Details" icon="pi pi-info"
+                                    class="p-button-rounded p-button-secondary p-button-raised"
+                                    style="margin: 0px 10px 0px 0px;" @click="handleClick(btn.data.code)"/>
+                                <Button label="Add Course" icon="pi pi-plus"
+                                    class="p-button-rounded p-button-warning p-button-raised" @click="addUserCourse(btn.data.code)"/>
+                            </template>
+                        </Column>
+                    </DataTable>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </template>
 
 <script>
 import SideBar from '../components/sidebar/CourseSideBar.vue';
-import {FilterMatchMode,FilterOperator} from 'primevue/api';
+import { FilterMatchMode, FilterOperator } from 'primevue/api';
+import db from "../components/chatroom/firebase";
+import {
+    ref,
+    set,
+    push,
+    onValue
+} from "firebase/database";
 export default {
     name: 'Overview',
     components: {
         SideBar
     },
+    methods: {
+            handleClick(code) {
+                let courseRow;
+                onValue(ref(db, "courses"), (snapshot) => {
+                    snapshot.forEach((childSnapshot) => {
+                        if (childSnapshot.val().code === code){
+                            courseRow = childSnapshot.val();
+                        }
+                    })
+                });
+                if (courseRow) {
+                    this.$router.push({ name: 'CourseReview', params: {code: code}} );
+                }
+            },
+            onResize () {
+                if (window.innerWidth <= 767) {
+                    this.isOnMobile = true
+                    this.collapsed = true
+                } else {
+                    this.isOnMobile = false
+                    this.collapsed = false
+                }
+            },
+            addUserCourse(code) {
+                onValue(ref(db, "usercourse"), (snapshot) => {
+                    snapshot.forEach((childSnapshot) => {
+                        if (childSnapshot.val().uid === localStorage.getItem('user')){
+                            console.log(childSnapshot.val().uid);
+                        }
+                    })
+                });
+            },
+            handleDelete(code) {
+                console.log(code);
+            }
+        },
+    mounted() {
+        onValue(ref(db, "usercourse"), (snapshot) => {
+            this.usercourse = {};
+            snapshot.forEach((childSnapshot) => {
+                if (childSnapshot.val().uid === localStorage.getItem('user')) {
+                    this.usercourse = childSnapshot.val().code;
+                }
+            })
+        });
+        onValue(ref(db, "courses"), (snapshot) => {
+            this.usercourse_details = [];
+            snapshot.forEach((childSnapshot) => {
+                this.usercourse.forEach((code) => {
+                    if (code == childSnapshot.val().code) {
+                        this.usercourse_details.push(childSnapshot.val());
+                    }
+                })
+            })
+        });
+        onValue(ref(db, "courses"), (snapshot) => {
+            this.courses = [];
+            snapshot.forEach((childSnapshot) => {
+                    this.courses.push(childSnapshot.val());
+            })
+        });
+        this.onResize();
+        window.addEventListener('resize', this.onResize);
+        
+    },
     data() {
         return {
             filters: {
-                'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
+                'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
             },
-            "usercourse": [
-                {
-                    "_id": {
-                        "$oid": "623361c5ef1acfa872c710e7"
-                    },
-                    "userid": {
-                        "$oid": "623328fe269d41f11ff57425"
-                    },
-                    "courseid": {
-                        "$oid": "623354dcef1acfa872c710cf"
-                    },
-                    "courseCode": "CSCI2720",
-                    "courseName": "Building Web Applications",
-                    "courseDescription": "Almost everything in full-stack web development, from raw HTML to the ME*N stack",
-                    "professor": "Dr. CHAU Chuck-jee",
-                    "assessment": "Homework: 20%; Project: 40%; Final Exam: 40%",
-                    "rating": 5,
-                    "comments": ["", {
-                        "username": "janedoe",
-                        "commentedOn": {
-                            "$date": "2022-03-28T15:23:54.029Z"
-                        },
-                        "content": "kkwkwkkwkwk",
-                        "rate": 5
-                    }]
-                },
-                {
-                    "_id": {
-                        "$oid": "6233627aef1acfa872c710fa"
-                    },
-                    "userid": {
-                        "$oid": "623328fe269d41f11ff57425"
-                    },
-                    "courseid": {
-                        "$oid": "6233578eef1acfa872c710d2"
-                    },
-                    "courseName": "Software Engineering",
-                    "courseDescription": "This course introduces software life-cycles: system modelling, requirements analysis and specifications, design techniques, implementation methodology, testings, maintenance and engineering laboratory. Analytical tools: software metrics, system performance measurement and evaluation. Management techniques: estimations, planning, project management, communication skills and documentations. Introductions to CASE tools and security.",
-                    "professor": "Professor LYU Rung Tsong Michael",
-                    "assessment": "Homework: 20%; Project: 40%; Final Exam: 40%",
-                    "rating": 6.5,
-                    "comments": [""],
-                    "courseCode": "CSCI3100"
-                }
-            ],
-            "courses": [
-                {
-                    "_id": {
-                        "$oid": "623354dcef1acfa872c710cf"
-                    },
-                    "courseCode": "CSCI2720",
-                    "courseName": "Building Web Applications",
-                    "courseDescription": "Almost everything in full-stack web development, from raw HTML to the ME*N stack",
-                    "professor": "Dr. CHAU Chuck-jee",
-                    "assessment": "Homework: 20%; Project: 40%; Final Exam: 40%",
-                    "rating": 5,
-                    "comments": ["", {
-                        "username": "janedoe",
-                        "commentedOn": {
-                            "$date": "2022-03-28T15:23:54.029Z"
-                        },
-                        "content": "kkwkwkkwkwk",
-                        "rate": 5
-                    }]
-                },
-                {
-                    "_id": {
-                        "$oid": "623354dcef1acfa872c710cf"
-                    },
-                    "courseCode": "CSCI2720",
-                    "courseName": "Building Web Applications",
-                    "courseDescription": "Almost everything in full-stack web development, from raw HTML to the ME*N stack",
-                    "professor": "Dr. CHAU Chuck-jee",
-                    "assessment": "Homework: 20%; Project: 40%; Final Exam: 40%",
-                    "rating": 5,
-                    "comments": ["", {
-                        "username": "janedoe",
-                        "commentedOn": {
-                            "$date": "2022-03-28T15:23:54.029Z"
-                        },
-                        "content": "kkwkwkkwkwk",
-                        "rate": 5
-                    }]
-                },
-                {
-                    "_id": {
-                        "$oid": "62414f4b96f8a0b96a8e4608"
-                    },
-                    "courseName": "Introduction of Engineering",
-                    "courseDescription": "This course introduces software life-cycles: system modelling, requirements analysis and specifications, design techniques, implementation methodology, testings, maintenance and engineering laboratory. Analytical tools: software metrics, system performance measurement and evaluation. Management techniques: estimations, planning, project management, communication skills and documentations. Introductions to CASE tools and security.",
-                    "professor": "Professor ABCC",
-                    "assessment": "Homework: 20%; Project: 40%; Final Exam: 40%",
-                    "rating": 1,
-                    "comments": [""],
-                    "courseCode": "ENGG9000"
-                }
-            ]
+            selected: null,
+            usercourse_details: [],
+            courses: [],
         }
     },
 };

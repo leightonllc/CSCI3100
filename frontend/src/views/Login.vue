@@ -61,6 +61,7 @@
             signInWithEmailAndPassword(auth, this.email, this.password)
               .then((userCredential) => {
                 console.log(auth.currentUser);
+                localStorage.setItem('user', auth.currentUser.uid);
                 this.$router.push({
                   path: '/overview'
                 });

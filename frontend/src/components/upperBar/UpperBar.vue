@@ -9,7 +9,7 @@
                 />
             </div>
             <div>
-                <span style="color:aliceblue">{{name}}</span>
+                <span style="color:aliceblue">Hi, {{name}}</span>
                 <img
                     class="propic"
                     id="mypropic"
