@@ -112,6 +112,8 @@ export default {
                 })
             });
             if (courseRow) {
+                localStorage.setItem('code', code);
+                localStorage.setItem('title', courseRow.name);
                 this.$router.push({ name: 'CourseReview', params: { code: code } });
             }
         },
@@ -167,6 +169,7 @@ export default {
                     let userListRef = ref(db, refe);
                     set(userListRef, null);
                     this.$toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Course deleted', life: 3000 });
+                    window.location.reload();
                 },
                 reject: () => {
                     this.$toast.add({ severity: 'error', summary: 'Rejected', detail: 'Request cancelled', life: 3000 });

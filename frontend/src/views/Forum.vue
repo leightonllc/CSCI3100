@@ -1,12 +1,14 @@
 <template>
 <div>
+    <Toast />
+    <ConfirmDialog :breakpoints="{ '960px': '75vw', '640px': '100vw' }" :style="{ width: '50vw' }"></ConfirmDialog>
     <UpperBar/>
     <div class="container">
         <div class="left">
             <SideBar />
         </div>
         <div class="right">
-            <h1>{{ course.courseCode }} - {{ course.courseName }}</h1>
+            <h1>{{ course_code }} - {{ course_name }}</h1>
             <Menu />
             <div class="block1">
                 <div v-if="showForumHomeView">
@@ -59,8 +61,10 @@ export default {
             onValue(ref(db, "forum"), (snapshot) => {
                 this.posts = [];
                 snapshot.forEach((childSnapshot) => {
-                    let key = childSnapshot.key;
-                    this.posts.push({id: key, contents: childSnapshot.val()});
+                    if (this.course_code === childSnapshot.val().courseCode) {
+                        let key = childSnapshot.key;
+                        this.posts.push({id: key, contents: childSnapshot.val()});
+                    }
                 })
             })
         },
@@ -69,15 +73,8 @@ export default {
     },
     data() {
         return {
-            course:
-            {
-                "courseName": "Introduction to Web Application",
-                "courseCode": "CSCI2720",
-                "_id": {
-                    "$oid": "62473b72bcedb48c1d643cfe"
-                }
-            }
-            ,
+            course_code: localStorage.getItem('code'),
+            course_name: localStorage.getItem('title'),
             rating: 0,
             showForumHomeView: true,
             showCreateForumPost: false,

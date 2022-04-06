@@ -1,5 +1,5 @@
 <template>
-  <TabMenu :model="items" />
+  <TabMenu :model="items" activeIndex="active" />
   <!-- <ul class="fa-ul">
     <li onclick="location.href='/coursereview'"><i class='pi pi-fw pi-info-circle'></i>Course Review</li>
     <li onclick="location.href='/forum'"><i class='pi pi-fw pi-globe'></i>Forum</li>
@@ -16,6 +16,7 @@ export default {
   },
 	data() {
 		return {
+      active: 1,
 			items: [
                 {label: 'Course Review', icon: 'pi pi-fw pi-info-circle', to: '/coursereview' },
                 {label: 'Forum', icon: 'pi pi-fw pi-globe', to: '/forum'},

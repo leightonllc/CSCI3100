@@ -15,6 +15,7 @@
                     id="mypropic"
                     alt="propic"
                     style="height:75px; width:75px; padding:5px; margin: 2px 30px; border-radius: 50%;"
+                    @click="gotosetting()"
                 />
             </div>
         </div>
@@ -44,6 +45,9 @@ var key = '';
 export default {
     name: 'UpperBar',
     methods: {
+        gotosetting() {
+            this.$router.push("/setting");
+        },
         onItemClick(event, item) {
             if (item.title == 'LogOut') {
                 signOut(auth).then(() => {

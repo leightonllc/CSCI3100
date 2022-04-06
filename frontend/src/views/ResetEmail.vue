@@ -14,6 +14,9 @@
             <button @click="resend()" class="btn btn-primary sendButton">
               Resend Reset Email
             </button>
+            <button @click="login()" class="btn btn-secondary sendButton">
+              Return to Login
+            </button>
           </div>
       </div>
     </div>
@@ -30,6 +33,9 @@
       resend() {
         console.log("resent");
       },
+      login() {
+        this.$router.push("/login");
+      },
     },
   };
 </script>
@@ -39,7 +45,9 @@
     height: 100%;
     display: flex;
   }
-
+.btn {
+  margin: 10px;
+}
   .left {
     background: linear-gradient(0deg,
         rgba(21, 101, 216, 0.7),

@@ -1,5 +1,7 @@
 <template>
     <div>
+        <Toast />
+        <ConfirmDialog :breakpoints="{ '960px': '75vw', '640px': '100vw' }" :style="{ width: '50vw' }"></ConfirmDialog>
         <UpperBar/>
         <div class="container">
             <div class="left">
@@ -76,6 +78,8 @@
                     })
                 });
                 if (courseRow) {
+                    localStorage.setItem('code', code);
+                    localStorage.setItem('title', courseRow.name);
                     this.$router.push({ name: 'CourseReview', params: {code: code}} );
                 }
             },
@@ -130,7 +134,7 @@
 
     .right {
         flex:10 10 0;
-        padding: 30px 20px 30px 70px 
+        padding: 30px 20px 30px 70px;
     }
 
     @media (max-width:768px){

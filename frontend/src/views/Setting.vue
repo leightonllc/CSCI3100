@@ -1,5 +1,7 @@
 <template>
 <div>
+  <Toast />
+  <ConfirmDialog :breakpoints="{ '960px': '75vw', '640px': '100vw' }" :style="{ width: '50vw' }"></ConfirmDialog>
   <UpperBar/>
   <div class="container">
     <div style="width:100%" class="left">
@@ -11,7 +13,7 @@
         <hr />
         <div class="formcontent">
           <div class="propic">
-            <img src="" id="mypropic2" alt="propic" />
+            <img src="" id="mypropic2" alt="propic"  />
           </div>
           <br />
           <div class="button">
@@ -229,7 +231,6 @@ export default {
 }
 
 .propic, img {
-  
     max-width: 100%;
   display: flex;
   justify-content: center;
