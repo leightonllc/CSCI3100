@@ -13,13 +13,13 @@ We are going to build an application that helps students to manage all the daily
   - This application enables students to rate and comment on the courses which they have taken for the reference of other students interested in the courses.
 
 - Instant Chat
-- This application allows students to chat and talk to each other about their studies, students can also ask questions to instructors or TAs instantly.
+  - This application allows students to chat and talk to each other about their studies, students can also ask questions to instructors or TAs instantly.
 
 - Forum
-- This application provides a platform for students to discuss their studies or school life.
+  - This application provides a platform for students to discuss their studies or school life.
 
 - Calendar
-- This application is created for students to view their class timetable in this semester for a better planning. It updates automatically whenever the students change their courses.
+  - This application is created for students to view their class timetable in this semester for a better planning. It updates automatically whenever the students change their courses.
 
 - Timetable planner
   - This application lets students plan their timetable for the coming semester. All the courses can be selected in the application directly. Then, they can insert their course timetable in the calendar embedded.
