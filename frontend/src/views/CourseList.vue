@@ -15,7 +15,7 @@
                                 <tr class="align-bottom">
                                     <th scope="col">Course Code</th>
                                     <th scope="col">Course Name</th>
-                                    <th v-if="!isOnMobile" scope="col">Description</th>
+                                    <th class="d-none d-md-block" v-if="!isOnMobile" scope="col">Description</th>
                                     <th v-if="!isOnMobile" scope="col">Professors</th>
                                     <th v-if="!isOnMobile" scope="col">Assessment</th>
                                     <th v-if="!isOnMobile" scope="col">Rating</th>
@@ -26,10 +26,10 @@
                                 <tr class="courseEntry" v-for="course of courses" :key="course.code" @click="handleClick(course.code)">
                                     <th scope="row"> {{course.code}}</th>
                                     <td> {{ course.name }} </td>
-                                    <td v-if="!isOnMobile"> {{ course.courseDescription }} </td>
-                                    <td v-if="!isOnMobile"> {{ course.professor }} </td>
-                                    <td v-if="!isOnMobile"> {{ course.assessment }} </td>
-                                    <td v-if="!isOnMobile"> {{course.rating }}/5</td>
+                                    <td class="d-none d-md-block"> {{ course.courseDescription }} </td>
+                                    <td> {{ course.professor }} </td>
+                                    <td> {{ course.assessment }} </td>
+                                    <td> {{course.rating }}/5</td>
                                     <!-- <td>Interesting jokes</td> -->
                                 </tr>
                             </tbody>
