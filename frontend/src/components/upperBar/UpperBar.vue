@@ -135,4 +135,26 @@ export default {
         display: none;
     }
 }
+
+.mainBar {
+    height: 70px;
+}
+
+.logo {
+    height: 70px !important;
+}
+
+.propic-wrapper {
+    width: 70px;
+  height: 70px;
+  overflow:hidden;
+}
+.propic1 {
+   min-height: 100%;
+  width: 100%;
+  left: 50%;
+  top: 50%;
+  position: relative;
+  transform: translateX(-50%) translateY(-50%);
+}
 </style>
