@@ -16,9 +16,15 @@ import Overview from '../views/Overview.vue'
 import Forum from '../views/Forum.vue'
 import Members from '../views/Members.vue'
 import Done from '../views/Done.vue'
+import Landing from '../views/Landing.vue'
 
 const routes = [{
         path: '/',
+        name: 'Landing',
+        component: Landing
+    },
+    {
+        path: '/login',
         name: 'login',
         component: Login
     },
