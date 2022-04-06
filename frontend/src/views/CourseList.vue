@@ -3,38 +3,38 @@
         <UpperBar/>
         <div class="container">
             <div class="left">
-                <SideBar />
+                <CourseSideBar />
             </div>
             <div class="right">
                 <div>
-                    <span class="h2">Courses</span>
-                    <div class="my-2">
-                        <table class="table">
-                            <thead>
-                                <tr>
+                    <span class="h2">Course List</span>
+                    <div class="my-2 overflow-auto">
+                    <p style="font-family:Segoe UI">
+                        <DataTable :paginator="true" data-key="id" class="table align-middle">
+                            <thead class="table-light">
+                                <tr class="align-bottom">
                                     <th scope="col">Course Code</th>
                                     <th scope="col">Course Name</th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">Professors</th>
-                                    <th scope="col">Assessment</th>
-                                    <th scope="col">Rating</th>
+                                    <th v-if="!isOnMobile" scope="col">Description</th>
+                                    <th v-if="!isOnMobile" scope="col">Professors</th>
+                                    <th v-if="!isOnMobile" scope="col">Assessment</th>
+                                    <th v-if="!isOnMobile" scope="col">Rating</th>
                                     <!-- <th scope="col">Comments</th> -->
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr class="courseEntry" v-for="course of courses" :key="course.code" @click="handleClick(course.code)">
-                                    <th scope="row"> {{course.code}} </th>
+                                    <th scope="row"> {{course.code}}</th>
                                     <td> {{ course.name }} </td>
-                                    <td> {{ course.courseDescription }} </td>
-                                    <td> {{ course.professor }} </td>
-                                    <td> {{ course.assessment }} </td>
-                                    <td> {{course.rating }}/5</td>
+                                    <td v-if="!isOnMobile"> {{ course.courseDescription }} </td>
+                                    <td v-if="!isOnMobile"> {{ course.professor }} </td>
+                                    <td v-if="!isOnMobile"> {{ course.assessment }} </td>
+                                    <td v-if="!isOnMobile"> {{course.rating }}/5</td>
                                     <!-- <td>Interesting jokes</td> -->
                                 </tr>
-
                             </tbody>
-
-                        </table>
+                        </Datatable>
+                    </p>
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-    import SideBar from '../components/sidebar/CourseSideBar';
+    import CourseSideBar from '../components/sidebar/CourseSideBar';
     import db from "../components/chatroom/firebase";
     import {
         ref,
@@ -57,7 +57,7 @@
 
         },
         components: {
-            SideBar,
+            CourseSideBar,
 
         },
         data() {
@@ -78,6 +78,15 @@
                 if (courseRow) {
                     this.$router.push({ name: 'CourseReview', params: {code: code}} );
                 }
+            },
+            onResize () {
+                if (window.innerWidth <= 767) {
+                    this.isOnMobile = true
+                    this.collapsed = true
+                } else {
+                    this.isOnMobile = false
+                    this.collapsed = false
+                }
             }
         },
 
@@ -90,7 +99,10 @@
                 snapshot.forEach((childSnapshot) => {
                     this.courses.push(childSnapshot.val());
                 })
-            })
+            });
+
+            this.onResize();
+            window.addEventListener('resize', this.onResize);
             // this.courses.forEach((idx, val) => {
             //     console.log(idx);
             //     console.log(val)}
@@ -119,5 +131,12 @@
     .right {
         flex:10 10 0;
         padding: 30px 20px 30px 70px 
+    }
+
+    @media (max-width:768px){
+    .table_class_name tr td:nth-child(4),.table_class_name tr td:nth-child(5),
+    .table_class_name tr td:nth-child(6),.table_class_name tr td:nth-child(7){
+        display: none;
+        }
     }
 </style>

@@ -94,9 +94,6 @@ import db from "../components/chatroom/firebase";
   } from "firebase/database";
 const auth = getAuth();
 const storage = getStorage();
-var key = '';
-var role = '';
-var uid = '';
 export default {
   name: "Setting",
   components: {
@@ -109,6 +106,8 @@ export default {
       email: '',
       description: '',
       newPassword: '',
+      role: '',
+      key: 'test',
 
     }
   },
@@ -137,13 +136,12 @@ export default {
     })
     },
     changeInfo() {
-      set(rtdbref(db, "users/" + key), {
-        name: this.name,
-        email: this.email,
-        description: this.description,
-        role: role,
-        uid: uid,
-      });
+      console.log(this.description);
+      const updates = {};
+      updates['users/' + this.key + '/name'] = this.name;
+      updates['users/' + this.key + '/description'] = this.description;
+      updates['users/' + this.key + '/email'] = this.email;
+      update(rtdbref(db), updates);
       updateProfile(auth.currentUser, {
         displayName: this.name
       }).catch((error1) => {
@@ -163,7 +161,7 @@ export default {
 
     }
   },
-   created() {
+   mounted() {
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     // User is signed in, see docs for a list of available properties
@@ -184,12 +182,12 @@ export default {
                     onValue(rtdbref(db, "users"), (snapshot) => {
                       snapshot.forEach((childSnapshot) => {
                       if(childSnapshot.val().uid == user.uid) {
-                        key = childSnapshot.key;
+                        this.key = childSnapshot.key;
                         this.name = childSnapshot.val().name;
                         this.email = childSnapshot.val().email;
                         this.description = childSnapshot.val().description;
-                        role = childSnapshot.val().role;
-                        uid = childSnapshot.val().uid;
+                        this.role = childSnapshot.val().role;
+                        
                       }
                       })
                     })
