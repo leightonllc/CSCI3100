@@ -18,6 +18,7 @@ import Members from '../views/Members.vue'
 import Done from '../views/Done.vue'
 import Landing from '../views/Landing.vue'
 
+
 const routes = [{
         path: '/',
         name: 'Landing',

@@ -9,12 +9,13 @@
                 <div>
                     <span class="h2">Courses</span>
                     <div class="my-2">
+                    <p style="Seoge UI">
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th scope="col">Course Code</th>
                                     <th scope="col">Course Name</th>
-                                    <th scope="col">Description</th>
+                                    <th scope="col" class="d-none d-md-block">Description</th>
                                     <th scope="col">Professors</th>
                                     <th scope="col">Assessment</th>
                                     <th scope="col">Rating</th>
@@ -25,7 +26,7 @@
                                 <tr class="courseEntry" v-for="course of courses" :key="course.code" @click="handleClick(course.code)">
                                     <th scope="row"> {{course.code}} </th>
                                     <td> {{ course.name }} </td>
-                                    <td> {{ course.courseDescription }} </td>
+                                    <td class="d-none d-md-block"> {{ course.courseDescription }} </td>
                                     <td> {{ course.professor }} </td>
                                     <td> {{ course.assessment }} </td>
                                     <td> {{course.rating }}/5</td>
@@ -35,6 +36,7 @@
                             </tbody>
 
                         </table>
+                        </p>
                     </div>
                 </div>
             </div>
