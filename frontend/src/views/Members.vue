@@ -1,16 +1,18 @@
 <template>
 <div>
+    <Toast />
+    <ConfirmDialog :breakpoints="{ '960px': '75vw', '640px': '100vw' }" :style="{ width: '50vw' }"></ConfirmDialog>
     <UpperBar/>
     <div class="container">
         <div class="left">
             <SideBar />
         </div>
         <div class="right">
-            <h1>{{ course.courseCode }} - {{ course.courseName }}</h1>
+            <h1>{{ course_code }} - {{ course_name }}</h1>
             <Menu />
             <div class="block1">
-                <DataTable :value="user" :paginator="true" :rows="10" data-key="id">
-                    <Column field="username" header="Username"></Column>
+                <DataTable :value="member_details" :paginator="true" :rows="10" data-key="id">
+                    <Column field="name" header="Username"></Column>
                     <Column
                         field="description"
                         header="Description"
@@ -22,6 +24,7 @@
                                 label="Chat"
                                 icon="pi pi-comments"
                                 class="p-button-rounded p-button-warning p-button-raised"
+                                @click="gotochat()"
                             />
                         </template>
                     </Column>
@@ -35,6 +38,14 @@
 <script>
 import SideBar from '../components/sidebar/CourseSideBar'
 import Menu from '../components/tabmenu/Menu'
+import db from "../components/chatroom/firebase";
+
+import {
+    ref,
+    set,
+    push,
+    onValue
+} from "firebase/database";
 
 export default {
     name: 'Members',
@@ -42,60 +53,39 @@ export default {
         SideBar,
         Menu
     },
+    methods: {
+        gotochat() {
+            this.$router.push("/chat");
+        },
+    },
+    created() {
+    },
+    mounted() {
+        onValue(ref(db, "usercourse"), (snapshot) => {
+            this.member = [];
+            snapshot.forEach((childSnapshot) => {
+                if (childSnapshot.val().code === localStorage.getItem('code')) {
+                    this.member.push(childSnapshot.val().uid);
+                }
+            })
+        });
+        onValue(ref(db, "users"), (snapshot) => {
+            this.member_details = [];
+            snapshot.forEach((childSnapshot) => {
+                this.member.forEach((uid) => {
+                    if (uid == childSnapshot.val().uid) {
+                        this.member_details.push(childSnapshot.val());
+                    }
+                });
+            });
+        });
+    },
     data() {
         return {
-            course:
-            {
-                "courseName": "Introduction to Web Application",
-                "courseCode": "CSCI2720",
-                "_id": {
-                    "$oid": "62473b72bcedb48c1d643cfe"
-                }
-            },
-            user: [
-                {
-                    "_id": {
-                        "$oid": "623328fe269d41f11ff57425"
-                    },
-                    "username": "johtutdoe",
-                    "password": "00011100",
-                    "email": "1155123456@link.cuhk.edu.hk",
-                    "propic": {
-                        "$binary": "W29iamVjdCBPYmplY3Rd",
-                        "$type": "0"
-                    },
-                    "description": "1zwqz3fc hahha",
-                    "role": "user"
-                },
-                {
-                    "_id": {
-                        "$oid": "623328fe269d41f11ff57425"
-                    },
-                    "username": "johtutdoe",
-                    "password": "00011100",
-                    "email": "1155123456@link.cuhk.edu.hk",
-                    "propic": {
-                        "$binary": "W29iamVjdCBPYmplY3Rd",
-                        "$type": "0"
-                    },
-                    "description": "1zwqz3fc hahha",
-                    "role": "user"
-                },
-                {
-                    "_id": {
-                        "$oid": "62414db27c7f93ea626fe2be"
-                    },
-                    "username": "testaaa",
-                    "password": "00012300",
-                    "email": "huuhhh@ghhbam.com",
-                    "propic": {
-                        "$binary": "W29iamVjdCBPYmplY3Rd",
-                        "$type": "0"
-                    },
-                    "description": "1zwq000fc hahha",
-                    "role": "admin"
-                }
-            ]
+            member_details:[],
+            member: [],
+            course_code: localStorage.getItem('code'),
+            course_name: localStorage.getItem('title'),
         }
     },
 };

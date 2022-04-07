@@ -1,5 +1,7 @@
 <template>
 <div>
+  <Toast />
+  <ConfirmDialog :breakpoints="{ '960px': '75vw', '640px': '100vw' }" :style="{ width: '50vw' }"></ConfirmDialog>
   <UpperBar/>
   <div class="container">
     <div style="width:100%" class="left">
@@ -11,7 +13,7 @@
         <hr />
         <div class="formcontent">
           <div class="propic">
-            <img src="" id="mypropic2" alt="propic" />
+            <img src="" id="mypropic2" alt="propic"  />
           </div>
           <br />
           <div class="button">
@@ -106,6 +108,7 @@ export default {
       email: '',
       description: '',
       newPassword: '',
+      comfirmPassword: '',
       role: '',
       key: 'test',
 
@@ -113,11 +116,20 @@ export default {
   },
   methods: {
     changepassword() {
-      updatePassword(auth.currentUser, this.newPassword).catch((error3) => {
+      if ((this.newPassword == this.comfirmPassword) && this.newPassword != '' && this.comfirmPassword != '') {
+        updatePassword(auth.currentUser, this.newPassword)
+        .then((n) => {
+          this.$toast.add({ severity: 'info', summary: 'Success', detail: 'Password Changed', life: 3000 });
+        })
+        .catch((error3) => {
         const errorCode = error3.code;
         const errorMessage = error3.message;
         console.log(errorCode, errorMessage);
       })
+      } else {
+        this.$toast.add({ severity: 'error', summary: 'Rejected', detail: 'New password is not align with confirm password', life: 3000 });
+      }
+      
     },
     propicUploader(event) {
     console.log(event.files[0].type.replace("image/", ''));
@@ -229,7 +241,6 @@ export default {
 }
 
 .propic, img {
-  
     max-width: 100%;
   display: flex;
   justify-content: center;

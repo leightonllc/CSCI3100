@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-
+        <Toast />
+       <ConfirmDialog :breakpoints="{ '960px': '75vw', '640px': '100vw' }" :style="{ width: '50vw' }"></ConfirmDialog>
         <UpperBar/>
     <!-- Chat section -->
 

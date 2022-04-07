@@ -23,6 +23,10 @@ import TabMenu from 'primevue/tabmenu';
 import VueSidebarMenu from 'vue-sidebar-menu'
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import UpperBar from './components/upperBar/UpperBar'
+import ConfirmationService from 'primevue/confirmationservice';
+import ConfirmDialog from 'primevue/confirmdialog';
+import ToastService from 'primevue/toastservice';
+import Toast from 'primevue/toast';
 
 library.add(fas)
 
@@ -30,6 +34,8 @@ const app = createApp(App).use(router).use(PrimeVue).use(VueSidebarMenu)
 app.use(router)
 app.use(PrimeVue)
 app.use(VueSidebarMenu)
+app.use(ConfirmationService);
+app.use(ToastService);
 app.component('fa', FontAwesomeIcon)
 app.component('UpperBar', UpperBar)
 app.component('TabView', TabView)
@@ -43,5 +49,7 @@ app.component('Card', Card)
 app.component('Button', Button)
 app.component('InputText', InputText)
 app.component('TabMenu', TabMenu)
+app.component('ConfirmDialog', ConfirmDialog)
+app.component('Toast', Toast)
 
 app.mount('#app')
