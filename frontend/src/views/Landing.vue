@@ -35,12 +35,12 @@
         <div class="div-why-easybank">
           <h2 class="title-why-easybank">Our services</h2>
           <p class="text-title-why-easybank">
-            We provide to you the best choiches for you. Here are some core features in out first stage of development. All of these are free of charge and available to all CUHK members.
+            We provide the best choices for you. Here are some core features in out first stage of development. All of these are free of charge and available to all CUHK members.
           </p>
         </div>
         <div class="div-icones-why-easybank">
           <article class="article-why-easybank">
-            <i class="pi pi-star-fill" style="font-size: 2rem; margin-left:1rem"></i>
+            <i class="pi pi-star-fill animate__bounce" style="font-size: 2rem; margin-left:1rem "></i>
             <h3 class="title-icon-why-easybank">Course Evaluation</h3>
             <p class="text-icon-why-easybank">
               Students can rate and comment on the courses which they have taken for the reference of other students interested in the courses.
@@ -62,7 +62,7 @@
           </article>
           <article class="article-why-easybank">
             <i class="pi pi-calendar" style="font-size: 2rem; margin-left:1rem"></i>
-            <h3 class="title-icon-why-easybank">Calender</h3>
+            <h3 class="title-icon-why-easybank">Calendar</h3>
             <p class="text-icon-why-easybank">
               Students can view their class timetable in this semester for a better planning. It updates automatically whenever you changes your courses
             </p>
