@@ -15,7 +15,7 @@
                         <DataTable :paginator="true" data-key="id" class="table align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th scope="col" style="width: 10%">Course Code</th>
+                                    <th scope="col">Code</th>
                                     <th scope="col">Course Name</th>
                                     <th class="d-none d-md-block" v-if="!isOnMobile" scope="col">Description</th>
                                     <th v-if="!isOnMobile" scope="col">Professors</th>
