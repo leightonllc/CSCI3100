@@ -1,13 +1,14 @@
 <template>
    <div>
      <h2>New Post</h2>
-      <form class="form" @submit.prevent="buttonClicked">
+      <form class="form" @submit.stop.prevent="buttonClicked">
         <div class="form-group">
             <label for="title">Title</label>
             <input
               type="text"
               class="form-control"
               v-model="title"
+              required="true" 
               placeholder="What is the title of your post?"
             />
         </div>
@@ -16,6 +17,7 @@
             <textarea rows="10"
               class="form-control"
               v-model="description"
+              required="true" 
               placeholder="Write your description in detail"
             ></textarea>
         </div>

@@ -27,6 +27,7 @@ import ConfirmationService from 'primevue/confirmationservice';
 import ConfirmDialog from 'primevue/confirmdialog';
 import ToastService from 'primevue/toastservice';
 import Toast from 'primevue/toast';
+import Tag from 'primevue/tag';
 
 library.add(fas)
 
@@ -51,5 +52,6 @@ app.component('InputText', InputText)
 app.component('TabMenu', TabMenu)
 app.component('ConfirmDialog', ConfirmDialog)
 app.component('Toast', Toast)
+app.component('Tag', Tag)
 
 app.mount('#app')
