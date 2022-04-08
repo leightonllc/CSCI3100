@@ -40,7 +40,7 @@
         </div>
         <div class="div-icones-why-easybank">
           <article class="article-why-easybank">
-            <i class="pi pi-star-fill animate__bounce" style="font-size: 2rem; margin-left:1rem "></i>
+            <i class="pi pi-star-fill" style="font-size: 2rem; margin-left:1rem "></i>
             <h3 class="title-icon-why-easybank">Course Evaluation</h3>
             <p class="text-icon-why-easybank">
               Students can rate and comment on the courses which they have taken for the reference of other students interested in the courses.

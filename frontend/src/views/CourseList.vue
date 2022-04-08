@@ -10,6 +10,13 @@
             <div class="right">
                 <div>
                     <span class="h2">Course List</span>
+                    <div class="input-group md-form form-sm form-1 pl-0">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-text1"><i class="pi pi-search text-white"
+                                aria-hidden="true"></i></span>
+                        </div>
+                        <input class="form-control my-0 py-0" type="text" placeholder="Search..." aria-label="Search">
+                    </div>
                     <div class="my-2 overflow-auto">
                     <p style="font-family:Segoe UI">
                         <DataTable :paginator="true" data-key="id" class="table align-middle">
@@ -111,7 +118,7 @@
             //     console.log(idx);
             //     console.log(val)}
             // );
-        }
+        },
     };
 </script>
 
