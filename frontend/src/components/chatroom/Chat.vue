@@ -70,6 +70,15 @@
             </div>
 
           <div class="right row d-flex justify-content-center">
+          <div class="col-lg-8">
+              <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
+                <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
+              </a>
+              <div class="chat-about">
+                                <h6 class="m-b-0">Aiden Chavez</h6>
+                                <small>Last seen: 2 hours ago</small>
+                            </div>
+              </div>
             <div class="col-lg-8 hidden-sm text-right">
                 <a href="javascript:void(0);" class="btn btn-outline-secondary"><i class="fa fa-camera"></i></a>
                 <a href="javascript:void(0);" class="btn btn-outline-primary"><i class="fa fa-image"></i></a>
@@ -295,4 +304,6 @@ body{
       flex:10 10 0;
       padding: 20px 10px 30px 0px;
     }
+
+
 </style>

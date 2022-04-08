@@ -60,7 +60,7 @@ export default {
                     icon: 'fa fa-calendar-days',
                 },
                 {
-                    header: 'Setting',
+                    header: 'Settings',
                     hiddenOnCollapse: true
 
                 },
@@ -70,8 +70,8 @@ export default {
                     icon: 'fa fa-comment',
                 },
                 {
-                    href: '/setting',
-                    title: 'Setting',
+                    href: '/settings',
+                    title: 'Settings',
                     icon: 'fa fa-gears',
                 },
                 {
@@ -143,8 +143,13 @@ export default {
 
                 },{
                 href: '/showallusers',
-                title: 'All User',
+                title: 'All Users',
                 icon: 'fa fa-users',
+                }, {
+                href: '/showallcourses',
+                title: 'All Courses',
+                icon: 'fa fa-book',
+                
             })
         }
         }

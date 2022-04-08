@@ -17,7 +17,7 @@ import Forum from '../views/Forum.vue'
 import Members from '../views/Members.vue'
 import Done from '../views/Done.vue'
 import Landing from '../views/Landing.vue'
-
+import ShowAllCourses from '../views/ShowAllCourses.vue'
 
 const routes = [{
         path: '/',
@@ -109,6 +109,12 @@ const routes = [{
         name: 'Done',
         component: Done,
     },
+    {
+        path: '/showallcourses',
+        name: 'ShowAllCourses',
+        component: ShowAllCourses,
+    },
+    
 ]
 
 const router = createRouter({
