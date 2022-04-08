@@ -102,11 +102,15 @@ export default {
           if (childSnapshot.val().code === localStorage.getItem('code')) {
             key = childSnapshot.key;
             rate = childSnapshot.val().rating;
-            total = childSnapshot.val().comments;
+            if (childSnapshot.val().comments) {
+              total = childSnapshot.val().comments;
+            } else {
+              total = 0;
+            }
           }
         })
       });
-      total = Object.keys(total).length; //dunno how to find number of comments
+      total = Object.keys(total).length;
       let newRate = ((total*rate + this.rating)/(total+1)).toFixed(2);
       let path = 'courses/' + key + '/comments';
       let add = { username: user, content: this.comment, rate: this.rating };
