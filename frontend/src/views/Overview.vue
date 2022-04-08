@@ -10,9 +10,10 @@
             <div class="right">
                 <div class="content">
                     <h2>Current Courses</h2>
-                    <span v-for="course of usercourse_details" v-bind:key="course.code">
-                        <Button class="p-button-text p-button-secondary block1">
-                            <Card class="block2" @click="handleClick(course.code)">
+                    <div style="display:flex;overflow: auto;">
+                    <div v-for="course of usercourse_details" v-bind:key="course.code">
+                        <Button class="p-button-text p-button-secondary block1" style="width: 320px;height:200px;">
+                            <Card class="block2" @click="handleClick(course.code)" style="overflow: hidden;">
                                 <template #title>
                                     <div class="title">{{ course.code }}</div>
                                 </template>
@@ -25,13 +26,13 @@
                             </Card>
                             <div class="tool">
                                 <Button
-                                    icon="pi pi-ellipsis-v"
+                                    icon="pi pi-times"
                                     class="p-button-secondary p-button-text p-button-rounded"
                                     @click="handleDelete(course.code)"
                                 />
                             </div>
                         </Button>
-                    </span>
+                    </div></div>
                     <hr />
                     <h2>Other Courses</h2>
                     <DataTable
@@ -56,11 +57,14 @@
                         </template>
                         <Column field="code" header="Course Code"></Column>
                         <Column field="name" header="Title" style="overflow: auto;" />
-                        <Column
-                            field="courseDescription"
-                            header="Description"
-                            style="overflow: auto; "
-                        />
+                        <Column field="courseDescription" header="Description" style="overflow: auto; ">
+                        
+                            <template #body="slotProps">
+                                <div style="padding-left:15px">
+                                    {{slotProps.data.courseDescription}}
+                                </div>
+                            </template>
+                        </Column>
                         <Column style="width: 340px;">
                             <template #body="btn">
                                 <Button
@@ -252,5 +256,6 @@ export default {
 }
 .right {
     flex: 10;
+    overflow-x: auto;
 }
 </style>

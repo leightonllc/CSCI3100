@@ -5,7 +5,7 @@
         <div class="left">
             <SideBar />
         </div>
-        <div class="right m-2">
+        <div class="right m-2" style="overflow: scroll;padding: 0px 70px;">
             <div>
                 <span class="h2">Users</span>
                 <div class="my-2">

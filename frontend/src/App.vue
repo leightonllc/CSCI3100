@@ -1,7 +1,5 @@
 <template>
-  <div style="min-height:100%">
     <router-view/>
-  </div>
 </template>
 <script>
 import UpperBar from './components/upperBar/UpperBar.vue'

@@ -130,7 +130,24 @@ export default {
     },
     mounted() {
         this.onResize()
-        window.addEventListener('resize', this.onResize)
+        window.addEventListener('resize', this.onResize);
+
+    },
+    watch: {
+        role: function (newVal, oldVal){
+            if (this.role=='admin'){
+            this.menu.push(
+                {
+                    header: 'Admin',
+                    hiddenOnCollapse: true
+
+                },{
+                href: '/showallusers',
+                title: 'All User',
+                icon: 'fa fa-users',
+            })
+        }
+        }
     },
     created() {
         onAuthStateChanged(auth, (user) => {
@@ -148,6 +165,7 @@ export default {
                                 if (childSnapshot.val().uid == user.uid) {
                                     this.role = childSnapshot.val().role;
                                 }
+                                
                             })
                         })
                     })

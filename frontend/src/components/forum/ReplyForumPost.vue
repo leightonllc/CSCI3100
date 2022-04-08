@@ -83,8 +83,42 @@ export default {
                 }
             })
         });
+        if (this.forumPost.replies != null){
+            
+        console.log(this.forumPost.replies)
+        Object.values(this.forumPost.replies).forEach((reply)=>{
+            let pd = new Date(reply.repliedOn);
+            let year = pd.getFullYear();
+            let month = pd.getMonth() + 1;
+            let day = pd.getDate();
+            let hour = pd.getHours();
+            let minute = pd.getMinutes();
+            if (hour<10){
+                hour = "0"+String(hour);
+            }
+            if (minute<10){
+                minute = "0"+String(minute);
+            }
+
+            let postdate = year + "/" + String(month) + "/" + String(day) + " " + String(hour) + ":" + String(minute);
+            reply.repliedOn = postdate;
+        })
+
+        }
     },
     methods: {
+        
+        genPostDatess(dateStr) {
+            console.log(dateStr)
+            let pd = new Date(dateStr);
+            let year = pd.getFullYear();
+            let month = pd.getMonth() + 1;
+            let day = pd.getDate();
+            let hour = pd.getHours();
+            let minute = pd.getMinutes();
+            this.postdate = year + "/" + String(month) + "/" + String(day) + " " + String(hour) + ":" + String(minute);
+            this.reply.repliedOn = dateStr;
+        },
         sendReply() {
             if (this.newreply == '') {
                 this.$toast.add({ severity: 'warn', summary: 'Action failed', detail: 'Please leave a reply first.', life: 3000 });
@@ -113,6 +147,13 @@ export default {
             let day = pd.getDate();
             let hour = pd.getHours();
             let minute = pd.getMinutes();
+            
+            if (hour<10){
+                hour = "0"+String(hour);
+            }
+            if (minute<10){
+                minute = "0"+String(minute);
+            }
             this.postDate = year + "/" + String(month) + "/" + String(day) + " at " + String(hour) + ":" + String(minute);
         }
     }
@@ -131,6 +172,6 @@ export default {
     margin-top: 30px;
 }
 .color {
-    border: solid sandybrown 5px;
+    border: solid sandybrown 8px;
 }
 </style>

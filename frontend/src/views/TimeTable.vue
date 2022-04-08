@@ -25,6 +25,15 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction'
 import db from "../components/calendar/firebase";
 import { collection, getDocs } from "firebase/firestore";
+import { FilterMatchMode, FilterOperator } from 'primevue/api';
+import db2 from "../components/chatroom/firebase";
+
+import {
+    ref,
+    set,
+    push,
+    onValue
+} from "firebase/database";
 export default {
   name: 'TimeTable',
   components: {
@@ -42,7 +51,6 @@ export default {
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                editable: true,
                 allDaySlot:false,
                 slotMinTime:"08:00:00",
                 slotMaxTime:"21:00:01",
@@ -61,8 +69,20 @@ export default {
         };
   },
   created(){
-      this.getEvents('CSCI3100')
-      this.getEvents('CSCI4430')
+  },
+  mounted() {
+    onValue(ref(db2, "usercourse"), (snapshot) => {
+        this.usercourse = [];
+        snapshot.forEach((childSnapshot) => {
+            if (childSnapshot.val().uid === localStorage.getItem('user')) {
+                this.usercourse.push(childSnapshot.val().code);
+                console.log(this.usercourse)
+            }
+        })
+        this.usercourse.forEach((coursecode)=>{
+            this.getEvents(coursecode)
+        })
+    });
   },
   watch: {
       "options.events": function(){
@@ -84,13 +104,6 @@ export default {
         events.push(appData)
       })
       this.options.events=this.options.events.concat(events)
-    },
-    async updateEvent (ev) {
-      await db.collection('CSCI3100').doc(ev.id).update({
-        title: ev.title,
-        start: ev.start,
-        end: ev.end,
-      })
     },
     handleDateClick: function(arg) {
       alert('date click! ' + arg.dateStr)

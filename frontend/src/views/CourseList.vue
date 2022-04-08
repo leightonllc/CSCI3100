@@ -10,39 +10,49 @@
             <div class="right">
                 <div>
                     <span class="h2">Course List</span>
-                    <div class="input-group md-form form-sm form-1 pl-0">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-text1"><i class="pi pi-search text-white"
-                                aria-hidden="true"></i></span>
-                        </div>
-                        <input class="form-control my-0 py-0" type="text" placeholder="Search..." aria-label="Search">
-                    </div>
                     <div class="my-2 overflow-auto">
                     <p style="font-family:Segoe UI">
-                        <DataTable :paginator="true" data-key="id" class="table align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th scope="col">Code</th>
-                                    <th scope="col">Course Name</th>
-                                    <th class="d-none d-md-block" v-if="!isOnMobile" scope="col">Description</th>
-                                    <th v-if="!isOnMobile" scope="col">Professors</th>
-                                    <th v-if="!isOnMobile" scope="col">Assessment</th>
-                                    <th v-if="!isOnMobile" scope="col">Rating</th>
-                                    <!-- <th scope="col">Comments</th> -->
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="courseEntry" v-for="course of courses" :key="course.code" @click="handleClick(course.code)">
-                                    <th scope="row"> {{course.code}}</th>
-                                    <td> {{ course.name }} </td>
-                                    <td class="d-none d-md-block"> {{ course.courseDescription }} </td>
-                                    <td> {{ course.professor }} </td>
-                                    <td> {{ course.assessment }} </td>
-                                    <td> {{course.rating }}/5</td>
-                                    <!-- <td>Interesting jokes</td> -->
-                                </tr>
-                            </tbody>
-                        </Datatable>
+                        <DataTable
+                        :value="courses"
+                        :paginator="true"
+                        :rows="5"
+                        data-key="id"
+                        :filters="filters"
+                        :selection="selected"
+                        selectionMode="single"
+                        @rowSelect="handleClick"
+                    >
+                        <template #header>
+                            <div class="p-input-icon-left" style="margin: 10px 0px;">
+                                <i class="pi pi-search" />
+                                <InputText
+                                    type="text"
+                                    v-model="filters['global'].value"
+                                    placeholder="Search"
+                                />
+                            </div>
+                        </template>
+                        <Column field="code" header="Course Code"></Column>
+                        <Column field="name" header="Title" style="overflow: auto;" />
+                        <Column field="courseDescription" header="Description" style="overflow: auto; ">
+                        
+                            <template #body="slotProps">
+                                <div style="padding-left:15px">
+                                    {{slotProps.data.courseDescription}}
+                                </div>
+                            </template>
+                        </Column>
+                        <Column field="professor" header="Professor" style="overflow: auto;" />
+                        <Column field="assessment" header="Assessment" style="overflow: auto;">
+                        
+                            <template #body="slotProps">
+                                <div style="padding-left:15px">
+                                    {{slotProps.data.assessment}}
+                                </div>
+                            </template>
+                        </Column>
+                        <Column field="rating" header="Rating" style="overflow: auto;" />
+                    </DataTable>
                     </p>
                     </div>
                 </div>
@@ -53,6 +63,7 @@
 
 <script>
     import CourseSideBar from '../components/sidebar/CourseSideBar';
+import { FilterMatchMode, FilterOperator } from 'primevue/api';
     import db from "../components/chatroom/firebase";
     import {
         ref,
@@ -71,11 +82,17 @@
         },
         data() {
             return {
-                courses: []
+                courses: [],
+                filters: {
+                    'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
+                },
+                selected:null,
             };
         },
         methods: {
-            handleClick(code) {
+            handleClick(event) {
+                console.log(event.data)
+                let code = event.data.code
                 let courseRow;
                 onValue(ref(db, "courses"), (snapshot) => {
                     snapshot.forEach((childSnapshot) => {

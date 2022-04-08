@@ -106,8 +106,7 @@ export default {
           }
         })
       });
-      console.log(total); //dunno how to find number of comments
-      total = 5; //dunno how to find number of comments
+      total = Object.keys(total).length; //dunno how to find number of comments
       let newRate = ((total*rate + this.rating)/(total+1)).toFixed(2);
       let path = 'courses/' + key + '/comments';
       let add = { username: user, content: this.comment, rate: this.rating };
