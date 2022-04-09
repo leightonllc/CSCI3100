@@ -181,8 +181,9 @@ export default {
                     });
                 // ...
             } else {
-                // User is signed out
-                // ...
+                this.$router.push({
+                        path: '/login'
+                    });
             }
         });
     }
