@@ -97,7 +97,7 @@ import db from "../components/chatroom/firebase";
 const auth = getAuth();
 const storage = getStorage();
 export default {
-  name: "Setting",
+  name: "Settings",
   components: {
     SideBar,
   },
