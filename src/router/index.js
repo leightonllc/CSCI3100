@@ -5,6 +5,7 @@ import VerifyEmail from '../views/VerifyEmail.vue'
 import ConfirmRegist from '../views/ConfirmRegist'
 import TimeTable from '../views/TimeTable'
 import ChatRoom from '../components/chatroom/Chat.vue'
+import PrivateChat from '../components/chatroom/PrivateChat.vue'
 import CourseReview from '../views/CourseReview.vue'
 import Settings from '../views/Setting.vue'
 import ShowAllUsers from '../views/ShowAllUsers.vue'
@@ -63,6 +64,11 @@ const routes = [{
         path: '/chat',
         name: 'Chat',
         component: ChatRoom,
+    },
+    {
+        path: '/privatechat',
+        name: 'PrivateChat',
+        component: PrivateChat,
     },
     {
         path: '/coursereview',

@@ -16,15 +16,15 @@
                     <Column
                         field="description"
                         header="Description"
-                        style="max-width: 300px; overflow: auto;"
+                        style="overflow: auto;"
                     />
                     <Column header="Action" style="width: 180px;">
-                        <template #body>
+                        <template #body="slotProps">
                             <Button
                                 label="Chat"
                                 icon="pi pi-comments"
                                 class="p-button-rounded p-button-warning p-button-raised"
-                                @click="gotochat()"
+                                @click="gotochat(slotProps.data.uid)"
                             />
                         </template>
                     </Column>
@@ -54,8 +54,8 @@ export default {
         Menu
     },
     methods: {
-        gotochat() {
-            this.$router.push("/chat");
+        gotochat(uid) {
+            this.$router.push({ name: 'PrivateChat', params: {receiver: uid}} );
         },
     },
     created() {
@@ -76,6 +76,7 @@ export default {
                     if (uid == childSnapshot.val().uid) {
                         this.member_details.push(childSnapshot.val());
                     }
+                    
                 });
             });
         });

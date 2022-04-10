@@ -7,7 +7,8 @@
         </div>
         <div class="right mt-3 mx-3">
             <h3>Chat</h3>
-        <h5>Welcome {{ name }}!</h5>
+        <h5>Welcome <span class="name">{{ name }}</span>!</h5>
+        <h5> <span class="name">{{recevierName}}</span> Chat Room</h5>
         <div class="chat-app">
 
           <div >
@@ -38,6 +39,7 @@
 
 
 <script>
+  const auth = getAuth();
   import SideBar from '../sidebar/CourseSideBar.vue';
   import db from "./firebase";
   import {
@@ -56,7 +58,11 @@
       return {
         name: null,
         showMessage: "",
-        messages: []
+        messages: [],
+        users:['FPTv0OOkkENK5fCPosWyRYamIiZ2',''],
+        userName: 'You',
+        recevierName: '',
+        flag:0,
       };
     },
     components: {
@@ -67,36 +73,71 @@
         if (this.name) {
           const message = {
             text: this.showMessage,
-            username: this.name
+            sender: this.users[0],
+            recevier: this.users[1]
           };
-          const messageListRef = ref(db, "messages");
+          const messageListRef = ref(db, "privatemessage");
           const newMessageRef = push(messageListRef);
           set(newMessageRef, message);
           this.showMessage = "";
         }
+      },
+    },
+    created() {
+      this.users[1] = this.$route.params.receiver;
+      //this.users[1] = 'cYfb7RDdmsfXKEAbFSq2TJ3kHL72';
+    },
+    watch: {
+      'flag': function(newVal, oldVal){
+          if (newVal==2){
+            onValue(ref(db, "privatemessage"), (snapshot) => {
+                this.messages = [];
+                snapshot.forEach((childSnapshot) => {
+                  let temp={text:"",username:""}
+                  if (this.users.includes(childSnapshot.val().recevier) && this.users.includes(childSnapshot.val().sender)){
+                    temp.text=childSnapshot.val().text
+                    if (childSnapshot.val().sender == this.users[0]){
+                      
+                      temp.username=this.userName
+                    }else if((childSnapshot.val().sender == this.users[1])){
+                      temp.username=this.recevierName
+                    }
+                    
+                    this.messages.push(temp);
+                  }
+                  
+                  
+                })
+            })
+
+          }
       }
     },
     mounted() {
-      const auth = getAuth();
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          // User is signed in, see docs for a list of available properties
-          // https://firebase.google.com/docs/reference/js/firebase.User
-          this.name = user.displayName;
-          console.log(user);
-          // ...
-        } else {
-          // User is signed out
-          // ...
-        }
-      });
-      onValue(ref(db, "messages"), (snapshot) => {
-        this.messages = [];
-        snapshot.forEach((childSnapshot) => {
-          this.messages.push(childSnapshot.val());
-        })
-      })
-      console.log(this.messages);
+      console.log(this.recevierName)
+      
+        onAuthStateChanged(auth, (user) => {
+          if (user) {
+                onValue(ref(db, "users"), (snapshot) => {
+                    snapshot.forEach((childSnapshot) => {
+                        if (childSnapshot.val().uid == user.uid) {
+                            this.name = childSnapshot.val().name;
+                            this.users[0]=childSnapshot.val().uid
+                            this.flag=this.flag+1;
+                        }
+                        if (childSnapshot.val().uid == this.users[1]) {
+                            this.recevierName = childSnapshot.val().name;
+                            this.flag=this.flag+1;
+                        }
+
+                        
+                    })
+                })
+            }
+          });
+
+          
+
     }
   };
 </script>
@@ -135,7 +176,10 @@
     margin-left: 280px;
     border-left: 1px solid #eaeaea
   }
-
+  .name {
+    font-weight: bold;
+    text-decoration:inherit
+  }
   .people-list {
     -moz-transition: .5s;
     -o-transition: .5s;
