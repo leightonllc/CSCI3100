@@ -203,7 +203,10 @@ export default {
         onValue(ref(db, "courses"), (snapshot) => {
             this.courses = [];
             snapshot.forEach((childSnapshot) => {
-                this.courses.push(childSnapshot.val());
+                if (!this.usercourse.includes(childSnapshot.val().code)){
+                    
+                    this.courses.push(childSnapshot.val());
+                }
             })
         });
         this.onResize();

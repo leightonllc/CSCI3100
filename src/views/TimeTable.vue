@@ -8,7 +8,7 @@
         <div class="right mt-3 mx-3">
             <h1>Timetable Planner</h1>
             <div>
-                <FullCalendar @change="asd()" :options="options" :events="events" />
+                <FullCalendar @change="zoomEvent()" :options="options" :events="events" />
             </div>
         </div>
     </div>
@@ -28,12 +28,18 @@ import { collection, getDocs } from "firebase/firestore";
 import { FilterMatchMode, FilterOperator } from 'primevue/api';
 import db2 from "../components/chatroom/firebase";
 
+const auth = getAuth();
 import {
     ref,
     set,
     push,
     onValue
 } from "firebase/database";
+import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+} from "firebase/auth";
 export default {
   name: 'TimeTable',
   components: {
@@ -43,9 +49,10 @@ export default {
   },
   data() {
         return {
+            role:'user',
             options: {
                 plugins:[dayGridPlugin,timeGridPlugin, interactionPlugin],
-                initialDate : '2022-04-01',
+                initialDate : new Date(),
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
@@ -55,6 +62,7 @@ export default {
                 slotMinTime:"08:00:00",
                 slotMaxTime:"21:00:01",
                 selectMirror: true, 
+                editable:false,
                 events: [],
                 eventChange: async function(changeInfo ) {
                     console.log(changeInfo.event.endStr);
@@ -71,6 +79,7 @@ export default {
   created(){
   },
   mounted() {
+    console.log(auth)
     onValue(ref(db2, "usercourse"), (snapshot) => {
         this.usercourse = [];
         snapshot.forEach((childSnapshot) => {
@@ -82,16 +91,36 @@ export default {
         this.usercourse.forEach((coursecode)=>{
             this.getEvents(coursecode)
         })
+        
+    });
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            onValue(ref(db2, "users"), (snapshot) => {
+                snapshot.forEach((childSnapshot) => {
+                    if (childSnapshot.val().uid == user.uid) {
+                        this.role = childSnapshot.val().role;
+                    }
+                    
+                })
+            })
+        }
     });
   },
   watch: {
-      "options.events": function(){
-          console.log("change");
-      }
+    "options.events": function(){
+        console.log("change");
+    },
+    role: function (newVal, oldVal){
+        if (this.role=='admin'){
+            this.options.editable=true
+        }
+        else{
+            this.options.editable=false
+        }
+    }
   },
   methods: {
-      asd(){
-          console.log("asd")
+      zoomEvent(){
           calendar.getEventSources()
       },
       async getEvents (coursecode) {
