@@ -66,7 +66,12 @@ export default {
                 },
                 {
                     href: '/chat',
-                    title: 'Chat',
+                    title: 'Group Chat',
+                    icon: 'fa fa-comments',
+                },
+                {
+                    href: '/chatui',
+                    title: 'Private Chat',
                     icon: 'fa fa-comment',
                 },
                 {

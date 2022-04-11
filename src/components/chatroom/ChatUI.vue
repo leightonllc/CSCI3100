@@ -8,28 +8,21 @@
         <div class="right mt-3 mx-3">
             <h3>Chat</h3>
         <h5>Welcome <span class="name">{{ name }}</span>!</h5>
-        <h5> <span class="name">{{recevierName}}</span> Chat Room</h5>
         <div class="chat-app">
 
           <div >
 
             <div class="row d-flex justify-content-center my-4" style="height: 70vh; overflow-y: scroll">
 
-              <div v-for="message in messages" :key="message">
-                <div class="border pl-2 pt-1 ml-2 message-text mb-2" :class="{'sending':message.username=='You' }">
-                  <p class="lead mx-3">{{ message.username }}</p>
-                  <p class="message pt-1 mx-3">{{ message.text }}</p>
+              <div v-for="user in allusers" :key="user" >
+                <div class="border pl-2 pt-1 ml-2 message-text mb-2" style="position:relative;height:100px" @click="gotochat(user.uid)">
+                  <p class="lead mx-3 name">{{ user.name }}</p>
+                  <p class="lead mx-3">{{lastmessage[user.uid]}}</p>
+                  <div class="unseen">{{ unseen[user.uid] }}</div>
                 </div>
               </div>
               
             </div>
-            <form class="row mt-2 col-lg-8" @submit.stop.prevent="sendMessage()">
-                <div class="col-9"><input v-model="showMessage" type="tex" class="form-control"
-                    placeholder="Enter text here..." /></div>
-                <div class="col-3"><button class="btn btn-primary" type="submit"><img
-                      src="https://iconape.com/wp-content/files/xh/367685/svg/send-logo-icon-png-svg.png"
-                      filter="url(#colorMask3)" width="20" />   Send</button></div>
-              </form>
           </div>
         </div>
         </div>
@@ -47,7 +40,7 @@
     set,
     push,
     onValue,
-    update
+    update,
   } from "firebase/database";
   import {
     getAuth,
@@ -58,75 +51,81 @@
     data() {
       return {
         name: null,
-        showMessage: "",
         messages: [],
         users:['',''],
-        userName: 'You',
-        recevierName: '',
-        flag:0,
+        unseen:[],
+        allusers:[],
+        lastmessage:[],
       };
     },
     components: {
       SideBar,
     },
     methods: {
-      sendMessage() {
-        if (this.name) {
-          const message = {
-            text: this.showMessage,
-            sender: this.users[0],
-            recevier: this.users[1],
-            seen:0,
-          };
-          const messageListRef = ref(db, "privatemessage");
-          const newMessageRef = push(messageListRef);
-          set(newMessageRef, message);
-          this.showMessage = "";
-        }
-      },
+        gotochat(uid) {
+            this.$router.push({ name: 'PrivateChat', params: {receiver: uid}} );
+        },
     },
     created() {
-      this.users[1] = this.$route.params.receiver;
-      //this.users[1] = 'cYfb7RDdmsfXKEAbFSq2TJ3kHL72';
+            if(!window.location.hash) {
+                window.location = window.location + '#loaded';
+                window.location.reload();
+}
     },
     watch: {
-      'flag': function(newVal, oldVal){
-          if (newVal==2){
-            onValue(ref(db, "privatemessage"), (snapshot) => {
-                this.messages = [];
-                snapshot.forEach((childSnapshot) => {
-                  let temp={text:"",username:""}
-                  if (this.users.includes(childSnapshot.val().recevier) && this.users.includes(childSnapshot.val().sender)){
-                    temp.text=childSnapshot.val().text
-                    if (childSnapshot.val().sender == this.users[0]){
-                      
-                      temp.username=this.userName
-                    }else if((childSnapshot.val().sender == this.users[1])){
-                      temp.username=this.recevierName
+      'name': function(newVal, oldVal){
+          
+        onValue(ref(db, "privatemessage"), (snapshot) => {
+            this.messages = [];
+            this.unseen = []
+            snapshot.forEach((childSnapshot) => {
+                this.allusers.forEach(user => {
+                    this.users[1] = user.uid
+                    if (this.users.includes(childSnapshot.val().recevier) && this.users.includes(childSnapshot.val().sender)){
+                        this.lastmessage[user.uid]=childSnapshot.val().text;
                     }
                     
-                    this.messages.push(temp);
-                    if(childSnapshot.val().recevier == this.users[0]){
-                        const updates = {};
-                        var key = childSnapshot.key+''
-                        updates['privatemessage/' + key + '/sender'] = childSnapshot.val().sender
-                        updates['privatemessage/' + key + '/recevier'] = childSnapshot.val().recevier
-                        updates['privatemessage/' + key + '/text'] = childSnapshot.val().text
-                        updates['privatemessage/' + key + '/seen'] = 1;
-                        update(ref(db), updates);
-                    }
-                    
-                  }
-                  
-                  
-                })
-            })
+                });
+                if (childSnapshot.val().recevier == this.users[0] && childSnapshot.val().seen == 0 ){
+                    onValue(ref(db, "users"), (snapshot) => {
+                        snapshot.forEach((childSnapshot2) => {
+                            if (childSnapshot2.val().uid == childSnapshot.val().sender) {
+                                if (this.unseen[childSnapshot.val().sender] ==null){
+                                    this.unseen[childSnapshot.val().sender] = 0
+                                }
+                                this.unseen[childSnapshot.val().sender] += 1;
 
-          }
+                            }
+
+                            
+                        })
+                    })
+                    
+                }
+                
+
+
+            })
+            
+        });
+      },
+      'unseen' : function(newVal, oldVal){
+          var userstmp=[]
+          this.allusers.forEach(user => {
+              if (user.uid != this.users[0]){
+
+                  if(this.unseen[user.uid] > 0){
+                      userstmp.unshift(user)
+                  }else{
+                      userstmp.push(user)
+                  }
+              }
+              
+          });
+          this.allusers = userstmp;
       }
     },
     mounted() {
-      console.log(this.recevierName)
       
         onAuthStateChanged(auth, (user) => {
           if (user) {
@@ -137,17 +136,11 @@
                             this.users[0]=childSnapshot.val().uid
                             this.flag=this.flag+1;
                         }
-                        if (childSnapshot.val().uid == this.users[1]) {
-                            this.recevierName = childSnapshot.val().name;
-                            this.flag=this.flag+1;
-                        }
-
-                        
+                        this.allusers.push(childSnapshot.val())
                     })
                 })
             }
-          });
-
+        });
           
 
     }
@@ -204,7 +197,16 @@
     list-style: none;
     border-radius: 3px
   }
-
+    .unseen{
+        background: red;
+        color:white;
+        border-radius: 99999px;
+        width:25px;
+        text-align: center;
+        position: absolute;
+        top: 0;
+        right:0;
+    }
   .people-list .chat-list li:hover {
     background: #efefef;
     cursor: pointer
