@@ -15,7 +15,16 @@
             <div class="row d-flex justify-content-center my-4" style="height: 70vh; overflow-y: scroll">
 
               <div v-for="user in allusers" :key="user" >
-                <div class="border pl-2 pt-1 ml-2 message-text mb-2" style="position:relative;height:100px" @click="gotochat(user.uid)">
+                <div class="border pl-2 pt-1 ml-2 message-text mb-2" v-if="lastmessage[user.uid]"
+                 style="position:relative;height:100px" @click="gotochat(user.uid)">
+                  <p class="lead mx-3 name">{{ user.name }}</p>
+                  <p class="lead mx-3">{{lastmessage[user.uid]}}</p>
+                  <div class="unseen">{{ unseen[user.uid] }}</div>
+                </div>
+              </div>
+              <div v-for="user in allusers" :key="user" >
+                <div class="border pl-2 pt-1 ml-2 message-text mb-2" v-if="!lastmessage[user.uid]"
+                 style="position:relative;height:100px" @click="gotochat(user.uid)">
                   <p class="lead mx-3 name">{{ user.name }}</p>
                   <p class="lead mx-3">{{lastmessage[user.uid]}}</p>
                   <div class="unseen">{{ unseen[user.uid] }}</div>
