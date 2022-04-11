@@ -88,6 +88,7 @@ export default {
                 console.log(this.usercourse)
             }
         })
+        this.options.events=[];
         this.usercourse.forEach((coursecode)=>{
             this.getEvents(coursecode)
         })
@@ -107,9 +108,6 @@ export default {
     });
   },
   watch: {
-    "options.events": function(){
-        console.log("change");
-    },
     role: function (newVal, oldVal){
         if (this.role=='admin'){
             this.options.editable=true
