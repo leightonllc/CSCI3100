@@ -16,6 +16,9 @@
               Resend Confirmation Email
             </button>
           </div>
+          <div class="buttondiv my-4">
+            <button class="btn btn-primary sendButton" @click="back()">Return to Log in</button>
+          </div>
       </div>
     </div>
   </div>
@@ -31,6 +34,9 @@
       resend() {
         console.log("resent");
       },
+      back() {
+      this.$router.push("/login");
+    },
     },
   };
 </script>
