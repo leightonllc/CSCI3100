@@ -22,6 +22,10 @@
                 </div>
               </div>
               
+                
+                <div id="last">
+                  <div v-if="seen">seen</div>
+                </div>
             </div>
             <form class="row mt-2 col-lg-8" @submit.stop.prevent="sendMessage()">
                 <div class="col-9"><input v-model="showMessage" type="tex" class="form-control"
@@ -64,6 +68,7 @@
         userName: 'You',
         recevierName: '',
         flag:0,
+        seen:0,
       };
     },
     components: {
@@ -82,6 +87,9 @@
           const newMessageRef = push(messageListRef);
           set(newMessageRef, message);
           this.showMessage = "";
+          var TY = 0;
+          TY = document.getElementById(last).offsetTop;
+          document.getElementById(last).scroll(0, TY -tde);
         }
       },
     },
@@ -104,6 +112,7 @@
                     }else if((childSnapshot.val().sender == this.users[1])){
                       temp.username=this.recevierName
                     }
+                    this.seen=childSnapshot.val().seen
                     
                     this.messages.push(temp);
                     if(childSnapshot.val().recevier == this.users[0]){
