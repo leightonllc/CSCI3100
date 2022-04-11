@@ -16,7 +16,7 @@
             <div class="row d-flex justify-content-center my-4" style="height: 70vh; overflow-y: scroll">
 
               <div v-for="message in messages" :key="message">
-                <div class="border pl-2 pt-1 ml-2 message-text mb-2" :class="{'sending':message.username=='You' }">
+                <div class="border pl-2 pt-1 ml-2 message-text mb-2" :class="{'sending':message.username=='You','recieving':message.username!='You'}">
                   <p class="lead mx-3">{{ message.username }}</p>
                   <p class="message pt-1 mx-3">{{ message.text }}</p>
                 </div>
@@ -162,7 +162,16 @@
 
   .sending{
     background:green;
-    color:white
+    color:white;
+    float: right;
+    width: 60%;
+    border-radius: 20px 20px 0px 20px;
+  }
+  .recieving{
+    float: left;
+    width: 60%;
+    border-radius: 20px 20px  20px 0px;
+
   }
   .card {
     background: #fff;
