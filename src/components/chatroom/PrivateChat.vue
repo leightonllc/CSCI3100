@@ -112,7 +112,12 @@
                     }else if((childSnapshot.val().sender == this.users[1])){
                       temp.username=this.recevierName
                     }
-                    this.seen=childSnapshot.val().seen
+                    if(childSnapshot.val().sender== this.users[0] ){
+                      this.seen=childSnapshot.val().seen
+                    }else{
+                      this.seen=0
+                    }
+                    
                     
                     this.messages.push(temp);
                     if(childSnapshot.val().recevier == this.users[0]){
