@@ -13,7 +13,7 @@
                     <div class="my-2 overflow-auto">
 
                         <DataTable :value="courses" :paginator="true" :rows="5" data-key="id" :filters="filters"
-                            v-model:selection="selected" selectionMode="multiple" @rowSelect="handleClick">
+                            v-model:selection="selected" selectionMode="multiple" @rowSelect="handleClick" >
                             <template #header>
                                 <div class="p-input-icon-left" style="margin: 10px 0px;">
                                     <i class="pi pi-search" />
@@ -196,10 +196,16 @@ export default {
                 this.collapsed = false
             }
         },
-        openNew() {
+        openNew(code) {
             this.course = {};
             this.submitted = false;
             this.courseDialog = true;
+            let varAdd = { assessment: this.assessment, code: this.code, courseDescription: this.description, name: this.title, professor: this.professor, rating: 0 };
+            let userListRef = ref(db, "courses");
+            let newUserRef = push(userListRef);
+            set(newUserRef, varAdd);
+            window.alert(this.ccode + " added to the course list");
+            window.location.reload();
         },
         hideDialog() {
             this.courseDialog = false;
@@ -211,13 +217,14 @@ export default {
             let userListRef = ref(db, "courses");
             let newUserRef = push(userListRef);
             set(newUserRef, varAdd);
-            window.alert(this.code + " added to the course list");
+            window.alert(this.ccode + " added to the course list");
             window.location.reload();
         },
 
         editCourse(code) {
             this.code = { ...code };
             this.courseDialog = true;
+            this.ccode = ccode
         },
         confirmDeleteCourse(code) {
             this.$confirm.require({
