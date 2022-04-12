@@ -1,5 +1,7 @@
 <template>
 <div style="min-height:100vh">
+  <Toast />
+  <ConfirmDialog :breakpoints="{ '960px': '75vw', '640px': '100vw' }" :style="{ width: '50vw' }"></ConfirmDialog>
     <UpperBar/>
     <div class="container">
         <div class="left">
