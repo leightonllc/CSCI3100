@@ -72,8 +72,8 @@
                         <div class="field">
                             <form @submit.stop.prevent="changeInfo()">
                                 <div class="form-group">
-                                    <label for="code">Course Code</label>
-                                    <input type="text" class="form-control" v-model="code" />
+                                    <label for="ccode">Course Code</label>
+                                    <input type="text" class="form-control" v-model="ccode" />
                                 </div>
                                 <div class="form-group">
                                     <label for="title">Title</label>
@@ -162,10 +162,10 @@ export default {
             deleteCoursesDialog: false,
             submitted: false,
             courseDialog: false,
-            assessment: '', 
-            code: '', 
-            description: '', 
-            title: '', 
+            assessment: '',
+            ccode: '',
+            description: '',
+            title: '',
             professor: '',
         };
     },
@@ -207,12 +207,12 @@ export default {
         },
         saveCourse(code) {
             this.submitted = true;
-                let varAdd = { assessment: this.assessment, code: this.code, courseDescription: this.description, name: this.title, professor: this.professor, rating: 0 };
-                let userListRef = ref(db, "courses");
-                let newUserRef = push(userListRef);
-                set(newUserRef, varAdd);
-                window.alert(this.code + " added to the course list");
-                window.location.reload();
+            let varAdd = { assessment: this.assessment, code: this.code, courseDescription: this.description, name: this.title, professor: this.professor, rating: 0 };
+            let userListRef = ref(db, "courses");
+            let newUserRef = push(userListRef);
+            set(newUserRef, varAdd);
+            window.alert(this.code + " added to the course list");
+            window.location.reload();
         },
 
         editCourse(code) {
@@ -220,8 +220,30 @@ export default {
             this.courseDialog = true;
         },
         confirmDeleteCourse(code) {
-            this.code = code;
-            this.deleteCourseDialog = true;
+            this.$confirm.require({
+                message: 'Do you want to delete '+ code.code +' from your course list?',
+                header: 'Delete Confirmation',
+                icon: 'pi pi-info-circle',
+                acceptClass: 'p-button-danger',
+                accept: () => {
+                    let key = "tbc";
+                    onValue(ref(db, "courses"), (snapshot) => {
+                        snapshot.forEach((childSnapshot) => {
+                            if (childSnapshot.val().code === code.code) {
+                                    key = childSnapshot.key;
+                            }
+                        })
+                    });
+                    let refe = 'courses/' + key + '/'
+                    let userListRef = ref(db, refe);
+                    set(userListRef, null);
+                    this.$toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Course deleted', life: 3000 });
+                    //window.location.reload();
+                },
+                reject: () => {
+                    this.$toast.add({ severity: 'error', summary: 'Rejected', detail: 'Request cancelled', life: 3000 });
+                }
+            });
         },
         deleteCourse() {
 
@@ -229,8 +251,12 @@ export default {
         confirmDeleteSelectedCourses() {
             this.deleteCoursessDialog = true;
         },
-        deleteSelectedCourses() {
-
+        deleteSelectedCourses(code) {
+            let refe = 'courses/' + code + '/'
+            let userListRef = ref(db, refe);
+            set(userListRef, null);
+            this.$toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Course deleted', life: 3000 });
+            window.location.reload();
         },
     },
 
