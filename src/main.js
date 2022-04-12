@@ -24,6 +24,7 @@ import VueSidebarMenu from 'vue-sidebar-menu'
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import UpperBar from './components/upperBar/UpperBar'
 import ConfirmationService from 'primevue/confirmationservice';
+import Dropdown from 'primevue/dropdown';
 import ConfirmDialog from 'primevue/confirmdialog';
 import ToastService from 'primevue/toastservice';
 import Toast from 'primevue/toast';
@@ -54,6 +55,7 @@ app.component('TabMenu', TabMenu)
 app.component('ConfirmDialog', ConfirmDialog)
 app.component('Toast', Toast)
 app.component('Tag', Tag)
+app.component('Dropdown', Dropdown)
 app.component('Dialog', Dialog)
 
 app.mount('#app')

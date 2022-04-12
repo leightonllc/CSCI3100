@@ -11,13 +11,13 @@
                 <div>
                     <span class="h2">All Courses</span>
                     <div class="my-2 overflow-auto">
-
-                        <DataTable :value="courses" :paginator="true" :rows="5" data-key="id" :filters="filters"
-                            v-model:selection="selected" selectionMode="multiple" @rowSelect="handleClick" >
+                        <DataTable :value="courses" :paginator="true" :rows="5" data-key="key" :filters="filters" v-model:selection="this.selected"
+                             >
                             <template #header>
                                 <div class="p-input-icon-left" style="margin: 10px 0px;">
                                     <i class="pi pi-search" />
                                     <InputText type="text" v-model="filters['global'].value" placeholder="Search" />
+                                    <Button label="Delete" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelectedCourses" :disabled="!selected || !selected.length" />
                                 </div>
 
                                 <Button label="New" icon="pi pi-plus" class="p-button-success mr-2"
@@ -28,8 +28,7 @@
 
                             </template>
 
-
-                            <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
+                            <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
                             <Column field="code" header="Course Code"></Column>
                             <Column field="name" header="Title" style="overflow: auto;" />
                             <Column field="courseDescription" header="Description" style="overflow: auto; ">
@@ -57,13 +56,13 @@
                                         @click="confirmDeleteCourse(slotProps.data)" />
                                 </template>
                             </Column>
-                            <!--- <Column header="Edit" style="overflow: auto;"> 
+                             <Column header="Edit" style="overflow: auto;"> 
                                 <template #body="slotProps">
                                     <Button icon="pi pi-sliders-h"
                                         class="p-button-rounded p-button-secondary p-button-raised"
                                         style="margin: 0px 10px 0px 0px;" @click="editCourse(slotProps.data)" />
                                 </template>
-                            </Column> --->
+                            </Column>
                         </DataTable>
                     </div>
 
@@ -104,6 +103,7 @@
                         <div class="field">
                             <form @submit.stop.prevent="changeCourse()">
                                 <div class="form-group">
+                                    
                                     <label for="code">Course Code</label>
                                     <input type="text" class="form-control" v-model="code" />
                                 </div>
@@ -117,7 +117,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="professor">Professor</label>
-                                    <input type="text" class="form-control" v-model="professor" />
+                                    <Dropdown v-model="professor" :options="professorList" :editable="true"/>
                                 </div>
                                 <div class="form-group">
                                     <label for="assessment">Assessment</label>
@@ -127,7 +127,7 @@
                         </div>
                         <template #footer>
                             <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog1" />
-                            <Button label="Save" icon="pi pi-check" class="p-button-text" @click="changeCourse" />
+                            <Button label="Save" icon="pi pi-check" class="p-button-text" @click="changeCourse()" />
                         </template>
                     </Dialog>
 
@@ -196,6 +196,7 @@ export default {
             submitted: false,
             courseDialog: false,
             courseDialog1: false,
+            professorList:[],
             assessment: '',
             code: '',
             description: '',
@@ -205,21 +206,6 @@ export default {
     },
     methods: {
         handleClick(event) {
-            console.log(event.data)
-            let code = event.data.code
-            let courseRow;
-            onValue(ref(db, "courses"), (snapshot) => {
-                snapshot.forEach((childSnapshot) => {
-                    if (childSnapshot.val().code === code) {
-                        courseRow = childSnapshot.val();
-                    }
-                })
-            });
-            if (courseRow) {
-                localStorage.setItem('code', code);
-                localStorage.setItem('title', courseRow.name);
-                this.$router.push({ name: 'CourseReview', params: { code: code } });
-            }
         },
         onResize() {
             if (window.innerWidth <= 767) {
@@ -231,6 +217,11 @@ export default {
             }
         },
         openNew(code) {
+            this.assessment= '',
+            this.code= '',
+            this.description= '',
+            this.title= '',
+            this.professor= '',
             this.submitted = false;
             this.courseDialog = true;
         },
@@ -241,11 +232,15 @@ export default {
         saveCourse(code) {
             this.submitted = true;
             let varAdd = { assessment: this.assessment, code: this.code, courseDescription: this.description, name: this.title, professor: this.professor, rating: 0 };
-            let userListRef = ref(db, "courses");
-            let newUserRef = push(userListRef);
-            set(newUserRef, varAdd);
-            window.alert(this.code + " added to the course list");
-            window.location.reload();
+            if(this.description=='' || this.code =='' || this.title =='' || this.assessment==''|| this.professor==''){
+                window.alert("Entry cannot be empty!!");
+            }else{
+                let userListRef = ref(db, "courses");
+                let newUserRef = push(userListRef);
+                set(newUserRef, varAdd);
+                window.alert(this.code + " added to the course list");
+                this.courseDialog = false;
+            }
         },
 
         hideDialog1() {
@@ -274,6 +269,7 @@ export default {
 
         editCourse(code) {
             this.code = { ...code };
+            this.key= code.key
             this.courseDialog1 = true;
             this.code = code.code
             this.title = code.name
@@ -282,20 +278,13 @@ export default {
             this.assessment = code.assessment
         },
         confirmDeleteCourse(code) {
+            var key = code.key
             this.$confirm.require({
                 message: 'Do you want to delete '+ code.code +' from your course list?',
                 header: 'Delete Confirmation',
                 icon: 'pi pi-info-circle',
                 acceptClass: 'p-button-danger',
                 accept: () => {
-                    let key = "tbc";
-                    onValue(ref(db, "courses"), (snapshot) => {
-                        snapshot.forEach((childSnapshot) => {
-                            if (childSnapshot.val().code === code.code) {
-                                    key = childSnapshot.key;
-                            }
-                        })
-                    });
                     let refe = 'courses/' + key + '/'
                     let userListRef = ref(db, refe);
                     set(userListRef, null);
@@ -316,18 +305,13 @@ export default {
                 icon: 'pi pi-info-circle',
                 acceptClass: 'p-button-danger',
                 accept: () => {
-                    let key = "tbc";
-                    onValue(ref(db, "courses"), (snapshot) => {
-                        snapshot.forEach((childSnapshot) => {
-                            if (childSnapshot.val().code === code.code) {
-                                    key = childSnapshot.key;
-                            }
-                        })
+                    this.selected.forEach(element => {
+                        let key = element.key;
+                        let refe = 'courses/' + key + '/'
+                        let userListRef = ref(db, refe);
+                        set(userListRef, null);
+                        this.$toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Course deleted', life: 3000 });
                     });
-                    let refe = 'courses/' + key + '/'
-                    let userListRef = ref(db, refe);
-                    set(userListRef, null);
-                    this.$toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Course deleted', life: 3000 });
                     //window.location.reload();
                 },
                 reject: () => {
@@ -340,18 +324,25 @@ export default {
             let userListRef = ref(db, refe);
             set(userListRef, null);
             this.$toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Course deleted', life: 3000 });
-            window.location.reload();
+            this.courseDialog=false;
         },
-        changeCourse(code) {
+        changeCourse() {
 
-            console.log(this.description);
-            const updates = {};
-            updates['/courses/' + code.key + '/assessment'] = this.assessment;
-            updates['/courses/' + code.key + '/code'] = this.code;
-            updates['/courses/' + code.key + '/courseDescription'] = this.description;
-            updates['/courses/' + code.key + '/name'] = this.title;
-            updates['/courses/' + code.key + '/professor'] = this.professor;
-            return update(ref(db), updates);
+            if(this.description=='' || this.code =='' || this.title =='' || this.assessment==''|| this.professor==''){
+                window.alert("Entry cannot be empty!!");
+            }else{
+                    
+                const updates = {};
+                updates['/courses/' + this.key + '/assessment'] = this.assessment;
+                updates['/courses/' + this.key + '/code'] = this.code;
+                updates['/courses/' + this.key + '/courseDescription'] = this.description;
+                updates['/courses/' + this.key + '/name'] = this.title;
+                updates['/courses/' + this.key + '/professor'] = this.professor;
+                update(ref(db), updates);
+                this.courseDialog1=false;
+                window.alert(this.code + " added to the course list");
+            }
+            
 
 
         }
@@ -364,8 +355,12 @@ export default {
 
         onValue(ref(db, "courses"), (snapshot) => {
             this.courses = [];
+            var tmp;
             snapshot.forEach((childSnapshot) => {
-                this.courses.push(childSnapshot.val());
+                tmp=childSnapshot.val();
+                tmp.key = childSnapshot.key
+                this.courses.push(tmp);
+                this.professorList.push(childSnapshot.val().professor)
             })
         });
 
