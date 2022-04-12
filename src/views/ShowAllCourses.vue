@@ -72,8 +72,8 @@
                         <div class="field">
                             <form @submit.stop.prevent="changeInfo()">
                                 <div class="form-group">
-                                    <label for="ccode">Course Code</label>
-                                    <input type="text" class="form-control" v-model="ccode" />
+                                    <label for="code">Course Code</label>
+                                    <input type="text" class="form-control" v-model="code" />
                                 </div>
                                 <div class="form-group">
                                     <label for="title">Title</label>
@@ -163,7 +163,7 @@ export default {
             submitted: false,
             courseDialog: false,
             assessment: '',
-            ccode: '',
+            code: '',
             description: '',
             title: '',
             professor: '',
@@ -204,7 +204,7 @@ export default {
             let userListRef = ref(db, "courses");
             let newUserRef = push(userListRef);
             set(newUserRef, varAdd);
-            window.alert(this.ccode + " added to the course list");
+            window.alert(this.code + " added to the course list");
             window.location.reload();
         },
         hideDialog() {
@@ -217,14 +217,14 @@ export default {
             let userListRef = ref(db, "courses");
             let newUserRef = push(userListRef);
             set(newUserRef, varAdd);
-            window.alert(this.ccode + " added to the course list");
+            window.alert(this.code + " added to the course list");
             window.location.reload();
         },
 
         editCourse(code) {
             this.code = { ...code };
             this.courseDialog = true;
-            this.ccode = ccode
+            this.code = code
         },
         confirmDeleteCourse(code) {
             this.$confirm.require({
@@ -252,11 +252,33 @@ export default {
                 }
             });
         },
-        deleteCourse() {
 
-        },
         confirmDeleteSelectedCourses() {
             this.deleteCoursessDialog = true;
+            this.$confirm.require({
+                message: 'Do you want to delete all the selected courses from your course list?',
+                header: 'Delete Confirmation',
+                icon: 'pi pi-info-circle',
+                acceptClass: 'p-button-danger',
+                accept: () => {
+                    let key = "tbc";
+                    onValue(ref(db, "courses"), (snapshot) => {
+                        snapshot.forEach((childSnapshot) => {
+                            if (childSnapshot.val().code === code.code) {
+                                    key = childSnapshot.key;
+                            }
+                        })
+                    });
+                    let refe = 'courses/' + key + '/'
+                    let userListRef = ref(db, refe);
+                    set(userListRef, null);
+                    this.$toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Course deleted', life: 3000 });
+                    //window.location.reload();
+                },
+                reject: () => {
+                    this.$toast.add({ severity: 'error', summary: 'Rejected', detail: 'Request cancelled', life: 3000 });
+                }
+            });
         },
         deleteSelectedCourses(code) {
             let refe = 'courses/' + code + '/'
