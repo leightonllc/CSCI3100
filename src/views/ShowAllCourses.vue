@@ -22,9 +22,9 @@
 
                                 <Button label="New" icon="pi pi-plus" class="p-button-success mr-2"
                                     style="margin: 10px 0px;" @click="openNew" />
-                                <Button label="Delete" icon="pi pi-trash" class="p-button-danger"
+                                <!--- <Button label="Delete" icon="pi pi-trash" class="p-button-danger"
                                     style="margin: 10px 0px;" @click="confirmDeleteSelectedCourses"
-                                    :disabled="!selected || !selected.length" />
+                                    :disabled="!selected || !selected.length" /> --->
 
                             </template>
 
@@ -57,20 +57,20 @@
                                         @click="confirmDeleteCourse(slotProps.data)" />
                                 </template>
                             </Column>
-                            <Column header="Edit" style="overflow: auto;">
+                            <!--- <Column header="Edit" style="overflow: auto;"> 
                                 <template #body="slotProps">
                                     <Button icon="pi pi-sliders-h"
                                         class="p-button-rounded p-button-secondary p-button-raised"
                                         style="margin: 0px 10px 0px 0px;" @click="editCourse(slotProps.data)" />
                                 </template>
-                            </Column>
+                            </Column> --->
                         </DataTable>
                     </div>
 
                     <Dialog v-model:visible="courseDialog" :style="{ width: '450px' }" header="Course Details"
                         :modal="true" class="p-fluid">
                         <div class="field">
-                            <form @submit.stop.prevent="changeInfo()">
+                            <form @submit.stop.prevent="changeCourse()">
                                 <div class="form-group">
                                     <label for="code">Course Code</label>
                                     <input type="text" class="form-control" v-model="code" />
@@ -96,6 +96,38 @@
                         <template #footer>
                             <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
                             <Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveCourse" />
+                        </template>
+                    </Dialog>
+
+                    <Dialog v-model:visible="courseDialog1" :style="{ width: '450px' }" header="Course Details"
+                        :modal="true" class="p-fluid">
+                        <div class="field">
+                            <form @submit.stop.prevent="changeCourse()">
+                                <div class="form-group">
+                                    <label for="code">Course Code</label>
+                                    <input type="text" class="form-control" v-model="code" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="title">Title</label>
+                                    <input type="text" class="form-control" v-model="title" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="description">Description</label>
+                                    <textarea class="form-control" v-model="description" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="professor">Professor</label>
+                                    <input type="text" class="form-control" v-model="professor" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="assessment">Assessment</label>
+                                    <input type="text" class="form-control" v-model="assessment" />
+                                </div>
+                            </form>
+                        </div>
+                        <template #footer>
+                            <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog1" />
+                            <Button label="Save" icon="pi pi-check" class="p-button-text" @click="changeCourse" />
                         </template>
                     </Dialog>
 
@@ -140,7 +172,8 @@ import {
     ref,
     set,
     push,
-    onValue
+    onValue,
+    update,
 } from "firebase/database";
 export default {
     name: 'Admin2',
@@ -162,6 +195,7 @@ export default {
             deleteCoursesDialog: false,
             submitted: false,
             courseDialog: false,
+            courseDialog1: false,
             assessment: '',
             code: '',
             description: '',
@@ -197,15 +231,8 @@ export default {
             }
         },
         openNew(code) {
-            this.course = {};
             this.submitted = false;
             this.courseDialog = true;
-            let varAdd = { assessment: this.assessment, code: this.code, courseDescription: this.description, name: this.title, professor: this.professor, rating: 0 };
-            let userListRef = ref(db, "courses");
-            let newUserRef = push(userListRef);
-            set(newUserRef, varAdd);
-            window.alert(this.code + " added to the course list");
-            window.location.reload();
         },
         hideDialog() {
             this.courseDialog = false;
@@ -221,10 +248,38 @@ export default {
             window.location.reload();
         },
 
+        hideDialog1() {
+            this.courseDialog1 = false;
+            this.submitted = false;
+        },
+        saveCourse1(code) {
+            this.submitted = true;
+            let varAdd = { assessment: this.assessment, code: this.code, courseDescription: this.description, name: this.title, professor: this.professor};
+            let key = "tbc";
+                    onValue(ref(db, "courses"), (snapshot) => {
+                        snapshot.forEach((childSnapshot) => {
+                            if (childSnapshot.val().code === code.code) {
+                                    key = childSnapshot.key;
+                            }
+                        })
+                    });
+            let refe = 'courses/' + key + '/'
+            let userListRef = ref(db, refe);
+            update(userListRef, varAdd);
+            window.alert(this.code + "updated to the course list");
+            window.location.reload();
+            
+            
+        },
+
         editCourse(code) {
             this.code = { ...code };
-            this.courseDialog = true;
-            this.code = code
+            this.courseDialog1 = true;
+            this.code = code.code
+            this.title = code.name
+            this.description = code.courseDescription
+            this.professor = code.professor
+            this.assessment = code.assessment
         },
         confirmDeleteCourse(code) {
             this.$confirm.require({
@@ -287,6 +342,20 @@ export default {
             this.$toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Course deleted', life: 3000 });
             window.location.reload();
         },
+        changeCourse(code) {
+
+            console.log(this.description);
+            const updates = {};
+            updates['/courses/' + code.key + '/assessment'] = this.assessment;
+            updates['/courses/' + code.key + '/code'] = this.code;
+            updates['/courses/' + code.key + '/courseDescription'] = this.description;
+            updates['/courses/' + code.key + '/name'] = this.title;
+            updates['/courses/' + code.key + '/professor'] = this.professor;
+            return update(ref(db), updates);
+
+
+        }
+        
     },
 
     mounted() {
