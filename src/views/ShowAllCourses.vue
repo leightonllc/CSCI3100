@@ -1,4 +1,4 @@
- <template>
+<template>
     <div>
         <Toast />
         <ConfirmDialog :breakpoints="{ '960px': '75vw', '640px': '100vw' }" :style="{ width: '50vw' }"></ConfirmDialog>
@@ -9,19 +9,19 @@
             </div>
             <div class="right">
                 <div>
-                    <span class="h2">Course List</span>
+                    <span class="h2">All Courses</span>
                     <div class="my-2 overflow-auto">
-                    <p style="font-family:Segoe UI">
-                        <DataTable
+                    
+                    <DataTable
                         :value="courses"
                         :paginator="true"
                         :rows="5"
                         data-key="id"
                         :filters="filters"
-                        :selection="selected"
-                        selectionMode="single"
+                        v-model:selection="selected"
+                        selectionMode="multiple"
                         @rowSelect="handleClick"
-                    >
+                        >
                         <template #header>
                             <div class="p-input-icon-left" style="margin: 10px 0px;">
                                 <i class="pi pi-search" />
@@ -31,7 +31,14 @@
                                     placeholder="Search"
                                 />
                             </div>
+                            
+                            <Button label="New" icon="pi pi-plus" class="p-button-success mr-2" style="margin: 10px 0px;" @click="openNew" />
+                            <Button label="Delete" icon="pi pi-trash" class="p-button-danger" style="margin: 10px 0px;" @click="confirmDeleteSelectedCourses" :disabled="!selected || !selected.length" />
+                
                         </template>
+
+                        
+                        <Column selectionMode="multiple" style="width: 3rem" :exportable="false"></Column>
                         <Column field="code" header="Course Code"></Column>
                         <Column field="name" header="Title" style="overflow: auto;" />
                         <Column field="courseDescription" header="Description" style="overflow: auto; ">
@@ -52,9 +59,67 @@
                             </template>
                         </Column>
                         <Column field="rating" header="Rating" style="overflow: auto;" />
+                        <Column header="Delete" style="overflow: auto;">
+                            <template #body="slotProps">
+                                <Button
+                                    icon="pi pi-trash"
+                                    class="p-button-rounded p-button-danger p-button-raised"
+                                    style="margin: 0px 10px 0px 0px;"
+                                    @click="confirmDeleteCourse(slotProps.data)"
+                                />
+                            </template>
+                        </Column>
+                        <Column header="Edit" style="overflow: auto;">
+                            <template #body="slotProps">
+                                <Button
+                                    icon="pi pi-sliders-h"
+                                    class="p-button-rounded p-button-secondary p-button-raised"
+                                    style="margin: 0px 10px 0px 0px;"
+                                    @click="editCourse(slotProps.data)"
+                                />
+                            </template>
+                        </Column>
                     </DataTable>
-                    </p>
                     </div>
+
+                    <Dialog v-model:visible="courseDialog" :style="{width: '450px'}" header="Course Details" :modal="true" class="p-fluid">
+                        <div class="field">
+                            <label for="code">Course Code</label>
+                            <InputText
+                                    type="text"
+                                    v-model="filters['global'].value"
+                                    placeholder="Search"
+                                />
+                        </div>
+                    
+                        <template #footer>
+                            <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog"/>
+                            <Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveCourse" />
+                        </template>
+                    </Dialog>
+
+                     <Dialog v-model:visible="deleteCourseDialog" :style="{width: '450px'}" header="Confirm" :modal="true">
+                        <div class="confirmation-content">
+                            <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
+                            <span v-if="product">Are you sure you want to delete <b>{{code}}</b>?</span>
+                        </div>
+                        <template #footer>
+                            <Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteCourseDialog = false"/>
+                            <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteCourse" />
+                        </template>
+                    </Dialog>
+
+                    <Dialog v-model:visible="deleteCoursesDialog" :style="{width: '450px'}" header="Confirm" :modal="true">
+                        <div class="confirmation-content">
+                            <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
+                            <span v-if="product">Are you sure you want to delete the selected courses?</span>
+                        </div>
+                        <template #footer>
+                            <Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteCoursesDialog = false"/>
+                            <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteSelectedCourses" />
+                        </template>
+                    </Dialog>
+
                 </div>
             </div>
         </div>
@@ -63,7 +128,7 @@
 
 <script>
     import CourseSideBar from '../components/sidebar/CourseSideBar';
-import { FilterMatchMode, FilterOperator } from 'primevue/api';
+    import { FilterMatchMode, FilterOperator } from 'primevue/api';
     import db from "../components/chatroom/firebase";
     import {
         ref,
@@ -87,6 +152,9 @@ import { FilterMatchMode, FilterOperator } from 'primevue/api';
                     'global': { value: null, matchMode: FilterMatchMode.CONTAINS },
                 },
                 selected:null,
+                deleteCourseDialog: false,
+                deleteCoursesDialog: false,
+                submitted: false,
             };
         },
         methods: {
@@ -115,7 +183,54 @@ import { FilterMatchMode, FilterOperator } from 'primevue/api';
                     this.isOnMobile = false
                     this.collapsed = false
                 }
-            }
+            },
+            openNew() {
+                this.course = {};
+                this.submitted = false;
+                this.courseDialog = true;
+            },
+            
+            saveCourse(code) {
+                this.submitted = true;
+                var exist = "no";
+                onValue(ref(db, "usercourse"), (snapshot) => {
+                    snapshot.forEach((childSnapshot) => {
+                        if (childSnapshot.val().uid == localStorage.getItem('user')) {
+                            if (childSnapshot.val().code === code) {
+                                exist = "yes";
+                            }
+                        }
+                    })
+                });
+                if (exist == "no") {
+                    let varAdd = { uid: localStorage.getItem('user'), code: code };
+                    let userListRef = ref(db, "usercourse");
+                    let newUserRef = push(userListRef);
+                    set(newUserRef, varAdd);
+                    window.alert(code + " added to your current course list");
+                    window.location.reload();
+                } else {
+                    window.alert(code + " already in your current course list");
+                };
+            },
+            
+            editCourse(code) {
+                this.code = {...code};
+                this.courseDialog = true;
+            },
+            confirmDeleteCourse(code) {
+                this.code = code;
+                this.deleteCourseDialog = true;
+            },
+            deleteCourse() {
+                
+            },
+            confirmDeleteSelectedCourses() {
+                this.deleteCoursessDialog = true;
+            },
+            deleteSelectedCourses() {
+            
+            },
         },
 
         mounted() {
