@@ -165,6 +165,7 @@
 </template>
 
 <script>
+const CourseCodeFormat = /^[A-Z]{4}[0-9]{4}?$/;
 import CourseSideBar from '../components/sidebar/CourseSideBar';
 import { FilterMatchMode, FilterOperator } from 'primevue/api';
 import db from "../components/chatroom/firebase";
@@ -235,12 +236,23 @@ export default {
             if(this.description=='' || this.code =='' || this.title =='' || this.assessment==''|| this.professor==''){
                 window.alert("Entry cannot be empty!!");
             }else{
-                let userListRef = ref(db, "courses");
-                let newUserRef = push(userListRef);
-                set(newUserRef, varAdd);
-                window.alert(this.code + " added to the course list");
-                this.courseDialog = false;
+                
+                let exsits = this.courses.find(o => o.code === this.code);
+                if (exsits == null){
+                    if (CourseCodeFormat.test(this.code)){
+                        let userListRef = ref(db, "courses");
+                        let newUserRef = push(userListRef);
+                        set(newUserRef, varAdd);
+                        window.alert(this.code + " added to the course list");
+                        this.courseDialog = false;
+                    }else{
+                        window.alert("This course code not in correct format");
+                    }
+                }else {
+                    window.alert("This course already existed");
+                }
             }
+            
         },
 
         hideDialog1() {
@@ -332,15 +344,38 @@ export default {
                 window.alert("Entry cannot be empty!!");
             }else{
                     
-                const updates = {};
-                updates['/courses/' + this.key + '/assessment'] = this.assessment;
-                updates['/courses/' + this.key + '/code'] = this.code;
-                updates['/courses/' + this.key + '/courseDescription'] = this.description;
-                updates['/courses/' + this.key + '/name'] = this.title;
-                updates['/courses/' + this.key + '/professor'] = this.professor;
-                update(ref(db), updates);
-                this.courseDialog1=false;
-                window.alert(this.code + " added to the course list");
+                let exsits = this.courses.find(o => o.code === this.code);
+                
+                if (exsits == null){
+                    if (CourseCodeFormat.test(this.code)){
+                        const updates = {};
+                        updates['/courses/' + this.key + '/assessment'] = this.assessment;
+                        updates['/courses/' + this.key + '/code'] = this.code;
+                        updates['/courses/' + this.key + '/courseDescription'] = this.description;
+                        updates['/courses/' + this.key + '/name'] = this.title;
+                        updates['/courses/' + this.key + '/professor'] = this.professor;
+                        update(ref(db), updates);
+                        this.courseDialog1=false;
+                        window.alert(this.code + " has been modified to the course list");
+                    }else{
+                            window.alert("This course code not in correct format");
+                    }
+                }else {
+                    if (exsits.key == this.key){
+                        console.log('same')
+                        const updates = {};
+                        updates['/courses/' + this.key + '/assessment'] = this.assessment;
+                        updates['/courses/' + this.key + '/code'] = this.code;
+                        updates['/courses/' + this.key + '/courseDescription'] = this.description;
+                        updates['/courses/' + this.key + '/name'] = this.title;
+                        updates['/courses/' + this.key + '/professor'] = this.professor;
+                        update(ref(db), updates);
+                        this.courseDialog1=false;
+                        window.alert(this.code + " added to the course list");
+                    }else{
+                        window.alert("This course already existed");
+                    }
+                }
             }
             
 
@@ -362,6 +397,7 @@ export default {
                 this.courses.push(tmp);
                 this.professorList.push(childSnapshot.val().professor)
             })
+
         });
 
         this.onResize();
