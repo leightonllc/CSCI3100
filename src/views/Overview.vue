@@ -1,3 +1,15 @@
+<script>
+/**
+ * @Author: meganmhl
+ * @Description: /Overview.vue is the home page of the application. Content includes "Current Courses" and "Other Courses". 
+ *              "Current Courses" is a horizontal list created by a cards. By clicking the card, it directs to /CourseReview.vue.
+ *              "Other Courses" is a datatable listing all courses except those in "Current Courses".
+ * @Date: 2022-04-30 13:06:30
+ * @Last Modified by:   Your name
+ * @Last Modified time: 2022-04-30 23:40:25
+ */
+</script>
+
 <template>
     <div>
         <Toast />
@@ -9,6 +21,7 @@
             </div>
             <div class="right">
                 <div class="content">
+                    <!-- Horizontal scroll list on user's current courses -->
                     <h2>Current Courses</h2>
                     <div style="display:flex;overflow: auto;">
                     <div v-for="course of usercourse_details" v-bind:key="course.code">
@@ -34,6 +47,7 @@
                         </Button>
                     </div></div>
                     <hr />
+                    <!-- Datatable on other courses -->
                     <h2>Other Courses</h2>
                     <DataTable
                         :value="courses"
@@ -91,7 +105,7 @@
 
 <script>
 import SideBar from '../components/sidebar/CourseSideBar.vue';
-import { FilterMatchMode, FilterOperator } from 'primevue/api';
+import { FilterMatchMode } from 'primevue/api';
 import db from "../components/chatroom/firebase";
 
 import {
@@ -100,12 +114,14 @@ import {
     push,
     onValue
 } from "firebase/database";
+
 export default {
     name: 'Overview',
     components: {
         SideBar
     },
     methods: {
+        //go to Course Review with Course Code as parameter
         handleClick(code) {
             let courseRow;
             onValue(ref(db, "courses"), (snapshot) => {
@@ -121,6 +137,7 @@ export default {
                 this.$router.push({ name: 'CourseReview', params: { code: code } });
             }
         },
+        //change to mobile/normal view on resizing screen
         onResize() {
             if (window.innerWidth <= 767) {
                 this.isOnMobile = true
@@ -130,6 +147,7 @@ export default {
                 this.collapsed = false
             }
         },
+        //add a new course to UserCourse database
         addUserCourse(code) {
             var exist = "no";
             onValue(ref(db, "usercourse"), (snapshot) => {
@@ -152,6 +170,7 @@ export default {
                 window.alert(code + " already in your current course list");
             };
         },
+        //delete user's current course from UserCourse database
         handleDelete(code) {
             this.$confirm.require({
                 message: 'Do you want to delete '+ code+' from your course list?',
@@ -182,6 +201,7 @@ export default {
         },
     },
     mounted() {
+        //get the course code of user course list
         onValue(ref(db, "usercourse"), (snapshot) => {
             this.usercourse = [];
             snapshot.forEach((childSnapshot) => {
@@ -190,6 +210,7 @@ export default {
                 }
             })
         });
+        //get the course detail of user course list
         onValue(ref(db, "courses"), (snapshot) => {
             this.usercourse_details = [];
             snapshot.forEach((childSnapshot) => {
@@ -200,6 +221,7 @@ export default {
                 });
             });
         });
+        //get all courses
         onValue(ref(db, "courses"), (snapshot) => {
             this.courses = [];
             snapshot.forEach((childSnapshot) => {
@@ -209,6 +231,7 @@ export default {
                 }
             })
         });
+        //handle resize activities
         this.onResize();
         window.addEventListener('resize', this.onResize);
 
