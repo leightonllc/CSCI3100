@@ -1,14 +1,14 @@
-<script>
+<!--
 /**
  * @Author: meganmhl
  * @Description: /Overview.vue is the home page of the application. Content includes "Current Courses" and "Other Courses". 
  *              "Current Courses" is a horizontal list created by a cards. By clicking the card, it directs to /CourseReview.vue.
  *              "Other Courses" is a datatable listing all courses except those in "Current Courses".
- * @Date: 2022-04-30 13:06:30
- * @Last Modified by:   Your name
- * @Last Modified time: 2022-04-30 23:40:25
+ * @Date: 2022-04-30 17:24:23
+ * @Last Modified by:   meganmhl
+ * @Last Modified time: 2022-05-01 01:30:47
  */
-</script>
+-->
 
 <template>
     <div>
@@ -24,76 +24,55 @@
                     <!-- Horizontal scroll list on user's current courses -->
                     <h2>Current Courses</h2>
                     <div style="display:flex;overflow: auto;">
-                    <div v-for="course of usercourse_details" v-bind:key="course.code">
-                        <Button class="p-button-text p-button-secondary block1" style="width: 320px;height:200px;">
-                            <Card class="block2" @click="handleClick(course.code)" style="overflow: hidden;">
-                                <template #title>
-                                    <div class="title">{{ course.code }}</div>
-                                </template>
-                                <template #subtitle>
-                                    <div style="overflow: auto;">{{ course.name }}</div>
-                                </template>
-                                <template #content>
-                                    <div style="overflow: auto;">{{ course.professor }}</div>
-                                </template>
-                            </Card>
-                            <div class="tool">
-                                <Button
-                                    icon="pi pi-times"
-                                    class="p-button-secondary p-button-text p-button-rounded"
-                                    @click="handleDelete(course.code)"
-                                />
-                            </div>
-                        </Button>
-                    </div></div>
+                        <div v-for="course of usercourse_details" v-bind:key="course.code">
+                            <Button class="p-button-text p-button-secondary usercourse-cardblock1">
+                                <Card class="usercourse-cardblock2" @click="handleClick(course.code)">
+                                    <template #title>
+                                        <div class="title">{{ course.code }}</div>
+                                    </template>
+                                    <template #subtitle>
+                                        <div style="overflow: auto;">{{ course.name }}</div>
+                                    </template>
+                                    <template #content>
+                                        <div style="overflow: auto;">{{ course.professor }}</div>
+                                    </template>
+                                </Card>
+                                <div class="delete-course">
+                                    <Button icon="pi pi-times" class="p-button-secondary p-button-text p-button-rounded"
+                                        @click="handleDelete(course.code)" />
+                                </div>
+                            </Button>
+                        </div>
+                    </div>
                     <hr />
                     <!-- Datatable on other courses -->
                     <h2>Other Courses</h2>
-                    <DataTable
-                        :value="courses"
-                        :paginator="true"
-                        :rows="5"
-                        data-key="id"
-                        :filters="filters"
-                        :selection="selected"
-                        selectionMode="single"
-                        @rowSelect="onRowSelect"
-                    >
+                    <DataTable :value="courses" :paginator="true" :rows="5" data-key="id" :filters="filters"
+                        :selection="selected" selectionMode="single" @rowSelect="onRowSelect">
                         <template #header>
                             <div class="p-input-icon-left" style="margin: 10px 0px;">
                                 <i class="pi pi-search" />
-                                <InputText
-                                    type="text"
-                                    v-model="filters['global'].value"
-                                    placeholder="Search"
-                                />
+                                <InputText type="text" v-model="filters['global'].value" placeholder="Search" />
                             </div>
                         </template>
                         <Column field="code" header="Course Code"></Column>
                         <Column field="name" header="Title" style="overflow: auto;" />
                         <Column field="courseDescription" header="Description" style="overflow: auto; ">
-                        
+
                             <template #body="slotProps">
                                 <div style="padding-left:15px">
-                                    {{slotProps.data.courseDescription}}
+                                    {{ slotProps.data.courseDescription }}
                                 </div>
                             </template>
                         </Column>
                         <Column style="width: 340px;">
                             <template #body="btn">
-                                <Button
-                                    label="More Details"
-                                    icon="pi pi-info"
+                                <Button label="More Details" icon="pi pi-info"
                                     class="p-button-rounded p-button-secondary p-button-raised"
-                                    style="margin: 0px 10px 0px 0px;"
-                                    @click="handleClick(btn.data.code)"
-                                />
-                                <Button
-                                    label="Add Course"
-                                    icon="pi pi-plus"
+                                    style="margin: 0px 10px 0px 0px;" @click="handleClick(btn.data.code)" />
+                                <Button label="Add Course" icon="pi pi-plus"
                                     class="p-button-rounded p-button-warning p-button-raised"
-                                    @click="addUserCourse(btn.data.code)"
-                                />
+                                    @click="addUserCourse(btn.data.code)" />
                             </template>
                         </Column>
                     </DataTable>
@@ -137,6 +116,7 @@ export default {
                 this.$router.push({ name: 'CourseReview', params: { code: code } });
             }
         },
+
         //change to mobile/normal view on resizing screen
         onResize() {
             if (window.innerWidth <= 767) {
@@ -147,6 +127,7 @@ export default {
                 this.collapsed = false
             }
         },
+
         //add a new course to UserCourse database
         addUserCourse(code) {
             var exist = "no";
@@ -170,6 +151,7 @@ export default {
                 window.alert(code + " already in your current course list");
             };
         },
+
         //delete user's current course from UserCourse database
         handleDelete(code) {
             this.$confirm.require({
@@ -210,6 +192,7 @@ export default {
                 }
             })
         });
+
         //get the course detail of user course list
         onValue(ref(db, "courses"), (snapshot) => {
             this.usercourse_details = [];
@@ -221,6 +204,7 @@ export default {
                 });
             });
         });
+
         //get all courses
         onValue(ref(db, "courses"), (snapshot) => {
             this.courses = [];
@@ -231,6 +215,7 @@ export default {
                 }
             })
         });
+        
         //handle resize activities
         this.onResize();
         window.addEventListener('resize', this.onResize);
@@ -250,25 +235,32 @@ export default {
 </script>
 
 <style scoped>
-.block1 {
-    width: 50%;
+.usercourse-cardblock1 {
+    width: 320px;
+    height:200px;
 }
-.block2 {
+
+.usercourse-cardblock2 {
     width: 100%;
     height: 160px;
     text-align: left;
+    overflow: hidden;
 }
+
 .title {
     position: relative;
 }
-.tool {
+
+.delete-course {
     position: absolute;
     right: 20px;
     top: 20px;
 }
+
 .content {
     padding: 50px;
 }
+
 .container {
     display: flex;
     min-height: 100%;
@@ -276,10 +268,12 @@ export default {
     padding: 0;
     max-width: unset;
 }
+
 .left {
     flex: 2;
     min-height: 100%;
 }
+
 .right {
     flex: 10;
     overflow-x: auto;

@@ -1,18 +1,27 @@
+<!--
+/**
+ * @Author: cyril
+ * @Description: ForumHomeView.vue is a component of Forum.vue. It is a list of posts from a specific course. 
+ *              By clicking into a post, it shows post replies and details from ReplyForumPost.vue.
+ * @Date: 2022-05-01 00:56:37
+ * @Last Modified by:   meganmhl
+ * @Last Modified time: 2022-05-01 01:31:46
+ */
+-->
+
 <template>
     <div class="forumPostBox" @click="handleClick(post.id)">
-        <!-- Replace this with no profile picture placeholder -->
-        <!-- flex layout -->
+        <!-- post box with flex layout -->
         <div class="forumPostBoxHeader">
             <div class="forumPostProfilePicture">
-                <!-- disallow div to shrink when page gets smaller -->
                 <i class="fa-solid fa-circle-user  fa-3x" style="margin:10px 0px 5px 10px"/>
             </div>
             <div class="forumPostMetadata">
-                <!-- allow div to grow and take up all space -->
                 <p class="poster">{{ post.contents.username }}</p>
                 <p class="timeElapsed">{{ timediff }}</p>
             </div>
         </div>
+         <!-- content of the post -->
         <div class="forumPostBody">
             <div class="title">
                 <p>{{ post.contents.question }}</p>
@@ -92,9 +101,11 @@ export default {
     },
 
     methods: {
+        //go to Reply Forum Post
         handleClick(id) {
             this.$emit('clicked-post', id);
         },
+        //format timer
         setTimer() {
             let d1 = new Date();
             let d = d1 - new Date(this.post.contents.timestamp);

@@ -1,6 +1,18 @@
+<!--
+/**
+ * @Author: meganmhl
+ * @Description: ReplyForumPost.vue is a component of Forum.vue. It shows the detail of a certain post and its replies.
+ *              User can add new reply and page shows instant reply from all users.
+ * @Date: 2022-05-01 00:56:37
+ * @Last Modified by:   meganmhl
+ * @Last Modified time: 2022-05-01 01:31:31
+ */
+-->
+
 <template>
     <div>
         <Toast />
+        <!-- Post content -->
         <Card>
             <template #header>
                 <Tag :value="forumPost.courseCode" rounded style="margin:20px 0px 0px 15px;"></Tag>
@@ -11,29 +23,24 @@
             </template>
             <template #content>{{ forumPost.description }}</template>
         </Card>
+        <!-- Replies -->
         <div class="reply">
+            <!-- Add new reply -->
             <p style="text-align: center;">-------- Leave a Reply --------</p>
             <Card style="padding-bottom: 20px;">
                 <template #content>
                     <Textarea v-model="newreply" rows="5" style="width:100%" />
                 </template>
                 <template #footer>
-                    <Button
-                        label="Reply"
-                        icon="pi pi-send"
-                        class="p-button-warning"
-                        style="float: right; top:-20px;"
-                        @click="sendReply()"
-                    />
+                    <Button label="Reply" icon="pi pi-send" class="p-button-warning" style="float: right; top:-20px;"
+                        @click="sendReply()" />
                 </template>
             </Card>
+            <!-- Show all replies -->
             <h4 style="margin-top: 30px">Replies</h4>
             <span v-if="!this.rply">There is no reply yet.</span>
             <span v-if="this.rply">
-                <span
-                    v-for="reply of forumPost.replies"
-                    v-bind:key="reply.username"
-                > <!--forumPost.replies.slice().reverse() error-->
+                <span v-for="reply of forumPost.replies" v-bind:key="reply.username">
                     <Card style="margin: 10px 0px;">
                         <template #header>
                             <div class="color"></div>
@@ -70,6 +77,7 @@ export default {
         }
     },
     created() {
+        //get post details
         onValue(ref(db, "forum"), (snapshot) => {
             snapshot.forEach((childSnapshot) => {
                 if (this.id === childSnapshot.key) {
@@ -83,9 +91,9 @@ export default {
                 }
             })
         });
-        if (this.forumPost.replies != null){
-            
-        console.log(this.forumPost.replies)
+        
+        //format datetime display for post replies
+        if (this.forumPost.replies != null){  
         Object.values(this.forumPost.replies).forEach((reply)=>{
             let pd = new Date(reply.repliedOn);
             let year = pd.getFullYear();
@@ -107,7 +115,7 @@ export default {
         }
     },
     methods: {
-        
+        //format datetime
         genPostDatess(dateStr) {
             console.log(dateStr)
             let pd = new Date(dateStr);
@@ -119,10 +127,14 @@ export default {
             this.postdate = year + "/" + String(month) + "/" + String(day) + " " + String(hour) + ":" + String(minute);
             this.reply.repliedOn = dateStr;
         },
+
+        //push a new reply
         sendReply() {
             if (this.newreply == '') {
+                //invlid input
                 this.$toast.add({ severity: 'warn', summary: 'Action failed', detail: 'Please leave a reply first.', life: 3000 });
             } else {
+                //save the reply into Forum database
                 let user;
                 onValue(ref(db, "users"), (snapshot) => {
                     snapshot.forEach((childSnapshot) => {
@@ -140,6 +152,8 @@ export default {
                 this.newreply = '';
             }
         },
+
+        //format datetime display for post
         genPostDate() {
             let pd = new Date(this.forumPost.timestamp);
             let year = pd.getFullYear();
@@ -161,16 +175,11 @@ export default {
 </script>
 
 <style scoped>
-.block1 {
-    margin: 20px 10px;
-    padding: 20px 10px;
-    border-radius: 5px;
-    border: 1px solid gray;
-}
 .reply {
     margin: 10px;
     margin-top: 30px;
 }
+
 .color {
     border: solid sandybrown 8px;
 }
