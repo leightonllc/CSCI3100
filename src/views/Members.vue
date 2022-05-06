@@ -1,13 +1,11 @@
-<!--
 /**
  * @Author: meganmhl
  * @Description: /Members.vue is the page showing all users who register a specific course. Contents include a datatable 
  *              on member list. By clicking "chat", it directs to private chat with the selected person.
  * @Date: 2022-04-30 13:06:30
  * @Last Modified by:   meganmhl
- * @Last Modified time: 2022-05-01 01:31:00
+ * @Last Modified time: 2022-05-06 19:07:28
  */
--->
 
 <template>
     <div>

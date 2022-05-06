@@ -1,3 +1,11 @@
+/**
+ * @Author: monkeyjai78
+ * @Description: /router/index.js contains all path of the pages.
+ * @Date: 2022-05-06 20:24:20
+ * @Last Modified by:   meganmhl
+ * @Last Modified time: 2022-05-06 20:25:33
+ */
+
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../views/Login.vue'
 import Registration from '../views/Registration.vue'

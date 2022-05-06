@@ -1,15 +1,13 @@
-<!--
 /**
  * @Author: meganmhl
- * @Description: Landing.vue is the initial landing page of the application. It consists of Header, Main, and Footer.
+ * @Description: /views/Landing.vue is the initial landing page of the application. It consists of Header, Main, and Footer.
  *              Header has some in-page anchors and login/signup button.
  *              Main is divided into abstraction, our services, and about us.
  *              Footer has some in-page anchors and useful links.
  * @Date: 2022-04-30 13:06:30
  * @Last Modified by:   meganmhl
- * @Last Modified time: 2022-05-01 01:29:44
+ * @Last Modified time: 2022-05-06 20:11:50
  */
--->
 
 <template>
   <div>

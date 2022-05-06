@@ -1,14 +1,12 @@
-<!--
 /**
  * @Author: meganmhl
- * @Description: /Overview.vue is the home page of the application. Content includes "Current Courses" and "Other Courses". 
+ * @Description: /views/Overview.vue is the home page of the application. Content includes "Current Courses" and "Other Courses". 
  *              "Current Courses" is a horizontal list created by a cards. By clicking the card, it directs to /CourseReview.vue.
  *              "Other Courses" is a datatable listing all courses except those in "Current Courses".
  * @Date: 2022-04-30 17:24:23
  * @Last Modified by:   meganmhl
- * @Last Modified time: 2022-05-01 01:30:47
+ * @Last Modified time: 2022-05-06 20:04:14
  */
--->
 
 <template>
     <div>

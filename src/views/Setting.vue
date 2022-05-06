@@ -1,14 +1,12 @@
-<!--
 /**
  * @Author: meganmhl
- * @Description: /Setting.vue is the "My Profile" from the application. Content includes "change propic", "change info" 
+ * @Description: /views/Setting.vue is the "My Profile" from the application. Content includes "change propic", "change info" 
  *              and "change password". "change propic" can change the profile picture.
  *              "change info" can change username, email, and description. "change password" can change the password.
  * @Date: 2022-04-30 14:05:38
  * @Last Modified by:   meganmhl
- * @Last Modified time: 2022-05-01 01:30:33
+ * @Last Modified time: 2022-05-06 20:27:32
  */
--->
 
 <template>
   <div>

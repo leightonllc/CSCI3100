@@ -1,6 +1,14 @@
+/**
+ * @Author: leightonllc
+ * @Description: /views/Done.vue is the response page after user updating the profile.
+ * @Date: 2022-05-06 20:13:17
+ * @Last Modified by:   meganmhl
+ * @Last Modified time: 2022-05-06 20:13:25
+ */
+
 <template>
   <div>
-    <UpperBar/>
+    <UpperBar />
     <div class="container">
       <div class="left">
         <SideBar />
@@ -21,9 +29,7 @@ export default {
     SideBar,
   },
   data() {
-
   },
-
 };
 </script>
 
@@ -33,43 +39,7 @@ export default {
   font-size: 14px;
   font-family: "Poppins";
 }
-.box {
-  background: rgba(255, 255, 255, 1);
-  padding: 30px;
-  margin: 30px;
-  border-radius: 30px;
-}
-.formcontent {
-  padding: 30px;
-}
-.propic {
-  width: 114px;
-  height: 114px;
-  background: rgba(196, 196, 196, 1);
-  opacity: 1;
-  top: 0px;
-  left: 0px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin: auto;
-}
 
-.propic, img {
-  
-    max-width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.heading {
-  color: #868686;
-  font-family: Poppins;
-  font-weight: Bold;
-  font-size: 16px;
-  opacity: 1;
-  padding: 30px 0px;
-}
 .container {
   display: flex;
   min-height: 100vh;
@@ -77,22 +47,11 @@ export default {
   padding: 0;
   max-width: unset;
 }
-.left{
-  flex:2;
+
+.left {
+  flex: 2;
 }
-.right {
-  flex:10;
-  padding: 30px 20px;
-}
-.cater {
-  padding-bottom: 50px;
-}
-.header {
-  font-family: "Poppins";
-  font-weight: 600;
-  font-size: 16px;
-  color: #000000;
-}
+
 .content {
   background: #f6f6f6;
   padding: 10px;
@@ -103,5 +62,4 @@ export default {
   width: 100%;
   height: 100%;
 }
-
 </style>

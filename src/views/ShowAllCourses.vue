@@ -1,3 +1,12 @@
+/**
+ * @Author: ethanwongys
+ * @Description: /views/ShowAllCourses.vue shows all the courses in the system. It is an admin page.
+ *              Admin can add new course, edit course, and delete course.
+ * @Date: 2022-05-06 19:36:02
+ * @Last Modified by:   meganmhl
+ * @Last Modified time: 2022-05-06 19:49:56
+ */
+
 <template>
     <div>
         <Toast />
@@ -9,23 +18,23 @@
             </div>
             <div class="right">
                 <div>
+                    <!--course list-->
                     <span class="h2">All Courses</span>
                     <div class="my-2 overflow-auto">
-                        <DataTable :value="courses" :paginator="true" :rows="5" data-key="key" :filters="filters" v-model:selection="this.selected"
-                             >
+                        <DataTable :value="courses" :paginator="true" :rows="5" data-key="key" :filters="filters"
+                            v-model:selection="this.selected">
+                            <!--header includes search, add new, and delete course-->
                             <template #header>
                                 <div class="p-input-icon-left" style="margin: 10px 0px;">
                                     <i class="pi pi-search" />
                                     <InputText type="text" v-model="filters['global'].value" placeholder="Search" />
-                                    <Button label="Delete" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelectedCourses" :disabled="!selected || !selected.length" />
+                                    <Button label="Delete" icon="pi pi-trash" class="p-button-danger"
+                                        @click="confirmDeleteSelectedCourses"
+                                        :disabled="!selected || !selected.length" />
                                 </div>
 
                                 <Button label="New" icon="pi pi-plus" class="p-button-success mr-2"
                                     style="margin: 10px 0px;" @click="openNew" />
-                                <!--- <Button label="Delete" icon="pi pi-trash" class="p-button-danger"
-                                    style="margin: 10px 0px;" @click="confirmDeleteSelectedCourses"
-                                    :disabled="!selected || !selected.length" /> --->
-
                             </template>
 
                             <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
@@ -56,7 +65,7 @@
                                         @click="confirmDeleteCourse(slotProps.data)" />
                                 </template>
                             </Column>
-                             <Column header="Edit" style="overflow: auto;"> 
+                            <Column header="Edit" style="overflow: auto;">
                                 <template #body="slotProps">
                                     <Button icon="pi pi-sliders-h"
                                         class="p-button-rounded p-button-secondary p-button-raised"
@@ -66,6 +75,7 @@
                         </DataTable>
                     </div>
 
+                    <!--Pop-up dialog for adding a new course-->
                     <Dialog v-model:visible="courseDialog" :style="{ width: '450px' }" header="Course Details"
                         :modal="true" class="p-fluid">
                         <div class="field">
@@ -98,12 +108,13 @@
                         </template>
                     </Dialog>
 
+                    <!--Pop-up dialog for editing a current course-->
                     <Dialog v-model:visible="courseDialog1" :style="{ width: '450px' }" header="Course Details"
                         :modal="true" class="p-fluid">
                         <div class="field">
                             <form @submit.stop.prevent="changeCourse()">
                                 <div class="form-group">
-                                    
+
                                     <label for="code">Course Code</label>
                                     <input type="text" class="form-control" v-model="code" />
                                 </div>
@@ -117,7 +128,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="professor">Professor</label>
-                                    <Dropdown v-model="professor" :options="professorList" :editable="true"/>
+                                    <Dropdown v-model="professor" :options="professorList" :editable="true" />
                                 </div>
                                 <div class="form-group">
                                     <label for="assessment">Assessment</label>
@@ -131,6 +142,7 @@
                         </template>
                     </Dialog>
 
+                    <!--Pop-up dialog for confirming to delete a course-->
                     <Dialog v-model:visible="deleteCourseDialog" :style="{ width: '450px' }" header="Confirm"
                         :modal="true">
                         <div class="confirmation-content">
@@ -144,6 +156,7 @@
                         </template>
                     </Dialog>
 
+                    <!--Pop-up dialog for confirming to delete a series of courses-->
                     <Dialog v-model:visible="deleteCoursesDialog" :style="{ width: '450px' }" header="Confirm"
                         :modal="true">
                         <div class="confirmation-content">
@@ -167,7 +180,7 @@
 <script>
 const CourseCodeFormat = /^[A-Z]{4}[0-9]{4}?$/;
 import CourseSideBar from '../components/sidebar/CourseSideBar';
-import { FilterMatchMode, FilterOperator } from 'primevue/api';
+import { FilterMatchMode } from 'primevue/api';
 import db from "../components/chatroom/firebase";
 import {
     ref,
@@ -197,7 +210,7 @@ export default {
             submitted: false,
             courseDialog: false,
             courseDialog1: false,
-            professorList:[],
+            professorList: [],
             assessment: '',
             code: '',
             description: '',
@@ -206,8 +219,7 @@ export default {
         };
     },
     methods: {
-        handleClick(event) {
-        },
+        //responsive window settings
         onResize() {
             if (window.innerWidth <= 767) {
                 this.isOnMobile = true
@@ -217,71 +229,75 @@ export default {
                 this.collapsed = false
             }
         },
+        //open add course pop-up dialog
         openNew(code) {
-            this.assessment= '',
-            this.code= '',
-            this.description= '',
-            this.title= '',
-            this.professor= '',
-            this.submitted = false;
+            this.assessment = '',
+                this.code = '',
+                this.description = '',
+                this.title = '',
+                this.professor = '',
+                this.submitted = false;
             this.courseDialog = true;
         },
+        //hide add course pop-up dialog
         hideDialog() {
             this.courseDialog = false;
             this.submitted = false;
         },
+        //add course to course database
         saveCourse(code) {
             this.submitted = true;
             let varAdd = { assessment: this.assessment, code: this.code, courseDescription: this.description, name: this.title, professor: this.professor, rating: 0 };
-            if(this.description=='' || this.code =='' || this.title =='' || this.assessment==''|| this.professor==''){
+            if (this.description == '' || this.code == '' || this.title == '' || this.assessment == '' || this.professor == '') {
                 window.alert("Entry cannot be empty!!");
-            }else{
-                
+            } else {
+
                 let exsits = this.courses.find(o => o.code === this.code);
-                if (exsits == null){
-                    if (CourseCodeFormat.test(this.code)){
+                if (exsits == null) {
+                    if (CourseCodeFormat.test(this.code)) {
                         let userListRef = ref(db, "courses");
                         let newUserRef = push(userListRef);
                         set(newUserRef, varAdd);
                         window.alert(this.code + " added to the course list");
                         this.courseDialog = false;
-                    }else{
+                    } else {
                         window.alert("This course code not in correct format");
                     }
-                }else {
+                } else {
                     window.alert("This course already existed");
                 }
             }
-            
-        },
 
+        },
+        //hide edit course pop-up dialog
         hideDialog1() {
             this.courseDialog1 = false;
             this.submitted = false;
         },
+        //save edited course information to database
         saveCourse1(code) {
             this.submitted = true;
-            let varAdd = { assessment: this.assessment, code: this.code, courseDescription: this.description, name: this.title, professor: this.professor};
+            let varAdd = { assessment: this.assessment, code: this.code, courseDescription: this.description, name: this.title, professor: this.professor };
             let key = "tbc";
-                    onValue(ref(db, "courses"), (snapshot) => {
-                        snapshot.forEach((childSnapshot) => {
-                            if (childSnapshot.val().code === code.code) {
-                                    key = childSnapshot.key;
-                            }
-                        })
-                    });
+            onValue(ref(db, "courses"), (snapshot) => {
+                snapshot.forEach((childSnapshot) => {
+                    if (childSnapshot.val().code === code.code) {
+                        key = childSnapshot.key;
+                    }
+                })
+            });
             let refe = 'courses/' + key + '/'
             let userListRef = ref(db, refe);
             update(userListRef, varAdd);
             window.alert(this.code + "updated to the course list");
             window.location.reload();
-            
-            
-        },
 
+
+        },
+        //open edit course pop-up dialog
         editCourse(code) {
             this.code = { ...code };
-            this.key= code.key
+            this.key = code.key
             this.courseDialog1 = true;
             this.code = code.code
             this.title = code.name
@@ -289,10 +305,11 @@ export default {
             this.professor = code.professor
             this.assessment = code.assessment
         },
+        //show confirm delete course dialog
         confirmDeleteCourse(code) {
             var key = code.key
             this.$confirm.require({
-                message: 'Do you want to delete '+ code.code +' from your course list?',
+                message: 'Do you want to delete ' + code.code + ' from your course list?',
                 header: 'Delete Confirmation',
                 icon: 'pi pi-info-circle',
                 acceptClass: 'p-button-danger',
@@ -301,14 +318,13 @@ export default {
                     let userListRef = ref(db, refe);
                     set(userListRef, null);
                     this.$toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Course deleted', life: 3000 });
-                    //window.location.reload();
                 },
                 reject: () => {
                     this.$toast.add({ severity: 'error', summary: 'Rejected', detail: 'Request cancelled', life: 3000 });
                 }
             });
         },
-
+        //show confirm delete course dialog (for a brunch of courses)
         confirmDeleteSelectedCourses() {
             this.deleteCoursessDialog = true;
             this.$confirm.require({
@@ -324,30 +340,31 @@ export default {
                         set(userListRef, null);
                         this.$toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Course deleted', life: 3000 });
                     });
-                    //window.location.reload();
                 },
                 reject: () => {
                     this.$toast.add({ severity: 'error', summary: 'Rejected', detail: 'Request cancelled', life: 3000 });
                 }
             });
         },
+        //delete selected courses
         deleteSelectedCourses(code) {
             let refe = 'courses/' + code + '/'
             let userListRef = ref(db, refe);
             set(userListRef, null);
             this.$toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Course deleted', life: 3000 });
-            this.courseDialog=false;
+            this.courseDialog = false;
         },
+        //add or change course information
         changeCourse() {
 
-            if(this.description=='' || this.code =='' || this.title =='' || this.assessment==''|| this.professor==''){
+            if (this.description == '' || this.code == '' || this.title == '' || this.assessment == '' || this.professor == '') {
                 window.alert("Entry cannot be empty!!");
-            }else{
-                    
+            } else {
+
                 let exsits = this.courses.find(o => o.code === this.code);
-                
-                if (exsits == null){
-                    if (CourseCodeFormat.test(this.code)){
+
+                if (exsits == null) {
+                    if (CourseCodeFormat.test(this.code)) {
                         const updates = {};
                         updates['/courses/' + this.key + '/assessment'] = this.assessment;
                         updates['/courses/' + this.key + '/code'] = this.code;
@@ -355,13 +372,13 @@ export default {
                         updates['/courses/' + this.key + '/name'] = this.title;
                         updates['/courses/' + this.key + '/professor'] = this.professor;
                         update(ref(db), updates);
-                        this.courseDialog1=false;
+                        this.courseDialog1 = false;
                         window.alert(this.code + " has been modified to the course list");
-                    }else{
-                            window.alert("This course code not in correct format");
+                    } else {
+                        window.alert("This course code not in correct format");
                     }
-                }else {
-                    if (exsits.key == this.key){
+                } else {
+                    if (exsits.key == this.key) {
                         console.log('same')
                         const updates = {};
                         updates['/courses/' + this.key + '/assessment'] = this.assessment;
@@ -370,29 +387,27 @@ export default {
                         updates['/courses/' + this.key + '/name'] = this.title;
                         updates['/courses/' + this.key + '/professor'] = this.professor;
                         update(ref(db), updates);
-                        this.courseDialog1=false;
+                        this.courseDialog1 = false;
                         window.alert(this.code + " added to the course list");
-                    }else{
+                    } else {
                         window.alert("This course already existed");
                     }
                 }
             }
-            
+
 
 
         }
-        
+
     },
 
     mounted() {
-        // const userListRef = ref(db, "users");
-        // console.log(userListRef);
-
+        //get course list
         onValue(ref(db, "courses"), (snapshot) => {
             this.courses = [];
             var tmp;
             snapshot.forEach((childSnapshot) => {
-                tmp=childSnapshot.val();
+                tmp = childSnapshot.val();
                 tmp.key = childSnapshot.key
                 this.courses.push(tmp);
                 this.professorList.push(childSnapshot.val().professor)
@@ -402,10 +417,6 @@ export default {
 
         this.onResize();
         window.addEventListener('resize', this.onResize);
-        // this.courses.forEach((idx, val) => {
-        //     console.log(idx);
-        //     console.log(val)}
-        // );
     },
 };
 </script>
@@ -419,10 +430,6 @@ export default {
     max-width: unset;
 }
 
-.courseEntry:hover {
-    background-color: lightgray;
-}
-
 .left {
     flex: 2 2 0;
 }
@@ -430,15 +437,5 @@ export default {
 .right {
     flex: 10 10 0;
     padding: 30px 20px 30px 70px;
-}
-
-@media (max-width:768px) {
-
-    .table_class_name tr td:nth-child(4),
-    .table_class_name tr td:nth-child(5),
-    .table_class_name tr td:nth-child(6),
-    .table_class_name tr td:nth-child(7) {
-        display: none;
-    }
 }
 </style>

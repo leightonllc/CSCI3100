@@ -1,3 +1,11 @@
+/**
+ * @Author: leightonllc 
+ * @Description: /main.js manages all components or libraries imported from expernal sourses.
+ * @Date: 2022-05-06 19:07:30
+ * @Last Modified by:   meganmhl
+ * @Last Modified time: 2022-05-06 19:09:03
+ */
+
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'

@@ -1,33 +1,31 @@
-<template>
+/**
+ * @Author: leightonllc
+ * @Description: /views/NewPassword.vue is the reset password page. It is accessed when the user clicks the email line to reset password.
+ * @Date: 2022-05-06 20:03:41
+ * @Last Modified by:   meganmhl
+ * @Last Modified time: 2022-05-06 20:07:02
+ */
+ 
+ <template>
   <div class="background">
     <div class="login">
       <form class="form">
         <div class="header">
-          <img src="@/assets/logo.png" alt="App Logo"  height="90"/>
+          <img src="@/assets/logo.png" alt="App Logo" height="90" />
         </div>
         <div class="header">
-          <div class="loginStr1">Reset password</div>
+          <div class="topic">Reset password</div>
         </div>
         <div class="form-group">
-          <label for="exampleInputEmail1">New Password</label>
-          <input
-            type="password"
-            class="form-control"
-            v-model="login"
-            placeholder="Password"
-          />
+          <label for="InputPassword">New Password</label>
+          <input type="password" class="form-control" v-model="login" placeholder="Password" />
         </div>
         <div class="form-group">
-          <label for="exampleInputEmail1">Confirm Password</label>
-          <input
-            type="password"
-            class="form-control"
-            v-model="login"
-            placeholder="Password"
-          />
+          <label for="InputPassword">Confirm Password</label>
+          <input type="password" class="form-control" v-model="login" placeholder="Password" />
         </div>
         <div style="text-align: center;">
-            <button type="submit" class="btn btn-primary button">Reset Password</button>
+          <button type="submit" class="btn btn-primary button">Reset Password</button>
         </div>
       </form>
     </div>
@@ -45,11 +43,9 @@ export default {
 
 <style scoped>
 .background {
-  background: linear-gradient(
-      0deg,
+  background: linear-gradient(0deg,
       rgba(21, 101, 216, 0.7),
-      rgba(21, 101, 216, 0.7)
-    ),
+      rgba(21, 101, 216, 0.7)),
     url(~@/assets/images/cuhkbg.jpg);
   min-height: 100%;
   display: flex;
@@ -59,10 +55,12 @@ export default {
   background-position: center;
   background-size: cover;
 }
+
 .login {
   display: flex;
   justify-content: center;
 }
+
 .form {
   background: white;
   padding: 40px 40px 80px 40px;
@@ -70,6 +68,7 @@ export default {
   width: 35%;
   min-width: 350px;
 }
+
 .header {
   font-weight: bold;
   font-size: 19px;
@@ -77,16 +76,13 @@ export default {
   text-align: center;
   padding: 0px 0px 20px 0px;
 }
-.loginStr1 {
+
+.topic {
   font-weight: bold;
   font-size: 24px;
   color: #252733;
 }
-.loginStr2 {
-  font-weight: normal;
-  font-size: 14px;
-  color: #9fa2b4;
-}
+
 .form-group {
   text-align: start;
   font-weight: bold;
@@ -94,19 +90,8 @@ export default {
   color: #9fa2b4;
   padding: 0px 0px 30px 0px;
 }
+
 .button {
   width: 90%;
-}
-.signup {
-  font-size: 14px;
-  text-align: center;
-  color: #9fa2b4;
-  padding: 20px 0px;
-}
-.signuplink {
-  font-size: 14px;
-  font-weight: bold;
-  color: #1565d8;
-  text-decoration: none;
 }
 </style>

@@ -1,15 +1,13 @@
-<!--
 /**
  * @Author: meganmhl
- * @Description: Forum.vue is the page showing forum related component. 
+ * @Description: /views/Forum.vue is the page showing forum related component. 
  *              There are 3 UI: Forum Home View, Create Forum Post, and Post Reply.
  *              This file manages which UI to be shown according to user action.
  *              It uses component from components/forum (i.e. CreateForumPost.vue, ForumHomeView.vue, and ReplyForumPost.vue).
  * @Date: 2022-05-01 00:56:37
  * @Last Modified by:   meganmhl
- * @Last Modified time: 2022-05-01 01:34:54
+ * @Last Modified time: 2022-05-06 20:11:54
  */
--->
 
 <template>
     <div>

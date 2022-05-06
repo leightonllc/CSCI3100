@@ -1,3 +1,12 @@
+/**
+ * @Author: menkeyjai78
+ * @Description: /views/CourseReview.vue is the course review page after user clicking into a course.
+ *              User can (1) see course information, and (2) add comment and ratings.
+ * @Date: 2022-05-06 20:13:25
+ * @Last Modified by:   meganmhl
+ * @Last Modified time: 2022-05-06 20:17:39
+ */
+
 <template>
   <div>
     <Toast />
@@ -11,6 +20,7 @@
         <Toast />
         <h1>{{ course_code }} - {{ course_name }}</h1>
         <Menu :courseCode="courseCode" />
+        <!--information of a course-->
         <div class="block1">
           <div class="cater">
             <div class="header">Course Description</div>
@@ -34,6 +44,7 @@
               <div>{{ comment.username }}: {{ comment.content }}</div>
             </div>
           </div>
+          <!--add comments and rating-->
           <div class="cater">
             <div class="header">Input your review here:</div>
             <div class="content">
@@ -82,52 +93,54 @@ export default {
     Menu
   },
   methods: {
+    //push a comment to courses database
     pushComment() {
-      if ( this.comment=="" || this.rating==0 ) {
+      if (this.comment == "" || this.rating == 0) {
         this.$toast.add({ severity: 'warn', summary: 'Action failed', detail: 'Please add your comment and rating.', life: 3000 });
       } else {
-    let user;
-      onValue(ref(db, "users"), (snapshot) => {
-        snapshot.forEach((childSnapshot) => {
-          if (childSnapshot.val().uid === localStorage.getItem('user')) {
-            user = childSnapshot.val().name;
-          }
-        })
-      });
-      let key;
-      let rate;
-      let total;
-      onValue(ref(db, "courses"), (snapshot) => {
-        snapshot.forEach((childSnapshot) => {
-          if (childSnapshot.val().code === localStorage.getItem('code')) {
-            key = childSnapshot.key;
-            rate = childSnapshot.val().rating;
-            if (childSnapshot.val().comments) {
-              total = childSnapshot.val().comments;
-            } else {
-              total = 0;
+        let user;
+        onValue(ref(db, "users"), (snapshot) => {
+          snapshot.forEach((childSnapshot) => {
+            if (childSnapshot.val().uid === localStorage.getItem('user')) {
+              user = childSnapshot.val().name;
             }
-          }
-        })
-      });
-      total = Object.keys(total).length;
-      let newRate = ((total*rate + this.rating)/(total+1)).toFixed(2);
-      let path = 'courses/' + key + '/comments';
-      let add = { username: user, content: this.comment, rate: this.rating };
-      let userListRef = ref(db, path);
-      let newUserRef = push(userListRef);
-      set(newUserRef, add);
-      let ratepath = 'courses/' + key + '/';
-      let addrate = { rating: newRate };
-      let rateRef = ref(db, ratepath);
-      update(rateRef, addrate);
-      this.$toast.add({ severity: 'info', summary: 'Thank you', detail: 'We have received your feedbacks.', life: 3000 });
-      this.comment='';
-      this.rating=0;
+          })
+        });
+        let key;
+        let rate;
+        let total;
+        onValue(ref(db, "courses"), (snapshot) => {
+          snapshot.forEach((childSnapshot) => {
+            if (childSnapshot.val().code === localStorage.getItem('code')) {
+              key = childSnapshot.key;
+              rate = childSnapshot.val().rating;
+              if (childSnapshot.val().comments) {
+                total = childSnapshot.val().comments;
+              } else {
+                total = 0;
+              }
+            }
+          })
+        });
+        total = Object.keys(total).length;
+        let newRate = ((total * rate + this.rating) / (total + 1)).toFixed(2);
+        let path = 'courses/' + key + '/comments';
+        let add = { username: user, content: this.comment, rate: this.rating };
+        let userListRef = ref(db, path);
+        let newUserRef = push(userListRef);
+        set(newUserRef, add);
+        let ratepath = 'courses/' + key + '/';
+        let addrate = { rating: newRate };
+        let rateRef = ref(db, ratepath);
+        update(rateRef, addrate);
+        this.$toast.add({ severity: 'info', summary: 'Thank you', detail: 'We have received your feedbacks.', life: 3000 });
+        this.comment = '';
+        this.rating = 0;
       }
     },
   },
   mounted() {
+    //get course information
     onValue(ref(db, "courses"), (snapshot) => {
       snapshot.forEach((childSnapshot) => {
         if (childSnapshot.val().code === localStorage.getItem('code')) {
@@ -158,6 +171,7 @@ export default {
 .block1 {
   padding: 20px 10px;
 }
+
 .container {
   display: flex;
   min-height: 100vh;
@@ -165,6 +179,7 @@ export default {
   padding: 0;
   max-width: unset;
 }
+
 .left {
   flex: 2 2 0;
 }
@@ -173,15 +188,18 @@ export default {
   flex: 10 10 0;
   padding: 30px 20px 30px 70px;
 }
+
 .cater {
   padding-bottom: 50px;
 }
+
 .header {
   font-family: "Poppins";
   font-weight: 600;
   font-size: 16px;
   color: #000000;
 }
+
 .content {
   background: #f6f6f6;
   border-radius: 5px;
