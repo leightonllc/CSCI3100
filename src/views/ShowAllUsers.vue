@@ -4,7 +4,7 @@
  *              Admin can assign/remove admin, ask user to reset password and disable a user.
  * @Date: 2022-05-06 19:26:28
  * @Last Modified by:   meganmhl
- * @Last Modified time: 2022-05-06 19:36:02
+ * @Last Modified time: 2022-05-06 20:59:34
  */
 
 <template>
@@ -138,8 +138,6 @@ export default {
     padding: 0;
     max-width: unset;
 }
-
-.left {}
 
 .right {
     padding: 30px 20px
