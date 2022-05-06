@@ -1,12 +1,3 @@
-/**
- * @Author: monkeyjai78
- * @Description: /views/Registration.vue is the registration page for new user.
- *              new user can fill in account name, email address and passowrd to create an account.
- * @Date: 2022-05-06 19:58:42
- * @Last Modified by:   meganmhl
- * @Last Modified time: 2022-05-06 20:03:41
- */
-
 <template>
   <div class="background">
     <div class="left">
