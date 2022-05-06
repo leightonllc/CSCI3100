@@ -65,6 +65,9 @@ import {
   set,
   push,
 } from "firebase/database";
+import { getStorage, ref as ref2, getMetadata,uploadBytes,
+        getDownloadURL,getBytes } from "firebase/storage"
+const storage = getStorage();
 export default {
   name: "Registration",
   data() {
@@ -74,7 +77,11 @@ export default {
       name: '',
     };
   },
+  mount(){
+    
+  },
   methods: {
+
     //create new user with email and password
     register() {
         const auth = getAuth();
@@ -90,6 +97,28 @@ export default {
             createUserWithEmailAndPassword(auth, this.email, this.password)
               .then((userCredential) => {
                 const user = userCredential.user;
+                
+
+
+                fetch(require('../assets/defaultpropic.png'))//set the default profile picture
+                  .then(response => {
+                    return response.blob();
+                  })
+                  .then(blob => {
+
+                    updateProfile(auth.currentUser, {
+                      photoURL: 'png'
+                    }).then(() => {
+                      const propicRef = ref2(storage, 'propic/' + auth.currentUser.uid + '.' + 'png'); //filetype is stored in user.photoURL
+                      uploadBytes(propicRef, blob)
+                    }).catch((error1) => {
+                      console.log(error1);
+                    })
+                  })
+                            
+              
+
+
                 updateProfile(user, {
                   displayName: this.name,
                 }).then(() => {
@@ -125,6 +154,7 @@ export default {
         }
         
         }
+        
       },
   },
 };
