@@ -78,8 +78,6 @@ export default {
     //create new user with email and password
     register() {
         const auth = getAuth();
-        console.log(this.email);
-        console.log(this.password);
         if (this.name.length<=0){
           alert('user name cannot be empty')
         }
