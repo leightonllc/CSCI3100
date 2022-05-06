@@ -1,12 +1,16 @@
+/**
+ * @Author: leightonllc
+ * @Description: /component/chatroom/firebase.js connects to the realtime firebase chat record.
+ * @Date: 2022-05-06 20:40:19
+ * @Last Modified by:   meganmhl
+ * @Last Modified time: 2022-05-06 20:47:35
+ */
+
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { getDatabase } from "firebase/database";
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBkmkmp8XdBN91dK0aZZI3KOZQh3GcVaJY",
   authDomain: "csci3100-chat.firebaseapp.com",

@@ -1,3 +1,11 @@
+/**
+ * @Author: leightonllc
+ * @Description: /component/chatroom/Chat.vue is a page to chat with all available users instantly.
+ * @Date: 2022-05-06 20:52:20
+ * @Last Modified by:   meganmhl
+ * @Last Modified time: 2022-05-06 20:53:53
+ */
+
 <template>
 <div style="min-height:100vh">
   <Toast />
@@ -11,18 +19,14 @@
             <h3>Chat</h3>
         <h5>Welcome {{ name }}!</h5>
         <div class="chat-app">
-
           <div >
-
             <div class="row d-flex justify-content-center my-4" style="height: 70vh; overflow-y: scroll">
-
               <div v-for="message in messages" :key="message">
                 <div class="border pl-2 pt-1 ml-2 message-text mb-2" :class="{'sending':message.username=='You' }">
                   <p class="lead mx-3">{{ message.username }}</p>
                   <p class="message pt-1 mx-3">{{ message.text }}</p>
                 </div>
               </div>
-              
             </div>
             <form class="row mt-2 col-lg-8" @submit.stop.prevent="sendMessage()">
                 <div class="col-9"><input v-model="showMessage" type="tex" class="form-control"
@@ -82,14 +86,10 @@
       const auth = getAuth();
       onAuthStateChanged(auth, (user) => {
         if (user) {
-          // User is signed in, see docs for a list of available properties
-          // https://firebase.google.com/docs/reference/js/firebase.User
+          // User is signed in
           this.name = user.displayName;
-          console.log(user);
-          // ...
         } else {
           // User is signed out
-          // ...
         }
       });
       onValue(ref(db, "messages"), (snapshot) => {
@@ -98,7 +98,6 @@
           this.messages.push(childSnapshot.val());
         })
       })
-      console.log(this.messages);
     }
   };
 </script>
@@ -221,9 +220,6 @@
         flex: 10;
         padding: 0px 30px;
     }
-
-
-
 
   .online,
   .offline,

@@ -1,13 +1,11 @@
-<!--
 /**
- * @Author: cyril
- * @Description: ForumHomeView.vue is a component of Forum.vue. It is a list of posts from a specific course. 
+ * @Author: meganmhl
+ * @Description: /component/forum/ForumHomeView.vue is a component of Forum.vue. It is a list of posts from a specific course. 
  *              By clicking into a post, it shows post replies and details from ReplyForumPost.vue.
  * @Date: 2022-05-01 00:56:37
  * @Last Modified by:   meganmhl
- * @Last Modified time: 2022-05-01 01:31:46
+ * @Last Modified time: 2022-05-06 20:38:07
  */
--->
 
 <template>
     <div class="forumPostBox" @click="handleClick(post.id)">

@@ -1,3 +1,12 @@
+/**
+ * @Author: monkeyjai78
+ * @Description: /component/calender/Calender.vue is a component of TimeTable.vue. 
+ *              It shows timetable UI in daily, weekly and monthly format.
+ * @Date: 2022-05-06 20:55:01
+ * @Last Modified by:   meganmhl
+ * @Last Modified time: 2022-05-06 20:57:23
+ */
+
 <template>
     <div class="calendar">
         <table class="table">
@@ -5,13 +14,13 @@
                 <tr>
                     <th class="timecol"></th>
                     <th v-for="d in currentWeek" :key="d.id">
-                        {{d.day}}, {{d.date}} {{d.month}}
+                        {{ d.day }}, {{ d.date }} {{ d.month }}
                     </th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="bodyrow" v-for="ent in timesOfDay" :key="ent.t">
-                    <td class=timecol>{{ent.t}}</td>
+                    <td class=timecol>{{ ent.t }}</td>
                     <td v-for="d in currentWeek" :key="d.id"></td>
                 </tr>
             </tbody>
@@ -32,24 +41,26 @@ export default {
         this.generateTimeOfDay();
     },
     methods: {
+        //format week view
         initialiseWeek() {
             const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
             const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri"]
             let dateNow = new Date();
             let today = dateNow.getDay();
             let startOfWeek = new Date((new Date()).setDate(dateNow.getDate() - today));
             let daysOfWeek = {};
-            for (let i = 1; i <=5; i++) {
-                let dateObj = new Date(startOfWeek.getTime() + i*24*60*60*1000);
-                let day = dayNames[dateObj.getDay() -1 ];
+            for (let i = 1; i <= 5; i++) {
+                let dateObj = new Date(startOfWeek.getTime() + i * 24 * 60 * 60 * 1000);
+                let day = dayNames[dateObj.getDay() - 1];
                 let month = monthNames[dateObj.getMonth()];
                 let date = dateObj.getDate();
-                daysOfWeek[i] = {id:i, day: day, month: month, date: date};
+                daysOfWeek[i] = { id: i, day: day, month: month, date: date };
             }
             this.currentWeek = daysOfWeek;
             this.startOfWeek = startOfWeek;
         },
+        //format time view
         generateTimeOfDay() {
             let timesOfDay = [];
             let time = 330; // 5 30 am in minutes
@@ -58,10 +69,8 @@ export default {
                 let hour = Math.floor(time / 60);
                 let minute = time - hour * 60;
                 time += 15;
-                timesOfDay.push({t: (minute == 0 ? `${hour}:00` : ""), major: (minute == 0 ? true : false)});
+                timesOfDay.push({ t: (minute == 0 ? `${hour}:00` : ""), major: (minute == 0 ? true : false) });
             }
-
-            //console.log(timesOfDay);
             this.timesOfDay = timesOfDay;
         }
     }
@@ -69,37 +78,37 @@ export default {
 </script>
 
 <style scoped>
-    div.calendar {
-        border: 3px black solid;
-        margin: auto;
-        max-height: 75%;
-        max-width: 75%;
-        overflow: auto;
-    }
-    .timecol {
-        width: 5%;
-        font-size: 0.885em;
-        font-weight: 500;
-        padding: 0.3em;
-        text-align: center;
-        position: relative;
-        top: -0.9rem;
-        border-bottom: 1px solid transparent;
-    }
+div.calendar {
+    border: 3px black solid;
+    margin: auto;
+    max-height: 75%;
+    max-width: 75%;
+    overflow: auto;
+}
 
-    td {
-        border: 1px solid lightgray;
-        width: 10%;
-        height: 4rem;
-    }
+.timecol {
+    width: 5%;
+    font-size: 0.885em;
+    font-weight: 500;
+    padding: 0.3em;
+    text-align: center;
+    position: relative;
+    top: -0.9rem;
+    border-bottom: 1px solid transparent;
+}
 
-    th {
-        width: 10%;
-        height: 4rem;
-    }
+td {
+    border: 1px solid lightgray;
+    width: 10%;
+    height: 4rem;
+}
 
-    tr.bodyrow {
-        border-style: none;
-    }
-    
+th {
+    width: 10%;
+    height: 4rem;
+}
+
+tr.bodyrow {
+    border-style: none;
+}
 </style>

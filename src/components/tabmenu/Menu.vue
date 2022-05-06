@@ -1,13 +1,11 @@
-<!--
 /**
  * @Author: meganmhl
- * @Description: Menu.vue is a component of course related features (e.g. CourseReview.vue, Forum.vue, Members.vue).
+ * @Description: /components/tabmenu/Menu.vue is a component of course related features (e.g. CourseReview.vue, Forum.vue, Members.vue).
  *              It navigates pages within a predefined course.
  * @Date: 2022-04-30 13:06:30
  * @Last Modified by:   meganmhl
- * @Last Modified time: 2022-05-01 01:30:20
+ * @Last Modified time: 2022-05-06 20:37:42
  */
--->
 
 <template>
   <!-- TabMenu component from PrimeVUE -->

@@ -1,7 +1,14 @@
+/**
+ * @Author: monkeyjai78
+ * @Description: /component/calender/firebase.js connects to the timetable firebase.
+ * @Date: 2022-05-06 20:47:35
+ * @Last Modified by:   meganmhl
+ * @Last Modified time: 2022-05-06 20:55:01
+ */
+
 import firebase from 'firebase/compat/app'; import 'firebase/compat/auth'; import 'firebase/compat/firestore';
 
-// TODO: Replace the following with your app's Firebase project configuration
-// See: https://firebase.google.com/docs/web/learn-more#config-object
+// Firebase Configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBkmkmp8XdBN91dK0aZZI3KOZQh3GcVaJY",
   authDomain: "csci3100-chat.firebaseapp.com",
@@ -14,7 +21,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-
 
 // Initialize Cloud Firestore and get a reference to the service
 const db = firebase.firestore();

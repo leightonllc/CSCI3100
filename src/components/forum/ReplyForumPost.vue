@@ -1,13 +1,11 @@
-<!--
 /**
  * @Author: meganmhl
- * @Description: ReplyForumPost.vue is a component of Forum.vue. It shows the detail of a certain post and its replies.
+ * @Description: /component/forum/ReplyForumPost.vue is a component of Forum.vue. It shows the detail of a certain post and its replies.
  *              User can add new reply and page shows instant reply from all users.
  * @Date: 2022-05-01 00:56:37
  * @Last Modified by:   meganmhl
- * @Last Modified time: 2022-05-01 01:31:31
+ * @Last Modified time: 2022-05-06 20:38:04
  */
--->
 
 <template>
     <div>

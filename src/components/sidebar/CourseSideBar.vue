@@ -1,12 +1,15 @@
+/**
+ * @Author: monkeyjai78
+ * @Description: /component/sidebar/CourseSideBar.vue is the left-hand-side navigation bar after user enter into the application.
+ *                 It shows the major features of the application.
+ * @Date: 2022-05-06 20:33:37
+ * @Last Modified by:   meganmhl
+ * @Last Modified time: 2022-05-06 20:37:48
+ */
+
 <template>
-    <sidebar-menu
-        :collapsed="collapsed"
-        :menu="menu"
-        :relative="!isOnMobile"
-        @update:collapsed="onToggleCollapse"
-        @item-click="onItemClick"
-        :theme="selectedTheme"
-    ></sidebar-menu>
+    <sidebar-menu :collapsed="collapsed" :menu="menu" :relative="!isOnMobile" @update:collapsed="onToggleCollapse"
+        @item-click="onItemClick" :theme="selectedTheme"></sidebar-menu>
 </template>
 
 <script>
@@ -49,11 +52,6 @@ export default {
                     title: 'Course Review',
                     icon: 'fa fa-bars-staggered',
                 },
-                /*{
-                    href: '/forum',
-                    title: 'Forum',
-                    icon: 'fa fa-chalkboard-user',
-                },*/
                 {
                     href: '/timetable',
                     title: 'Timetable',
@@ -88,6 +86,7 @@ export default {
         };
     },
     methods: {
+        //show confirm logout dialog and logout
         onItemClick(event, item) {
             if (item.title == 'LogOut') {
                 this.$confirm.require({
@@ -138,36 +137,34 @@ export default {
         window.addEventListener('resize', this.onResize);
 
     },
+    //show admin functions if the user is an admin
     watch: {
-        role: function (newVal, oldVal){
-            if (this.role=='admin'){
-            this.menu.push(
-                {
-                    header: 'Admin',
-                    hiddenOnCollapse: true
+        role: function (newVal, oldVal) {
+            if (this.role == 'admin') {
+                this.menu.push(
+                    {
+                        header: 'Admin',
+                        hiddenOnCollapse: true
 
-                },{
-                href: '/showallusers',
-                title: 'All Users',
-                icon: 'fa fa-users',
+                    }, {
+                    href: '/showallusers',
+                    title: 'All Users',
+                    icon: 'fa fa-users',
                 }, {
-                href: '/showallcourses',
-                title: 'All Courses',
-                icon: 'fa fa-book',
-                
-            })
-        }
+                    href: '/showallcourses',
+                    title: 'All Courses',
+                    icon: 'fa fa-book',
+
+                })
+            }
         }
     },
     created() {
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // User is signed in, see docs for a list of available properties
-                // https://firebase.google.com/docs/reference/js/firebase.User
+                // User is signed in
                 getDownloadURL(ref(storage, 'propic/' + user.uid + '.' + user.photoURL))
                     .then((url) => {
-                        // `url` is the download URL for 'images/stars.jpg'
-
                         const img = document.getElementById('mypropic');
                         img.setAttribute('src', url);
                         onValue(rtdbref(db, "users"), (snapshot) => {
@@ -175,7 +172,7 @@ export default {
                                 if (childSnapshot.val().uid == user.uid) {
                                     this.role = childSnapshot.val().role;
                                 }
-                                
+
                             })
                         })
                     })
@@ -184,11 +181,10 @@ export default {
                         const errorMessage = error.message;
                         console.log(errorCode, errorMessage);
                     });
-                // ...
             } else {
                 this.$router.push({
-                        path: '/login'
-                    });
+                    path: '/login'
+                });
             }
         });
     }

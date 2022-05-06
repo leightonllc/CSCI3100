@@ -1,22 +1,23 @@
+/**
+ * @Author: meganmhl
+ * @Description: /component/upperBar/UpperBar.vue is the upper navigation bar after user enter into the application.
+ *                 It shows the application icon, username and profile pic.
+ * @Date: 2022-05-06 20:27:12
+ * @Last Modified by:   meganmhl
+ * @Last Modified time: 2022-05-06 20:37:30
+ */
+
 <template>
     <div class="mainBar" style="background: #1e1e21; height:80px; overflow:hidden;">
         <div style="display: flex; justify-content: space-between;">
             <div>
-                <img
-                    src="@/assets/logo_white.png"
-                    alt="logo"
-                    style="height:60px; margin:10px 20px;"
-                />
+                <img src="@/assets/logo_white.png" alt="logo" style="height:60px; margin:10px 20px;" />
             </div>
             <div>
-                <span style="color:aliceblue">Hi, {{name}}</span>
-                <img
-                    class="propic"
-                    id="mypropic"
-                    alt="propic"
+                <span style="color:aliceblue">Hi, {{ name }}</span>
+                <img class="propic" id="mypropic" alt="propic"
                     style="height:75px; width:75px; padding:5px; margin: 2px 30px; border-radius: 50%;"
-                    @click="gotosetting()"
-                />
+                    @click="gotosetting()" />
             </div>
         </div>
     </div>
@@ -45,6 +46,7 @@ var key = '';
 export default {
     name: 'UpperBar',
     methods: {
+        //go to /setting to view user profile
         gotosetting() {
             this.$router.push("/settings");
         },
@@ -61,6 +63,7 @@ export default {
                 });
             }
         },
+        //logout and go to landing page
         LogOut() {
             console.log("asd")
             signOut(auth).then(() => {
@@ -88,13 +91,12 @@ export default {
         window.addEventListener('resize', this.onResize)
     },
     created() {
+        //user authentication
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // User is signed in, see docs for a list of available properties
-                // https://firebase.google.com/docs/reference/js/firebase.User
+                // User is signed in
                 getDownloadURL(ref(storage, 'propic/' + user.uid + '.' + user.photoURL))
                     .then((url) => {
-                        // `url` is the download URL for 'images/stars.jpg'
                         const img = document.getElementById('mypropic');
                         img.setAttribute('src', url);
                         onValue(rtdbref(db, "users"), (snapshot) => {
@@ -118,10 +120,8 @@ export default {
                         }
                     })
                 })
-                // ...
             } else {
                 // User is signed out
-                // ...
             }
         });
     },
@@ -150,15 +150,16 @@ export default {
 
 .propic-wrapper {
     width: 70px;
-  height: 70px;
-  overflow:hidden;
+    height: 70px;
+    overflow: hidden;
 }
+
 .propic1 {
-   min-height: 100%;
-  width: 100%;
-  left: 50%;
-  top: 50%;
-  position: relative;
-  transform: translateX(-50%) translateY(-50%);
+    min-height: 100%;
+    width: 100%;
+    left: 50%;
+    top: 50%;
+    position: relative;
+    transform: translateX(-50%) translateY(-50%);
 }
 </style>

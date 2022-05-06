@@ -1,12 +1,10 @@
-<!--
 /**
- * @Author: cyril
- * @Description: CreateForumPost.vue is a component of Forum.vue. It is a form to add a new post.
+ * @Author: meganmhl
+ * @Description: /component/forum/CreateForumPost.vue is a component of Forum.vue. It is a form to add a new post.
  * @Date: 2022-05-01 00:56:37
  * @Last Modified by:   meganmhl
- * @Last Modified time: 2022-05-01 01:31:55
+ * @Last Modified time: 2022-05-06 20:38:24
  */
--->
 
 <template>
   <div>
